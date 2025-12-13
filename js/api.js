@@ -142,9 +142,29 @@ const api = {
   },
 
   async moveTask(id, col_id, order_position) {
+    // Validate inputs before sending
+    const taskId = parseInt(id);
+    const colIdNum = parseInt(col_id);
+    const orderNum = parseInt(order_position);
+
+    if (isNaN(taskId) || isNaN(colIdNum) || isNaN(orderNum)) {
+      throw new Error('Valores inválidos para mover tarefa');
+    }
+
+    if (colIdNum < 0 || colIdNum > 3) {
+      throw new Error(`col_id deve ser entre 0 e 3, recebido: ${colIdNum}`);
+    }
+
+    if (orderNum < 0) {
+      throw new Error(`order_position deve ser >= 0, recebido: ${orderNum}`);
+    }
+
     // Backend accepts both snake_case (preferred) and camelCase (for compatibility)
     // We send snake_case to be consistent with frontend conventions
-    const result = await apiRequest('PATCH', `/api/tasks/${id}/move`, { col_id, order_position });
+    const result = await apiRequest('PATCH', `/api/tasks/${taskId}/move`, {
+      col_id: colIdNum,
+      order_position: orderNum
+    });
     return result.data;
   }
 };

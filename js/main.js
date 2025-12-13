@@ -67,6 +67,17 @@ function collapseSearch() {
 }
 
 function handleSearch() {
+  // Check if we're in financial view
+  if (DOM.financialContainer && DOM.financialContainer.classList.contains('active')) {
+    // Financial search is handled by financial.js
+    const searchTerm = DOM.searchInput ? DOM.searchInput.value.toLowerCase().trim() : '';
+    if (typeof filterAndRenderProjects === 'function') {
+      filterAndRenderProjects(searchTerm);
+    }
+    return;
+  }
+
+  // Default Kanban search
   if (AppState.searchTimeout) {
     clearTimeout(AppState.searchTimeout);
   }
@@ -243,11 +254,17 @@ function updateHeader(view) {
     const metrics = calculateDashboardMetrics();
     renderFinancialHeader(metrics);
     if (DOM.btnNewProject) DOM.btnNewProject.style.display = 'none';
-    if (DOM.searchContainer) DOM.searchContainer.style.display = 'none';
+    if (DOM.searchContainer) DOM.searchContainer.style.display = 'flex';
+    if (DOM.searchInput) {
+      DOM.searchInput.placeholder = 'Buscar projeto financeiro... (/)';
+    }
   } else {
     renderProjectsHeader();
     if (DOM.btnNewProject) DOM.btnNewProject.style.display = 'flex';
     if (DOM.searchContainer) DOM.searchContainer.style.display = 'flex';
+    if (DOM.searchInput) {
+      DOM.searchInput.placeholder = 'Buscar projeto... (/)';
+    }
   }
 }
 

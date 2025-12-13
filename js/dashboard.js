@@ -227,7 +227,8 @@ function renderPieChart(distribution) {
   ];
 
   if (total === 0) {
-    ctx.fillStyle = 'var(--text-muted)';
+    // Use white color for placeholder text (as requested)
+    ctx.fillStyle = '#ffffff';
     ctx.font = '12px Inter';
     ctx.textAlign = 'center';
     ctx.fillText('Sem dados', centerX, centerY);
@@ -443,7 +444,9 @@ function exportDashboardData() {
   const liveCount = tasks.filter(t => t.col_id === 3).length;
 
   const currentMonthTasks = tasks.filter(t => {
-    const taskDate = new Date(t.id);
+    if (!t.created_at) return false;
+    const taskDate = new Date(t.created_at);
+    if (isNaN(taskDate.getTime())) return false;
     return taskDate.getMonth() === currentMonth &&
       taskDate.getFullYear() === currentYear &&
       (t.payment_status === PAYMENT_STATUS_PAID || t.payment_status === PAYMENT_STATUS_PARTIAL);

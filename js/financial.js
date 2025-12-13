@@ -59,6 +59,18 @@ function renderFinancial() {
   DOM.financialContainer.classList.add('active');
   DOM.financialContainer.style.display = 'block';
 
+  // Reset search state
+  allFinancialTasks = [];
+  if (financialSearchTimeout) {
+    clearTimeout(financialSearchTimeout);
+    financialSearchTimeout = null;
+  }
+
+  // Clear search input when switching to financial view
+  if (DOM.searchInput) {
+    DOM.searchInput.value = '';
+  }
+
   const tasks = AppState.getTasks();
 
   if (!tasks || tasks.length === 0) {
@@ -147,15 +159,55 @@ function renderFinancial() {
 
   setTimeout(() => {
     renderProjectsTable(tasks);
+    setupFinancialSearch(tasks);
   }, 50);
 }
 
-function renderProjectsTable(tasks) {
+let financialSearchTimeout = null;
+let allFinancialTasks = [];
+
+function setupFinancialSearch(tasks) {
+  allFinancialTasks = tasks;
+
+  if (!DOM.searchInput) return;
+
+  // Update placeholder for financial view
+  DOM.searchInput.placeholder = 'Buscar projeto financeiro... (/)';
+
+  // The search will be handled by checking the active view in the filter function
+  // We just need to ensure the input is cleared when switching views
+}
+
+function filterAndRenderProjects(searchTerm) {
+  let filteredTasks = allFinancialTasks;
+  const hasSearchTerm = searchTerm && searchTerm.length > 0;
+
+  if (hasSearchTerm) {
+    filteredTasks = allFinancialTasks.filter(task => {
+      const client = (task.client || '').toLowerCase();
+      const contact = (task.contact || '').toLowerCase();
+      const type = (task.type || '').toLowerCase();
+      const description = (task.description || '').toLowerCase();
+
+      return client.includes(searchTerm) ||
+        contact.includes(searchTerm) ||
+        type.includes(searchTerm) ||
+        description.includes(searchTerm);
+    });
+  }
+
+  renderProjectsTable(filteredTasks, hasSearchTerm);
+}
+
+function renderProjectsTable(tasks, showNoResults = false) {
   const tableBody = document.getElementById('projectsTable');
   if (!tableBody) return;
 
   if (tasks.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-muted);">Nenhum projeto</td></tr>';
+    const message = showNoResults
+      ? 'Nenhum projeto encontrado com o termo buscado'
+      : 'Nenhum projeto';
+    tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-muted);">${message}</td></tr>`;
     return;
   }
 

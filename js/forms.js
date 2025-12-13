@@ -313,7 +313,7 @@ async function saveForm() {
     });
     // Show user-friendly error message
     const errorMessage = error.message || 'Erro ao salvar. Tente novamente.';
-    alert(errorMessage);
+    NotificationManager.error(errorMessage);
     // Keep modal open on error
   } finally {
     if (saveButton) {
@@ -380,7 +380,7 @@ function deleteItem() {
         taskId: AppState.currentTaskId
       });
       const errorMessage = error.message || 'Erro ao deletar. Tente novamente.';
-      alert(errorMessage);
+      NotificationManager.error(errorMessage);
     }
   });
 }

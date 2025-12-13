@@ -261,14 +261,30 @@ function handleDrop(e) {
   e.stopImmediatePropagation();
 
   const colBody = e.currentTarget;
-  if (!colBody || !colBody.dataset.colId) {
-    AppState.log('Drop failed: invalid column');
+  if (!colBody) {
+    AppState.log('Drop failed: invalid column element');
     return false;
   }
 
-  const targetColId = parseInt(colBody.dataset.colId);
-  if (isNaN(targetColId)) {
-    AppState.log('Drop failed: invalid column ID');
+  // Get col_id from dataset (camelCase) or attribute (snake_case)
+  const colIdValue = colBody.dataset.colId || colBody.getAttribute('data-col-id');
+  if (!colIdValue) {
+    AppState.log('Drop failed: column ID not found', {
+      hasDataset: !!colBody.dataset.colId,
+      hasAttribute: !!colBody.getAttribute('data-col-id')
+    });
+    NotificationManager.error('Erro: Coluna inválida. Tente novamente.');
+    return false;
+  }
+
+  const targetColId = parseInt(colIdValue);
+  if (isNaN(targetColId) || targetColId < 0 || targetColId > 3) {
+    AppState.log('Drop failed: invalid column ID', {
+      targetColId,
+      rawValue: colIdValue,
+      parsed: targetColId
+    });
+    NotificationManager.error(`Erro: Coluna inválida (${colIdValue}). Valores permitidos: 0-3.`);
     return false;
   }
 
@@ -314,6 +330,21 @@ function handleDrop(e) {
   cards.forEach(card => card.classList.remove('card-over'));
   renderBoard();
 
+  // Validate values before API call
+  if (targetColId < 0 || targetColId > 3) {
+    AppState.setTasks(previousState);
+    renderBoard();
+    NotificationManager.error('Erro: Coluna inválida. Valores permitidos: 0-3.');
+    return false;
+  }
+
+  if (insertIndex < 0) {
+    AppState.setTasks(previousState);
+    renderBoard();
+    NotificationManager.error('Erro: Posição inválida.');
+    return false;
+  }
+
   // Call API in background - update server state
   api.moveTask(taskId, targetColId, insertIndex)
     .then((updatedTaskFromServer) => {
@@ -337,7 +368,7 @@ function handleDrop(e) {
       renderBoard();
       AppState.log('Task move failed, rolled back', { taskId, error: error.message });
       // Show user-friendly error message
-      alert('Erro ao mover tarefa: ' + (error.message || 'Tente novamente'));
+      NotificationManager.error('Erro ao mover tarefa: ' + (error.message || 'Tente novamente'));
     });
 
   return false;

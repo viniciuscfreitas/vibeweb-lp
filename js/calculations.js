@@ -20,11 +20,13 @@ function calculateMRRGaps(mrr) {
 }
 
 function calculateRevenueForMonth(tasks, month, year) {
-  // Business Rule: Revenue is attributed to the month when task was created (task.id)
+  // Business Rule: Revenue is attributed to the month when task was created (created_at)
   // NOTE: This assumes payment happens at task creation. For accurate financial reporting,
   // consider adding a payment_date field in the future.
   const monthTasks = tasks.filter(t => {
-    const taskDate = new Date(t.id);
+    if (!t.created_at) return false;
+    const taskDate = new Date(t.created_at);
+    if (isNaN(taskDate.getTime())) return false;
     return taskDate.getMonth() === month &&
       taskDate.getFullYear() === year &&
       (t.payment_status === PAYMENT_STATUS_PAID || t.payment_status === PAYMENT_STATUS_PARTIAL);
@@ -208,8 +210,9 @@ function calculateMonthlyRevenue(tasks, monthsCount = 12) {
 
   paidTasks.forEach(task => {
     // Business Rule: Revenue is attributed to the month when task was created
-    // task.id is a timestamp, so we use it as the creation/payment date
-    const taskCreatedDate = new Date(task.id);
+    if (!task.created_at) return;
+    const taskCreatedDate = new Date(task.created_at);
+    if (isNaN(taskCreatedDate.getTime())) return;
     const taskMonth = taskCreatedDate.getMonth();
     const taskYear = taskCreatedDate.getFullYear();
 
@@ -226,26 +229,8 @@ function calculateMonthlyRevenue(tasks, monthsCount = 12) {
     });
   });
 
-  const totalRevenueCalculated = months.reduce((sum, month) => sum + month.value, 0);
-  const hasInsufficientData = totalRevenueCalculated === 0 || totalRevenueCalculated < 1000;
-
-  // Business Rule: If insufficient real data (< €1000), generate mock data for chart visualization
-  // NOTE: Mock data is for UI/demo purposes only - real financial reports should use actual data
-  // Grug Rule: Simple mock data with linear growth, no complex sin() formulas
-  // TODO: Consider showing "Dados simulados" label when mock data is used
-  if (hasInsufficientData) {
-    const mockBaseRevenue = MOCK_BASE_REVENUE;
-    months.forEach((month, monthIndex) => {
-      if (month.value === 0) {
-        // Simple linear growth: each month gets slightly more than previous
-        // Growth factor: 1% per month (simple, not complex sin() formulas)
-        const growthFactor = 1 + (monthIndex * 0.01);
-        const mockRevenue = Math.round(mockBaseRevenue * growthFactor);
-        month.value = mockRevenue;
-      }
-    });
-  }
-
+  // Business Rule: Only return real data - no mock data generation
+  // If there's no revenue, show zeros (empty chart is better than fake data)
   return months;
 }
 
@@ -276,7 +261,8 @@ function calculateAverageTicketFromRecentTasks(recentTasks) {
 // Removed: calculateTrendFactor - was used in complex projection formulas
 // Grug Rule: Removed unused complexity - projection now uses simple growth rate
 
-// Business Rule: Projected revenue = MRR (recurring) + new projects (based on recent average) + pipeline
+// Business Rule: Projected revenue = MRR (recurring) + new projects (based on recent average)
+// Only generate projections if there are actual live projects (placements) or paid projects
 // Grug Rule: Simple projection, no complex sin() formulas - easy to understand and maintain
 function calculateProjectedRevenue(tasks, monthsCount = 12) {
   const projectedMonths = [];
@@ -286,15 +272,38 @@ function calculateProjectedRevenue(tasks, monthsCount = 12) {
   const liveProjectsWithHosting = tasks.filter(t => t.col_id === 3 && t.hosting === HOSTING_YES);
   const monthlyRecurringRevenue = liveProjectsWithHosting.length * HOSTING_PRICE_EUR;
 
+  // Check if there are any paid projects to base projections on
+  const paidTasks = tasks.filter(t =>
+    t.payment_status === PAYMENT_STATUS_PAID || t.payment_status === PAYMENT_STATUS_PARTIAL
+  );
+
+  // If no live projects (placements) and no paid projects, return empty projection
+  if (liveProjectsWithHosting.length === 0 && paidTasks.length === 0) {
+    for (let monthsAhead = 1; monthsAhead <= monthsCount; monthsAhead++) {
+      const futureDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + monthsAhead, 1);
+      const monthName = futureDate.toLocaleDateString('pt-BR', { month: 'short' });
+      projectedMonths.push({
+        name: monthName,
+        value: 0,
+        month: futureDate.getMonth(),
+        year: futureDate.getFullYear()
+      });
+    }
+    return projectedMonths;
+  }
+
   // Calculate average new projects per month from last 6 months
   const recentTasks = tasks.filter(t => {
-    const taskCreatedDate = new Date(t.id);
+    if (!t.created_at) return false;
+    const taskCreatedDate = new Date(t.created_at);
+    if (isNaN(taskCreatedDate.getTime())) return false;
     const monthsSinceCreation = (currentDate.getFullYear() - taskCreatedDate.getFullYear()) * 12 +
       (currentDate.getMonth() - taskCreatedDate.getMonth());
     return monthsSinceCreation >= 0 && monthsSinceCreation <= 5;
   });
 
-  const averageJobsPerMonth = recentTasks.length > 0 ? recentTasks.length / 6 : 2;
+  // Only calculate projection if we have recent tasks to base it on
+  const averageJobsPerMonth = recentTasks.length > 0 ? recentTasks.length / 6 : 0;
   const averageTicketPrice = calculateAverageTicketFromRecentTasks(recentTasks);
   const baseNewProjectsRevenue = averageJobsPerMonth * averageTicketPrice;
 
@@ -379,7 +388,9 @@ function generateRecentActivities(tasks) {
   }
 
   selectedTasks.slice(0, 3).forEach(task => {
-    const taskCreatedDate = new Date(task.id);
+    if (!task.created_at) return;
+    const taskCreatedDate = new Date(task.created_at);
+    if (isNaN(taskCreatedDate.getTime())) return;
     const timeAgo = getTimeAgo(taskCreatedDate);
 
     let activityText = '';
