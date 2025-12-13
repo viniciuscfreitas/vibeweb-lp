@@ -1,0 +1,128 @@
+// Authentication Logic
+
+const AUTH_STORAGE_KEY = 'vibeTasks_auth';
+
+function sanitizeUrl() {
+  const hasQueryParams = window.location.search && window.location.search.length > 0;
+  const hasHash = window.location.hash && window.location.hash.length > 0;
+
+  if (hasQueryParams || hasHash) {
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+    AppState.log('URL sanitized - removed query params and hash');
+  }
+}
+
+function clearFormCredentials() {
+  const emailInput = document.getElementById('loginEmail');
+  const passwordInput = document.getElementById('loginPassword');
+
+  if (emailInput) {
+    emailInput.value = '';
+    emailInput.blur();
+  }
+  if (passwordInput) {
+    passwordInput.value = '';
+    passwordInput.blur();
+  }
+}
+const DEFAULT_USER = {
+  name: 'Vinícius Freitas',
+  email: 'vinicius@example.com'
+};
+
+function getInitials(fullName) {
+  if (!fullName) return 'U';
+
+  const parts = fullName.trim().split(' ');
+  if (parts.length === 1) {
+    return parts[0].substring(0, 2).toUpperCase();
+  }
+
+  const firstInitial = parts[0][0];
+  const lastInitial = parts[parts.length - 1][0];
+  return (firstInitial + lastInitial).toUpperCase();
+}
+
+function getCurrentUser() {
+  try {
+    const saved = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (error) {
+    console.error('[Auth] Erro ao carregar usuário:', error);
+  }
+  return null;
+}
+
+function setCurrentUser(user) {
+  try {
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    AppState.log('User authenticated', { name: user.name });
+  } catch (error) {
+    console.error('[Auth] Erro ao salvar usuário:', error);
+  }
+}
+
+function logout() {
+  localStorage.removeItem(AUTH_STORAGE_KEY);
+  sanitizeUrl();
+  AppState.log('User logged out');
+
+  const appContainer = document.getElementById('appContainer');
+  const loginOverlay = document.getElementById('loginOverlay');
+
+  if (appContainer) {
+    appContainer.classList.remove('fade-in');
+    appContainer.classList.add('fade-out');
+  }
+
+  setTimeout(() => {
+    if (appContainer) {
+      appContainer.classList.add('hidden');
+      appContainer.classList.remove('fade-out', 'fade-in');
+    }
+
+    if (loginOverlay) {
+      loginOverlay.classList.remove('hidden', 'fade-out');
+      loginOverlay.classList.remove('fade-in');
+      requestAnimationFrame(() => {
+        loginOverlay.classList.add('fade-in');
+      });
+    } else {
+      console.error('[Logout] ERRO: loginOverlay não encontrado!');
+    }
+
+    clearFormCredentials();
+
+    const emailInput = document.getElementById('loginEmail');
+    if (emailInput) {
+      emailInput.focus();
+    }
+  }, 400);
+}
+
+function isAuthenticated() {
+  return getCurrentUser() !== null;
+}
+
+function login(email, password) {
+  if (!email || !password) {
+    return { success: false, message: 'Email e senha são obrigatórios' };
+  }
+
+  const emailTrimmed = email.trim().toLowerCase();
+
+  if (emailTrimmed === 'vinicius@example.com' && password === 'admin123') {
+    const user = {
+      name: DEFAULT_USER.name,
+      email: emailTrimmed
+    };
+    setCurrentUser(user);
+    sanitizeUrl();
+    return { success: true, user };
+  }
+
+  return { success: false, message: 'Email ou senha incorretos' };
+}
