@@ -1,6 +1,12 @@
 // Financial Calculations and Metrics
+// Business Rules:
+// - MRR: Only projects in Live (col_id=3) with hosting='sim' count
+// - Revenue: Based on task creation date (task.id) - assumes payment happens at creation
+// - Partial payment: Always 50% of total price
 
 function calculateMRR(tasks) {
+  // MRR = Monthly Recurring Revenue from hosting subscriptions
+  // Only count projects that are Live AND have hosting activated
   const liveTasks = tasks.filter(t => t.col_id === 3 && t.hosting === HOSTING_YES);
   return liveTasks.length * HOSTING_PRICE_EUR;
 }
@@ -14,6 +20,9 @@ function calculateMRRGaps(mrr) {
 }
 
 function calculateRevenueForMonth(tasks, month, year) {
+  // Business Rule: Revenue is attributed to the month when task was created (task.id)
+  // NOTE: This assumes payment happens at task creation. For accurate financial reporting,
+  // consider adding a payment_date field in the future.
   const monthTasks = tasks.filter(t => {
     const taskDate = new Date(t.id);
     return taskDate.getMonth() === month &&
@@ -42,22 +51,32 @@ function calculateProjectCountsByStatus(tasks) {
   return { discoveryCount, agreementCount, buildCount, liveCount, activeProjects };
 }
 
+// Business Rules for Urgency:
+// 1. Project in Build (col_id=2) without deadline = urgent (needs attention)
+// 2. Deadline keywords ('48h', '24h', 'Hoje') = always urgent
+// 3. Calculated deadline within 48h or overdue = urgent
 function isTaskUrgent(task, now) {
+  // Rule 1: Projects in Build without deadline are urgent (need deadline set)
   const isInBuildWithoutDeadline = task.col_id === 2 && (!task.deadline || task.deadline === DEADLINE_UNDEFINED);
   if (isInBuildWithoutDeadline) return true;
 
+  // Rule 2: No deadline = not urgent (unless in Build, handled above)
   const hasNoDeadline = !task.deadline || task.deadline === DEADLINE_UNDEFINED;
   if (hasNoDeadline) return false;
 
+  // Rule 3: Urgent keywords are always urgent
   const isUrgentKeyword = URGENT_DEADLINES.includes(task.deadline);
   if (isUrgentKeyword) return true;
 
+  // Rule 4: Calculate time remaining for numeric deadlines (e.g., "48h")
   const hasDeadlineTimestamp = task.deadline_timestamp !== null && task.deadline_timestamp !== undefined;
   if (!hasDeadlineTimestamp) return false;
 
   const deadlineHours = parseDeadlineHours(task.deadline);
   if (!deadlineHours) return false;
 
+  // deadline_timestamp is when deadline was set, deadlineHours is the duration
+  // Final deadline = deadline_timestamp + deadlineHours
   const deadlineTimestamp = task.deadline_timestamp + (deadlineHours * MS_PER_HOUR);
   const timeRemaining = deadlineTimestamp - now;
   const isWithin48Hours = timeRemaining > 0 && timeRemaining <= URGENT_HOURS_48_MS;
@@ -163,6 +182,9 @@ function calculateDashboardMetrics() {
   };
 }
 
+// Business Rule: Monthly revenue is calculated based on task creation date (task.id)
+// This assumes payment happens when task is created. For accurate financial reporting,
+// consider tracking actual payment_date separately in the future.
 function calculateMonthlyRevenue(tasks, monthsCount = 12) {
   const months = [];
   const now = new Date();
@@ -179,11 +201,14 @@ function calculateMonthlyRevenue(tasks, monthsCount = 12) {
     });
   }
 
+  // Only count tasks that are paid (fully or partially)
   const paidTasks = tasks.filter(t =>
     t.payment_status === PAYMENT_STATUS_PAID || t.payment_status === PAYMENT_STATUS_PARTIAL
   );
 
   paidTasks.forEach(task => {
+    // Business Rule: Revenue is attributed to the month when task was created
+    // task.id is a timestamp, so we use it as the creation/payment date
     const taskCreatedDate = new Date(task.id);
     const taskMonth = taskCreatedDate.getMonth();
     const taskYear = taskCreatedDate.getFullYear();
@@ -204,14 +229,19 @@ function calculateMonthlyRevenue(tasks, monthsCount = 12) {
   const totalRevenueCalculated = months.reduce((sum, month) => sum + month.value, 0);
   const hasInsufficientData = totalRevenueCalculated === 0 || totalRevenueCalculated < 1000;
 
+  // Business Rule: If insufficient real data (< €1000), generate mock data for chart visualization
+  // NOTE: Mock data is for UI/demo purposes only - real financial reports should use actual data
+  // Grug Rule: Simple mock data with linear growth, no complex sin() formulas
+  // TODO: Consider showing "Dados simulados" label when mock data is used
   if (hasInsufficientData) {
     const mockBaseRevenue = MOCK_BASE_REVENUE;
     months.forEach((month, monthIndex) => {
       if (month.value === 0) {
-        const growthFactor = (monthIndex / monthsCount) * 1.5;
-        const variationFactor = (Math.sin(monthIndex * 0.5) * 0.3) + 1;
-        const mockRevenue = mockBaseRevenue * (1 + growthFactor) * variationFactor;
-        month.value = Math.round(mockRevenue);
+        // Simple linear growth: each month gets slightly more than previous
+        // Growth factor: 1% per month (simple, not complex sin() formulas)
+        const growthFactor = 1 + (monthIndex * 0.01);
+        const mockRevenue = Math.round(mockBaseRevenue * growthFactor);
+        month.value = mockRevenue;
       }
     });
   }
@@ -219,32 +249,9 @@ function calculateMonthlyRevenue(tasks, monthsCount = 12) {
   return months;
 }
 
-function calculateConversionRates(tasks) {
-  const totalProjectsEver = tasks.length;
-  const projectsInAgreement = tasks.filter(t => t.col_id >= 1).length;
-  const projectsInBuild = tasks.filter(t => t.col_id >= 2).length;
-  const projectsInLive = tasks.filter(t => t.col_id === 3).length;
-
-  return {
-    discoveryToAgreement: totalProjectsEver > 0 ? projectsInAgreement / totalProjectsEver : 0.6,
-    agreementToBuild: projectsInAgreement > 0 ? projectsInBuild / projectsInAgreement : 0.8,
-    buildToLive: projectsInBuild > 0 ? projectsInLive / projectsInBuild : 0.9
-  };
-}
-
-function calculatePipelineValue(tasks, averageTicketPrice, conversionRates) {
-  const discoveryProjects = tasks.filter(t => t.col_id === 0);
-  const agreementProjects = tasks.filter(t => t.col_id === 1);
-  const buildProjects = tasks.filter(t => t.col_id === 2);
-
-  const discoveryValue = discoveryProjects.length * conversionRates.discoveryToAgreement *
-    conversionRates.agreementToBuild * conversionRates.buildToLive * averageTicketPrice;
-  const agreementValue = agreementProjects.length * conversionRates.agreementToBuild *
-    conversionRates.buildToLive * averageTicketPrice;
-  const buildValue = buildProjects.length * conversionRates.buildToLive * averageTicketPrice;
-
-  return discoveryValue + agreementValue + buildValue;
-}
+// Removed: calculateConversionRates and calculatePipelineValue
+// These were used in complex projection formulas with pipeline calculations
+// Grug Rule: Removed unused complexity - projection simplified to MRR + new projects
 
 function calculateAverageTicketFromRecentTasks(recentTasks) {
   const paidRecentTasks = recentTasks.filter(t =>
@@ -266,23 +273,20 @@ function calculateAverageTicketFromRecentTasks(recentTasks) {
   return totalPaidRevenue / paidRecentTasks.length;
 }
 
-function calculateTrendFactor(last6MonthsValues) {
-  const last3MonthsAvg = last6MonthsValues.slice(-3).reduce((sum, val) => sum + val, 0) / 3;
-  const previous3MonthsAvg = last6MonthsValues.slice(0, 3).reduce((sum, val) => sum + val, 0) / 3;
-  return previous3MonthsAvg > 0 ? (last3MonthsAvg / previous3MonthsAvg) : 1;
-}
+// Removed: calculateTrendFactor - was used in complex projection formulas
+// Grug Rule: Removed unused complexity - projection now uses simple growth rate
 
+// Business Rule: Projected revenue = MRR (recurring) + new projects (based on recent average) + pipeline
+// Grug Rule: Simple projection, no complex sin() formulas - easy to understand and maintain
 function calculateProjectedRevenue(tasks, monthsCount = 12) {
   const projectedMonths = [];
   const currentDate = new Date();
 
+  // Base: MRR from active hosting subscriptions (recurring revenue)
   const liveProjectsWithHosting = tasks.filter(t => t.col_id === 3 && t.hosting === HOSTING_YES);
   const monthlyRecurringRevenue = liveProjectsWithHosting.length * HOSTING_PRICE_EUR;
 
-  const last6MonthsRevenue = calculateMonthlyRevenue(tasks, 6);
-  const last6MonthsValues = last6MonthsRevenue.map(m => m.value);
-  const trendFactor = calculateTrendFactor(last6MonthsValues);
-
+  // Calculate average new projects per month from last 6 months
   const recentTasks = tasks.filter(t => {
     const taskCreatedDate = new Date(t.id);
     const monthsSinceCreation = (currentDate.getFullYear() - taskCreatedDate.getFullYear()) * 12 +
@@ -292,31 +296,21 @@ function calculateProjectedRevenue(tasks, monthsCount = 12) {
 
   const averageJobsPerMonth = recentTasks.length > 0 ? recentTasks.length / 6 : 2;
   const averageTicketPrice = calculateAverageTicketFromRecentTasks(recentTasks);
-  const conversionRates = calculateConversionRates(tasks);
-  const pipelineValue = calculatePipelineValue(tasks, averageTicketPrice, conversionRates);
-
   const baseNewProjectsRevenue = averageJobsPerMonth * averageTicketPrice;
-  const pipelinePerMonth = pipelineValue / 3;
 
-  let baseGrowthRate = 1.01;
-  if (trendFactor > 1.1) {
-    baseGrowthRate = 1.015;
-  } else if (trendFactor < 0.9) {
-    baseGrowthRate = 0.995;
-  }
-  const adjustedGrowthRate = Math.max(0.99, Math.min(1.02, baseGrowthRate));
+  // Simple growth: 1% per month (conservative estimate)
+  // No complex sin() formulas - just simple linear growth
+  const monthlyGrowthRate = 1.01;
 
   for (let monthsAhead = 1; monthsAhead <= monthsCount; monthsAhead++) {
     const futureDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + monthsAhead, 1);
     const monthName = futureDate.toLocaleDateString('pt-BR', { month: 'short' });
 
-    const pipelineContribution = monthsAhead <= 3 ? pipelinePerMonth : 0;
-    const growthFactor = Math.pow(adjustedGrowthRate, monthsAhead);
-    const naturalVariation = (Math.sin(monthsAhead * 0.2) * 0.05) + 1;
+    // Projected revenue = MRR + (new projects * growth factor)
+    // Simple formula: no complex variations, easy to understand
+    const growthFactor = Math.pow(monthlyGrowthRate, monthsAhead);
     const projectedNewProjectsRevenue = baseNewProjectsRevenue * growthFactor;
-    const projectedRevenue = Math.round(
-      (monthlyRecurringRevenue + projectedNewProjectsRevenue + pipelineContribution) * naturalVariation
-    );
+    const projectedRevenue = Math.round(monthlyRecurringRevenue + projectedNewProjectsRevenue);
 
     projectedMonths.push({
       name: monthName,

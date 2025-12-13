@@ -122,11 +122,15 @@ function normalizeTasksData(tasks) {
         normalized.hosting = HOSTING_NO;
       }
 
-      // Set default deadline_timestamp if deadline exists but timestamp doesn't (legacy data)
+      // Set default deadline_timestamp if deadline exists but timestamp doesn't (legacy data only)
+      // NOTE: This is a migration helper for old data. New tasks should always have deadline_timestamp
+      // when deadline is set. Using task.id is incorrect but necessary for legacy compatibility.
+      // For new tasks, deadline_timestamp should be set to Date.now() when deadline is defined.
       if (normalized.deadline && !normalized.deadline_timestamp) {
         const deadlineHours = parseDeadlineHours(normalized.deadline);
         if (deadlineHours && normalized.id) {
-          // Use task ID as fallback timestamp for legacy data
+          // Legacy data: use task.id as approximation (not ideal, but better than null)
+          // This only applies to old data without deadline_timestamp
           normalized.deadline_timestamp = normalized.id;
         }
       }
