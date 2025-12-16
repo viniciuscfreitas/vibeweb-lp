@@ -130,6 +130,7 @@ function calculateDashboardMetrics() {
   const upsellPending = [];
   const statusDistribution = COLUMNS.map(col => ({ name: col.name, count: 0, value: 0 }));
 
+  const monthRevenueMap = new Map();
   tasks.forEach(task => {
     const colId = task.col_id || 0;
     if (colId >= 0 && colId <= 3) {
@@ -151,6 +152,19 @@ function calculateDashboardMetrics() {
       paidTasksCount++;
       const price = parseFloat(task.price) || 0;
       totalRevenue += price;
+
+      const taskDate = parseTaskDate(task.created_at);
+      if (taskDate) {
+        const taskMonth = taskDate.getMonth();
+        const taskYear = taskDate.getFullYear();
+        const monthKey = `${taskYear}-${taskMonth}`;
+
+        let taskRevenue = price;
+        if (task.payment_status === PAYMENT_STATUS_PARTIAL) {
+          taskRevenue = taskRevenue / 2;
+        }
+        monthRevenueMap.set(monthKey, (monthRevenueMap.get(monthKey) || 0) + taskRevenue);
+      }
     } else if (isPending) {
       pendingPaymentsCount++;
       pendingTasks.push(task);
@@ -163,29 +177,6 @@ function calculateDashboardMetrics() {
 
   const mrrGaps = calculateMRRGaps(mrr);
   const lastMonthInfo = getLastMonthInfo(currentMonth, currentYear);
-
-  const monthRevenueMap = new Map();
-  tasks.forEach(task => {
-    const isPaid = task.payment_status === PAYMENT_STATUS_PAID || task.payment_status === PAYMENT_STATUS_PARTIAL;
-    if (!isPaid) return;
-
-    const taskDate = parseTaskDate(task.created_at);
-    if (!taskDate) return;
-
-    const taskMonth = taskDate.getMonth();
-    const taskYear = taskDate.getFullYear();
-    const monthKey = `${taskYear}-${taskMonth}`;
-
-    if (!monthRevenueMap.has(monthKey)) {
-      monthRevenueMap.set(monthKey, 0);
-    }
-
-    let taskRevenue = parseFloat(task.price) || 0;
-    if (task.payment_status === PAYMENT_STATUS_PARTIAL) {
-      taskRevenue = taskRevenue / 2;
-    }
-    monthRevenueMap.set(monthKey, monthRevenueMap.get(monthKey) + taskRevenue);
-  });
 
   const currentMonthKey = `${currentYear}-${currentMonth}`;
   const lastMonthKey = `${lastMonthInfo.year}-${lastMonthInfo.month}`;

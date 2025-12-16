@@ -14,9 +14,14 @@ function openModal(task = null) {
 
   const modalTitle = isEditingExistingTask ? `Editar #${task.id}` : 'Novo Projeto';
   const deleteButtonDisplay = isEditingExistingTask ? 'block' : 'none';
+  const pdfButtonDisplay = isEditingExistingTask ? 'block' : 'none';
 
   DOM.modalTitle.innerText = modalTitle;
   DOM.btnDelete.style.display = deleteButtonDisplay;
+  if (DOM.btnGeneratePDF) {
+    DOM.btnGeneratePDF.style.display = pdfButtonDisplay;
+    DOM.btnGeneratePDF.classList.toggle('hidden', !isEditingExistingTask);
+  }
 
   DOM.modalOverlay.setAttribute('aria-hidden', 'false');
   DOM.modalOverlay.classList.add('open');
@@ -33,6 +38,32 @@ function openModal(task = null) {
 
   const hostingValue = task?.hosting || HOSTING_NO;
   DOM.formHosting.value = hostingValue;
+
+  if (DOM.formRecurring) {
+    DOM.formRecurring.checked = task?.is_recurring === 1 || task?.is_recurring === true;
+  }
+
+  if (DOM.formPublic) {
+    DOM.formPublic.checked = !!task?.public_uuid;
+  }
+
+  if (DOM.formAssetsLink) {
+    // Parse assets_link from JSON array or string
+    let assetsDisplay = '';
+    if (task?.assets_link) {
+      try {
+        const parsed = JSON.parse(task.assets_link);
+        if (Array.isArray(parsed)) {
+          assetsDisplay = parsed.join('\n');
+        } else {
+          assetsDisplay = task.assets_link;
+        }
+      } catch (e) {
+        assetsDisplay = task.assets_link;
+      }
+    }
+    DOM.formAssetsLink.value = assetsDisplay;
+  }
 
   setTimeout(() => {
     if (DOM.formClient) {
@@ -147,6 +178,149 @@ function clearFormErrors() {
   clearFormError('price');
 }
 
+function setupPasteHandler() {
+  const pasteableInputs = document.querySelectorAll('[data-paste-enabled="true"]');
+  pasteableInputs.forEach(input => {
+    input.addEventListener('paste', handlePaste);
+  });
+}
+
+function handlePaste(e) {
+  if (!e.target.hasAttribute('data-paste-enabled')) return;
+
+  const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+  if (!pastedText || !pastedText.trim()) return;
+
+  let parsed = false;
+
+  try {
+    // Tentar parsear como JSON primeiro
+    const jsonData = JSON.parse(pastedText);
+    if (typeof jsonData === 'object' && jsonData !== null) {
+      populateFieldsFromJson(jsonData);
+      parsed = true;
+      e.preventDefault();
+      NotificationManager.info('Campos preenchidos automaticamente!', 2000);
+      return;
+    }
+  } catch (e) {
+    // Não é JSON, tentar formato de linhas
+  }
+
+  // Tentar formato de linhas: "Cliente: Nome\nPreço: R$ 1000\n..."
+  const lines = pastedText.split('\n').map(line => line.trim()).filter(Boolean);
+  if (lines.length > 1) {
+    const parsedData = parseLinesFormat(lines);
+    if (Object.keys(parsedData).length > 0) {
+      populateFieldsFromJson(parsedData);
+      parsed = true;
+      e.preventDefault();
+      NotificationManager.info('Campos preenchidos automaticamente!', 2000);
+      return;
+    }
+  }
+
+  // Se não conseguiu parsear, não fazer nada (comportamento silencioso é OK)
+}
+
+function parseLinesFormat(lines) {
+  const data = {};
+
+  lines.forEach(line => {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex === -1) return;
+
+    const key = line.substring(0, colonIndex).trim().toLowerCase();
+    const value = line.substring(colonIndex + 1).trim();
+
+    if (!value) return;
+
+    // Mapear chaves em português para campos do formulário
+    if (key.includes('cliente') || key.includes('nome') || key.includes('empresa')) {
+      data.client = value;
+    } else if (key.includes('preço') || key.includes('preco') || key.includes('valor') || key.includes('price')) {
+      // Extrair números, ignorar "R$", "€", etc
+      const numbers = value.replace(/[^\d,.]/g, '').replace(',', '.');
+      const numValue = parseFloat(numbers);
+      if (!isNaN(numValue)) {
+        data.price = numValue;
+      }
+    } else if (key.includes('descrição') || key.includes('descricao') || key.includes('detalhes') || key.includes('description')) {
+      data.description = value;
+    } else if (key.includes('contato') || key.includes('contact')) {
+      data.contact = value;
+    } else if (key.includes('domínio') || key.includes('dominio') || key.includes('domain') || key.includes('url')) {
+      data.domain = value;
+    } else if (key.includes('stack') || key.includes('tecnologia')) {
+      data.stack = value;
+    }
+  });
+
+  return data;
+}
+
+function populateFieldsFromJson(data) {
+  if (data.client && DOM.formClient) {
+    DOM.formClient.value = data.client;
+  }
+  if (data.price !== undefined && DOM.formPrice) {
+    DOM.formPrice.value = data.price;
+  }
+  if (data.description && DOM.formDesc) {
+    DOM.formDesc.value = data.description;
+  }
+  if (data.contact && DOM.formContact) {
+    DOM.formContact.value = data.contact;
+  }
+  if (data.domain && DOM.formDomain) {
+    DOM.formDomain.value = data.domain;
+  }
+  if (data.stack && DOM.formStack) {
+    DOM.formStack.value = data.stack;
+  }
+}
+
+function parseAssetsLinks(value) {
+  if (!value || !value.trim()) return null;
+
+  // Split by comma or newline, trim and filter empty
+  const links = value.split(/[,\n]/).map(link => link.trim()).filter(Boolean);
+
+  if (links.length === 0) return null;
+
+  // Validate URLs
+  const validLinks = links.filter(link => URL_PATTERN.test(link));
+
+  if (validLinks.length === 0) return null;
+
+  // Return as JSON string
+  return JSON.stringify(validLinks);
+}
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function getPublicUuidValue() {
+  if (!DOM.formPublic) return null;
+
+  if (DOM.formPublic.checked) {
+    if (AppState.currentTaskId) {
+      const tasks = AppState.getTasks();
+      const existingTask = tasks.find(t => t.id === AppState.currentTaskId);
+      return existingTask?.public_uuid || generateUUID();
+    } else {
+      return generateUUID();
+    }
+  } else {
+    return null; // Sempre null se não marcado, nunca undefined
+  }
+}
+
 function validateForm() {
   let isFormValid = true;
   clearFormErrors();
@@ -224,6 +398,11 @@ async function saveForm() {
       payment_status: DOM.formPayment.value, // Use snake_case consistently
       deadline: deadline,
       hosting: DOM.formHosting.value,
+      is_recurring: DOM.formRecurring && DOM.formRecurring.checked ? 1 : 0,
+      public_uuid: DOM.formPublic && DOM.formPublic.checked
+        ? (AppState.currentTaskId ? (tasks.find(t => t.id === AppState.currentTaskId)?.public_uuid || generateUUID()) : generateUUID())
+        : (DOM.formPublic && !DOM.formPublic.checked ? null : undefined),
+      assets_link: DOM.formAssetsLink ? parseAssetsLinks(DOM.formAssetsLink.value) : null,
     };
 
     if (AppState.currentTaskId) {

@@ -31,8 +31,11 @@ let db;
 // For production with multiple instances, use Redis or similar
 // Current implementation is sufficient for single-instance deployment
 const loginAttempts = new Map();
+const leadAttempts = new Map(); // Separado para leads
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutos
 const MAX_LOGIN_ATTEMPTS = 5;
+const LEAD_RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hora para leads
+const MAX_LEAD_ATTEMPTS = 10;
 
 // Middleware
 // CORS: Allow all origins in development (including file:// protocol)
@@ -177,13 +180,212 @@ function initDatabase() {
               reject(err);
               return;
             }
-            console.log('Database initialized successfully');
-            resolve();
+
+            // Migrations: Add new columns if they don't exist
+            db.all(`PRAGMA table_info(tasks)`, (err, columns) => {
+              if (err) {
+                console.error('Error checking tasks table info:', err);
+                console.log('Database initialized successfully');
+                resolve();
+                return;
+              }
+
+              const columnNames = columns.map(col => col.name);
+
+              // Migration: is_recurring
+              if (!columnNames.includes('is_recurring')) {
+                db.run(`ALTER TABLE tasks ADD COLUMN is_recurring INTEGER DEFAULT 0`, (err) => {
+                  if (err) {
+                    console.error('Error adding is_recurring column:', err);
+                  } else {
+                    console.log('Added is_recurring column to tasks table');
+                  }
+                });
+              }
+
+              // Migration: assets_link
+              if (!columnNames.includes('assets_link')) {
+                db.run(`ALTER TABLE tasks ADD COLUMN assets_link TEXT`, (err) => {
+                  if (err) {
+                    console.error('Error adding assets_link column:', err);
+                  } else {
+                    console.log('Added assets_link column to tasks table');
+                  }
+                });
+              }
+
+              // Migration: uptime_status
+              if (!columnNames.includes('uptime_status')) {
+                db.run(`ALTER TABLE tasks ADD COLUMN uptime_status TEXT`, (err) => {
+                  if (err) {
+                    console.error('Error adding uptime_status column:', err);
+                  } else {
+                    console.log('Added uptime_status column to tasks table');
+                  }
+                });
+              }
+
+              // Migration: public_uuid
+              if (!columnNames.includes('public_uuid')) {
+                db.run(`ALTER TABLE tasks ADD COLUMN public_uuid TEXT UNIQUE`, (err) => {
+                  if (err) {
+                    console.error('Error adding public_uuid column:', err);
+                  } else {
+                    console.log('Added public_uuid column to tasks table');
+                  }
+                });
+              }
+
+              // Create subtasks table
+              db.run(`
+                CREATE TABLE IF NOT EXISTS subtasks (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  task_id INTEGER NOT NULL,
+                  title TEXT NOT NULL,
+                  completed INTEGER DEFAULT 0,
+                  order_position INTEGER NOT NULL,
+                  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                  FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+                )
+              `, (err) => {
+                if (err) {
+                  console.error('Error creating subtasks table:', err);
+                } else {
+                  console.log('Subtasks table created successfully');
+                }
+
+                // Create index for subtasks
+                db.run(`
+                  CREATE INDEX IF NOT EXISTS idx_subtasks_task_id ON subtasks(task_id)
+                `, (err) => {
+                  if (err) console.error('Error creating subtasks index:', err);
+
+                  console.log('Database initialized successfully');
+
+                  // Start uptime monitor after database is ready
+                  startUptimeMonitor(db, NODE_ENV);
+
+                  resolve();
+                });
+              });
+            });
           });
         });
       });
     });
   });
+}
+
+function checkDomainWithTimeout(domain, timeoutMs) {
+  return new Promise((resolve) => {
+    let timeoutCleared = false;
+    const timeout = setTimeout(() => {
+      if (!timeoutCleared) {
+        timeoutCleared = true;
+        resolve('down');
+      }
+    }, timeoutMs);
+
+    const protocol = https;
+    const req = protocol.request({
+      hostname: domain,
+      method: 'HEAD',
+      timeout: timeoutMs,
+      rejectUnauthorized: false
+    }, (res) => {
+      if (!timeoutCleared) {
+        timeoutCleared = true;
+        clearTimeout(timeout);
+        resolve(res.statusCode >= 200 && res.statusCode < 400 ? 'up' : 'down');
+      }
+    });
+
+    req.on('error', () => {
+      if (!timeoutCleared) {
+        timeoutCleared = true;
+        clearTimeout(timeout);
+        resolve('down');
+      }
+    });
+
+    req.on('timeout', () => {
+      req.destroy();
+      if (!timeoutCleared) {
+        timeoutCleared = true;
+        clearTimeout(timeout);
+        resolve('down');
+      }
+    });
+
+    req.setTimeout(timeoutMs);
+    req.end();
+  });
+}
+
+let uptimeMonitorInterval = null;
+
+function startUptimeMonitor(db, NODE_ENV) {
+  if (uptimeMonitorInterval) {
+    clearInterval(uptimeMonitorInterval);
+  }
+
+  uptimeMonitorInterval = setInterval(async () => {
+    try {
+      db.all(
+        `SELECT id, domain FROM tasks
+         WHERE domain IS NOT NULL AND domain != ''
+         LIMIT 100`,
+        [],
+        async (err, tasks) => {
+          if (err) {
+            console.error('[UptimeMonitor] Error fetching tasks:', err);
+            return;
+          }
+
+          if (!tasks || tasks.length === 0) {
+            return;
+          }
+
+          // Process in batches of 20
+          const batchSize = 20;
+          for (let i = 0; i < tasks.length; i += batchSize) {
+            const batch = tasks.slice(i, i + batchSize);
+
+            const checks = batch.map(task => {
+              const domain = task.domain.replace(/^https?:\/\//, '').split('/')[0];
+              return checkDomainWithTimeout(domain, 5000)
+                .then(status => ({ taskId: task.id, status }))
+                .catch(() => ({ taskId: task.id, status: 'down' }));
+            });
+
+            try {
+              const results = await Promise.all(checks);
+
+              const stmt = db.prepare('UPDATE tasks SET uptime_status = ? WHERE id = ?');
+              results.forEach(({ taskId, status }) => {
+                stmt.run([status, taskId], (err) => {
+                  if (err) {
+                    console.error(`[UptimeMonitor] Error updating task ${taskId}:`, err);
+                  }
+                });
+              });
+              stmt.finalize();
+
+              if (i + batchSize < tasks.length) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+              }
+            } catch (error) {
+              console.error('[UptimeMonitor] Error processing batch:', error);
+            }
+          }
+        }
+      );
+    } catch (error) {
+      console.error('[UptimeMonitor] Unexpected error:', error);
+    }
+  }, 5 * 60 * 1000); // Every 5 minutes
+
+  console.log('[UptimeMonitor] Started monitoring domains');
 }
 
 // Health check endpoint (no auth required)
@@ -246,6 +448,7 @@ function sanitizeString(str, maxLength = 255) {
 // Routes - will be mounted after database initialization
 const createAuthRoutes = require('./routes/auth');
 const createTasksRoutes = require('./routes/tasks');
+const createLeadsRoutes = require('./routes/leads');
 
 // Error handler (must be last middleware) - will be registered after routes
 function setupErrorHandlers() {
@@ -319,6 +522,61 @@ initDatabase()
       sanitizeString,
       authenticateToken
     }));
+
+    // Leads route (public, with rate limiting)
+    app.use('/api/leads', createLeadsRoutes(db, NODE_ENV, sanitizeString, checkLeadRateLimit));
+
+    // Public view route (no authentication) - must be before auth middleware
+    app.get('/api/tasks/view/:uuid', (req, res) => {
+      try {
+        const uuid = req.params.uuid;
+
+        // Validate UUID format (UUID v4 pattern)
+        const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        if (!uuid || !UUID_PATTERN.test(uuid)) {
+          return res.status(400).json({ success: false, error: 'UUID inválido' });
+        }
+
+        db.get('SELECT client, col_id, updated_at FROM tasks WHERE public_uuid = ?', [uuid], (err, task) => {
+          if (err) {
+            console.error('[GetPublicTask] Database error:', err);
+            return res.status(500).json({
+              success: false,
+              error: NODE_ENV === 'production' ? 'Erro interno do servidor' : err.message
+            });
+          }
+
+          if (!task) {
+            return res.status(404).json({ success: false, error: 'Projeto não encontrado' });
+          }
+
+          // Calculate progress based on col_id: 0=0%, 1=33%, 2=66%, 3=100%
+          const progress = Math.round((task.col_id / 3) * 100);
+          const colName = ['Descoberta', 'Acordo', 'Construir e Entregar', 'Suporte / Live'][task.col_id] || 'Desconhecido';
+
+          // Return minimal public data
+          res.json({
+            success: true,
+            data: {
+              client: task.client,
+              status: colName,
+              progress: progress,
+              updated_at: task.updated_at
+            }
+          });
+        });
+      } catch (error) {
+        console.error('[GetPublicTask] Unexpected error:', {
+          error: error.message,
+          uuid: req.params.uuid,
+          stack: NODE_ENV === 'development' ? error.stack : undefined
+        });
+        res.status(500).json({
+          success: false,
+          error: NODE_ENV === 'production' ? 'Erro interno do servidor' : error.message
+        });
+      }
+    });
 
     // Tasks routes require authentication - apply middleware before router
     app.use('/api/tasks', authenticateToken);

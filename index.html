@@ -243,13 +243,13 @@
               <div class="form-group">
                 <label for="formClient">Nome / Empresa</label>
                 <input type="text" class="form-input" id="formClient" placeholder="Ex: JCuts" aria-required="true"
-                  aria-invalid="false" aria-describedby="errorClient">
+                  aria-invalid="false" aria-describedby="errorClient" data-paste-enabled="true">
                 <div class="form-error" id="errorClient" role="alert" aria-live="polite"></div>
               </div>
               <div class="form-group">
                 <label for="formContact">Contato</label>
                 <input type="text" class="form-input" id="formContact" placeholder="Wpp / Email" aria-invalid="false"
-                  aria-describedby="errorContact">
+                  aria-describedby="errorContact" data-paste-enabled="true">
                 <div class="form-error" id="errorContact" role="alert" aria-live="polite"></div>
               </div>
             </div>
@@ -259,7 +259,7 @@
             <div class="form-grid">
               <div class="form-group">
                 <label for="formType">Tipo</label>
-                <select class="form-input" id="formType">
+                <select class="form-input" id="formType" aria-label="Tipo de projeto">
                   <option>Landing Essencial</option>
                   <option>Autoridade de Marca</option>
                   <option>Aplicação Web</option>
@@ -268,17 +268,17 @@
               </div>
               <div class="form-group">
                 <label for="formStack">Stack</label>
-                <input type="text" class="form-input" id="formStack" placeholder="React, Node...">
+                <input type="text" class="form-input" id="formStack" placeholder="React, Node..." aria-label="Stack tecnológico" data-paste-enabled="true">
               </div>
               <div class="form-group col-span-2">
                 <label for="formDomain">Domínio (URL)</label>
                 <input type="text" class="form-input domain-input" id="formDomain" placeholder="https://..."
-                  aria-invalid="false" aria-describedby="errorDomain">
+                  aria-invalid="false" aria-describedby="errorDomain" aria-label="Domínio ou URL do projeto" data-paste-enabled="true">
                 <div class="form-error" id="errorDomain" role="alert" aria-live="polite"></div>
               </div>
               <div class="form-group col-span-2">
                 <label for="formDesc">Detalhes</label>
-                <textarea class="form-input" id="formDesc" rows="3" placeholder="Escopo..."></textarea>
+                <textarea class="form-input" id="formDesc" rows="3" placeholder="Escopo..." aria-label="Detalhes e escopo do projeto" data-paste-enabled="true"></textarea>
               </div>
             </div>
           </div>
@@ -288,12 +288,12 @@
               <div class="form-group">
                 <label for="formPrice">Preço (€)</label>
                 <input type="number" class="form-input" id="formPrice" aria-required="true" aria-invalid="false"
-                  aria-describedby="errorPrice">
+                  aria-describedby="errorPrice" data-paste-enabled="true">
                 <div class="form-error" id="errorPrice" role="alert" aria-live="polite"></div>
               </div>
               <div class="form-group">
                 <label for="formPayment">Pagamento</label>
-                <select class="form-input" id="formPayment">
+                <select class="form-input" id="formPayment" aria-label="Status de pagamento">
                   <option>Pendente</option>
                   <option>50% Após Aprovação</option>
                   <option>Pago 100%</option>
@@ -301,15 +301,33 @@
               </div>
               <div class="form-group">
                 <label for="formDeadline">Prazo</label>
-                <input type="text" class="form-input" id="formDeadline" placeholder="48h">
+                <input type="text" class="form-input" id="formDeadline" placeholder="48h" aria-label="Prazo de entrega, exemplo: 48h">
               </div>
               <div class="form-group col-span-2">
                 <label for="formHosting">Hospedagem €29/mês?</label>
-                <select class="form-input" id="formHosting">
+                <select class="form-input" id="formHosting" aria-label="Opção de hospedagem mensal">
                   <option value="nao">Não</option>
                   <option value="sim">Sim, ativar</option>
                   <option value="depois">Talvez depois</option>
                 </select>
+              </div>
+              <div class="form-group col-span-2">
+                <label for="formRecurring" class="checkbox-label">
+                  <input type="checkbox" id="formRecurring" class="checkbox-input" aria-describedby="formRecurringDesc">
+                  <span>Recorrente? (Criar nova task automaticamente quando mover para "Suporte / Live")</span>
+                </label>
+                <div id="formRecurringDesc" class="sr-only">Quando marcado, uma nova task será criada automaticamente na coluna Descoberta quando esta task for movida para Suporte / Live</div>
+              </div>
+              <div class="form-group col-span-2">
+                <label for="formPublic" class="checkbox-label">
+                  <input type="checkbox" id="formPublic" class="checkbox-input" aria-describedby="formPublicDesc">
+                  <span>Tornar público (gerar link compartilhável para cliente)</span>
+                </label>
+                <div id="formPublicDesc" class="sr-only">Gera um link único que permite ao cliente visualizar o status do projeto sem necessidade de login</div>
+              </div>
+              <div class="form-group col-span-2">
+                <label for="formAssetsLink">Links de Anexos (um por linha ou separados por vírgula)</label>
+                <textarea class="form-input" id="formAssetsLink" rows="2" placeholder="https://drive.google.com/...&#10;https://figma.com/..." aria-label="Links de anexos, um por linha ou separados por vírgula"></textarea>
               </div>
             </div>
           </div>
@@ -317,6 +335,7 @@
         <div class="modal-footer">
           <button type="button" class="btn-danger hidden" id="btnDelete" aria-label="Arquivar projeto">Arquivar</button>
           <div class="form-actions">
+            <button type="button" class="btn-secondary hidden" id="btnGeneratePDF" aria-label="Gerar PDF da proposta">Gerar PDF</button>
             <button type="button" class="btn-text" id="btnCancel"
               aria-label="Cancelar e fechar formulário">Cancelar</button>
             <button type="button" class="btn-primary" id="btnSave" aria-label="Salvar projeto">Salvar</button>
@@ -326,6 +345,7 @@
     </div>
   </div>
   <!-- JavaScript Modules -->
+  <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="js/constants.js"></script>
   <script src="js/state.js"></script>
   <script src="js/api.js"></script>

@@ -286,12 +286,12 @@ function switchView(view) {
 
 function updateHeader(view) {
   if (view === 'dashboard') {
-    const metrics = calculateDashboardMetrics();
+    const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
     renderDashboardHeader(metrics);
     if (DOM.btnNewProject) DOM.btnNewProject.style.display = 'none';
     if (DOM.searchContainer) DOM.searchContainer.style.display = 'none';
   } else if (view === 'financial') {
-    const metrics = calculateDashboardMetrics();
+    const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
     renderFinancialHeader(metrics);
     if (DOM.btnNewProject) DOM.btnNewProject.style.display = 'none';
     if (DOM.searchContainer) DOM.searchContainer.style.display = 'flex';
@@ -460,6 +460,18 @@ function setupEventListeners() {
     }, { passive: false });
   }
 
+  if (DOM.btnGeneratePDF) {
+    DOM.btnGeneratePDF.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const tasks = AppState.getTasks();
+      const currentTask = tasks.find(t => t.id === AppState.currentTaskId);
+      if (currentTask) {
+        generateInvoice(currentTask);
+      }
+    });
+  }
+
   if (DOM.searchBtn) {
     DOM.searchBtn.addEventListener('click', expandSearch);
   }
@@ -511,6 +523,9 @@ function setupEventListeners() {
   DOM.formContact.addEventListener('input', () => clearFormError('contact'));
   DOM.formDomain.addEventListener('input', () => clearFormError('domain'));
   DOM.formPrice.addEventListener('input', () => clearFormError('price'));
+
+  // Setup paste handler for magic paste feature
+  setupPasteHandler();
 }
 
 async function renderUserAvatar() {

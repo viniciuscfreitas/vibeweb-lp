@@ -509,6 +509,30 @@ body {
   flex-shrink: 0;
 }
 
+.uptime-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.uptime-badge.online {
+  background-color: var(--success);
+  color: white;
+}
+
+.uptime-badge.offline {
+  background-color: var(--danger);
+  color: white;
+}
+
+.card[data-uptime-status="down"] {
+  border-left: 3px solid var(--danger);
+}
+
 .card-info {
   display: flex;
   flex-direction: column;
@@ -615,6 +639,79 @@ body {
   color: var(--text-main);
   line-height: 1.5;
   margin: 0;
+}
+
+.card-assets {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.assets-link {
+  font-size: 0.75rem;
+  color: var(--primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.assets-link:hover {
+  text-decoration: underline;
+}
+
+.assets-link:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.assets-link-multiple {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: help;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.action-btn.whatsapp {
+  background-color: #25d366;
+  color: white;
+}
+
+.action-btn.whatsapp:hover {
+  background-color: #20ba5a;
+}
+
+.action-btn.email {
+  background-color: var(--primary);
+  color: white;
+}
+
+.action-btn.email:hover {
+  background-color: var(--primary-hover);
+}
+
+.action-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .card-expanded .card-meta {
@@ -740,6 +837,34 @@ body {
   outline-offset: 2px;
 }
 
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-main);
+  text-transform: none;
+  margin-bottom: 0;
+}
+
+.checkbox-input {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--primary);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.checkbox-input:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .modal-footer {
   padding: 1rem 1.5rem;
   border-top: 1px solid var(--border-subtle);
@@ -765,6 +890,29 @@ body {
 }
 
 .btn-text:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s;
+  outline: none;
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-strong);
+  background-color: var(--bg-shell);
+}
+
+.btn-secondary:focus-visible {
   outline: 3px solid var(--primary);
   outline-offset: 2px;
 }

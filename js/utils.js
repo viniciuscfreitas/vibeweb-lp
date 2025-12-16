@@ -157,3 +157,131 @@ function normalizeTasksData(tasks) {
     return tasks;
   }
 }
+
+function generateInvoice(taskData) {
+  // Verificar se jsPDF está disponível
+  if (typeof window.jspdf === 'undefined' && typeof jspdf === 'undefined') {
+    NotificationManager.error('Biblioteca jsPDF não carregada. Recarregue a página.');
+    return;
+  }
+
+  try {
+    const { jsPDF } = window.jspdf || jspdf;
+    const doc = new jsPDF();
+
+    // Configurações
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    let yPos = margin;
+
+    // Header
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PROPOSTA COMERCIAL', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 15;
+
+    // Linha separadora
+    doc.setLineWidth(0.5);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 10;
+
+    // Cliente
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Cliente:', margin, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(taskData.client || 'N/A', margin + 30, yPos);
+    yPos += 10;
+
+    // Tipo de Projeto
+    if (taskData.type) {
+      doc.setFont('helvetica', 'bold');
+      doc.text('Tipo:', margin, yPos);
+      doc.setFont('helvetica', 'normal');
+      doc.text(taskData.type, margin + 30, yPos);
+      yPos += 10;
+    }
+
+    // Stack
+    if (taskData.stack) {
+      doc.setFont('helvetica', 'bold');
+      doc.text('Stack:', margin, yPos);
+      doc.setFont('helvetica', 'normal');
+      doc.text(taskData.stack, margin + 30, yPos);
+      yPos += 10;
+    }
+
+    // Domínio
+    if (taskData.domain) {
+      doc.setFont('helvetica', 'bold');
+      doc.text('Domínio:', margin, yPos);
+      doc.setFont('helvetica', 'normal');
+      doc.text(taskData.domain, margin + 30, yPos);
+      yPos += 10;
+    }
+
+    yPos += 5;
+
+    // Descrição
+    if (taskData.description) {
+      doc.setFont('helvetica', 'bold');
+      doc.text('Descrição:', margin, yPos);
+      yPos += 7;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      const descriptionLines = doc.splitTextToSize(taskData.description, pageWidth - 2 * margin);
+      doc.text(descriptionLines, margin, yPos);
+      yPos += descriptionLines.length * 5 + 5;
+    }
+
+    yPos += 5;
+
+    // Linha separadora antes do preço
+    doc.setLineWidth(0.5);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 10;
+
+    // Preço
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    const priceText = `Valor: ${formatPrice(taskData.price || 0)}`;
+    doc.text(priceText, margin, yPos);
+    yPos += 10;
+
+    // Status de Pagamento
+    if (taskData.payment_status) {
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Status: ${taskData.payment_status}`, margin, yPos);
+      yPos += 8;
+    }
+
+    // Hosting
+    if (taskData.hosting === HOSTING_YES) {
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'italic');
+      doc.text('Inclui hospedagem: €29/mês', margin, yPos);
+      yPos += 8;
+    }
+
+    // Data
+    yPos += 5;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    const dateText = `Gerado em: ${new Date().toLocaleDateString('pt-BR')}`;
+    doc.text(dateText, margin, yPos);
+
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 15;
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'italic');
+    doc.text('VibeWeb OS - Sistema de Gestão de Projetos', pageWidth / 2, footerY, { align: 'center' });
+
+    // Salvar PDF
+    const filename = `proposta-${(taskData.client || 'projeto').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`;
+    doc.save(filename);
+  } catch (error) {
+    console.error('[PDF Generator] Erro ao gerar PDF:', error);
+    NotificationManager.error('Erro ao gerar PDF. Tente novamente.');
+  }
+}

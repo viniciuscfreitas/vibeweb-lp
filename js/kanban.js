@@ -1,13 +1,15 @@
 // Kanban Board Logic
 
+const URL_PATTERN = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+
 function updateHeaderStats() {
   if (!DOM.dashboardContainer || !DOM.financialContainer) return;
 
   if (DOM.dashboardContainer.classList.contains('active')) {
-    const metrics = calculateDashboardMetrics();
+    const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
     renderDashboardHeader(metrics);
   } else if (DOM.financialContainer.classList.contains('active')) {
-    const metrics = calculateDashboardMetrics();
+    const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
     renderFinancialHeader(metrics);
   } else {
     renderProjectsHeader();
@@ -123,6 +125,36 @@ function renderBoard() {
   updateDeadlineDisplays();
 }
 
+function buildActionButtonsHtml(task) {
+  if (!task.contact) return '';
+
+  const contact = task.contact.trim();
+  let whatsappHtml = '';
+  let emailHtml = '';
+
+  // Validar e extrair telefone (não aceitar @username)
+  if (!contact.startsWith('@')) {
+    const phoneMatch = contact.replace(/\D/g, '');
+    if (phoneMatch.length >= 10) {
+      const colName = COLUMNS.find(col => col.id === task.col_id)?.name || 'em andamento';
+      const message = `Olá! Segue o status do projeto ${task.client}: ${colName}.`;
+      const whatsappUrl = `https://wa.me/${phoneMatch}?text=${encodeURIComponent(message)}`;
+      whatsappHtml = `<a href="${whatsappUrl}" class="action-btn whatsapp" target="_blank" aria-label="Abrir WhatsApp" onclick="event.stopPropagation();">WhatsApp</a>`;
+    }
+  }
+
+  // Validar e extrair email usando EMAIL_PATTERN de forms.js
+  const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (EMAIL_PATTERN.test(contact)) {
+    const emailUrl = `mailto:${contact}?subject=${encodeURIComponent(`Status do Projeto ${task.client}`)}`;
+    emailHtml = `<a href="${emailUrl}" class="action-btn email" aria-label="Enviar email" onclick="event.stopPropagation();">Email</a>`;
+  }
+
+  if (!whatsappHtml && !emailHtml) return '';
+
+  return `<div class="card-actions">${whatsappHtml}${emailHtml}</div>`;
+}
+
 function createCardElement(task, isExpanded = false) {
   if (!task) return null;
 
@@ -140,6 +172,9 @@ function createCardElement(task, isExpanded = false) {
   el.dataset.id = task.id;
   el.dataset.colId = task.col_id;
   el.dataset.deadlineTimestamp = task.deadline_timestamp || '';
+  if (task.uptime_status) {
+    el.dataset.uptimeStatus = task.uptime_status;
+  }
 
   const formattedPrice = formatPrice(task.price);
   const deadlineDisplay = formatDeadlineDisplay(task.deadline, task.deadline_timestamp);
@@ -159,12 +194,50 @@ function createCardElement(task, isExpanded = false) {
       hostingDisplay = 'Depois';
     }
     const hostingHtml = task.hosting ? `<div class="card-detail-item"><span class="card-detail-label">Hosting:</span><span class="card-detail-value">${escapeHtml(hostingDisplay)}</span></div>` : '';
+
+    // Uptime status badge
+    let uptimeBadgeHtml = '';
+    if (task.domain && task.uptime_status === 'down') {
+      uptimeBadgeHtml = '<span class="uptime-badge offline" title="Site offline">OFFLINE</span>';
+    } else if (task.domain && task.uptime_status === 'up') {
+      uptimeBadgeHtml = '<span class="uptime-badge online" title="Site online">ONLINE</span>';
+    }
+
     const descriptionHtml = task.description ? `<div class="card-description"><span class="card-detail-label">Descrição:</span><p class="card-detail-value">${escapeHtml(task.description)}</p></div>` : '';
+
+    // Parse and render assets links
+    let assetsHtml = '';
+    if (task.assets_link) {
+      try {
+        const links = JSON.parse(task.assets_link);
+        if (Array.isArray(links) && links.length > 0) {
+          // Validate URLs before rendering
+          const validLinks = links.filter(link => URL_PATTERN.test(link));
+          if (validLinks.length > 0) {
+            if (validLinks.length === 1) {
+              assetsHtml = `<div class="card-assets"><a href="${escapeHtml(validLinks[0])}" target="_blank" class="assets-link" onclick="event.stopPropagation();" aria-label="Abrir anexo">🔗 Anexo</a></div>`;
+            } else {
+              assetsHtml = `<div class="card-assets"><span class="assets-link-multiple" title="${validLinks.join(', ')}">🔗 ${validLinks.length} anexos</span></div>`;
+            }
+          }
+        }
+      } catch (e) {
+        // If not JSON, validate if it's a valid URL before treating as single link
+        if (URL_PATTERN.test(task.assets_link)) {
+          assetsHtml = `<div class="card-assets"><a href="${escapeHtml(task.assets_link)}" target="_blank" class="assets-link" onclick="event.stopPropagation();" aria-label="Abrir anexo">🔗 Anexo</a></div>`;
+        }
+      }
+    }
+
+    const actionButtonsHtml = buildActionButtonsHtml(task);
 
     el.innerHTML = `
       <div class="card-header">
         <h4 class="card-title">${escapeHtml(task.client)}</h4>
-        ${badgeHtml}
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          ${badgeHtml}
+          ${uptimeBadgeHtml}
+        </div>
       </div>
       <div class="card-expanded-content">
         <div class="card-details">
@@ -175,6 +248,8 @@ function createCardElement(task, isExpanded = false) {
           ${hostingHtml}
         </div>
         ${descriptionHtml}
+        ${assetsHtml}
+        ${actionButtonsHtml}
         <div class="card-meta">
           <span class="price">${formattedPrice}</span>
           ${deadlineHtml}
@@ -187,10 +262,19 @@ function createCardElement(task, isExpanded = false) {
     const domainHtml = task.domain && taskColId >= 1 ? `<div class="card-domain">${escapeHtml(task.domain)}</div>` : '';
     const infoHtml = (stackHtml || domainHtml) ? `<div class="card-info">${stackHtml}${domainHtml}</div>` : '';
 
+    // Uptime badge for collapsed card
+    let uptimeBadgeCollapsed = '';
+    if (task.domain && task.uptime_status === 'down') {
+      uptimeBadgeCollapsed = '<span class="uptime-badge offline" title="Site offline">OFF</span>';
+    }
+
     el.innerHTML = `
       <div class="card-header">
         <h3 class="card-title">${escapeHtml(task.client)}</h3>
-        ${badgeHtml}
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          ${badgeHtml}
+          ${uptimeBadgeCollapsed}
+        </div>
       </div>
       ${infoHtml}
       <div class="card-meta">

@@ -209,5 +209,29 @@ const api = {
       order_position: orderNum
     });
     return result.data;
+  },
+
+  // Subtasks API
+  async getSubtasks(taskId) {
+    const result = await apiRequest('GET', `/api/tasks/${taskId}/subtasks`);
+    return result.data;
+  },
+
+  async createSubtask(taskId, title, order_position) {
+    const result = await apiRequest('POST', `/api/tasks/${taskId}/subtasks`, {
+      title,
+      order_position
+    });
+    return result.data;
+  },
+
+  async updateSubtask(subtaskId, data) {
+    const result = await apiRequest('PATCH', `/api/tasks/subtasks/${subtaskId}`, data);
+    return result.data;
+  },
+
+  async deleteSubtask(subtaskId) {
+    const result = await apiRequest('DELETE', `/api/tasks/subtasks/${subtaskId}`);
+    return result.data;
   }
 };

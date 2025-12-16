@@ -10,6 +10,7 @@ const DOM = {
   modalOverlay: null,
   modalTitle: null,
   btnDelete: null,
+  btnGeneratePDF: null,
   formClient: null,
   formContact: null,
   formType: null,
@@ -20,6 +21,9 @@ const DOM = {
   formPayment: null,
   formDeadline: null,
   formHosting: null,
+  formRecurring: null,
+  formPublic: null,
+  formAssetsLink: null,
   errorClient: null,
   errorContact: null,
   errorDomain: null,
@@ -46,6 +50,7 @@ const DOM = {
     this.modalOverlay = document.getElementById('modalOverlay');
     this.modalTitle = document.getElementById('modalTitle');
     this.btnDelete = document.getElementById('btnDelete');
+    this.btnGeneratePDF = document.getElementById('btnGeneratePDF');
     this.formClient = document.getElementById('formClient');
     this.formContact = document.getElementById('formContact');
     this.formType = document.getElementById('formType');
@@ -56,6 +61,9 @@ const DOM = {
     this.formPayment = document.getElementById('formPayment');
     this.formDeadline = document.getElementById('formDeadline');
     this.formHosting = document.getElementById('formHosting');
+    this.formRecurring = document.getElementById('formRecurring');
+    this.formPublic = document.getElementById('formPublic');
+    this.formAssetsLink = document.getElementById('formAssetsLink');
     this.errorClient = document.getElementById('errorClient');
     this.errorContact = document.getElementById('errorContact');
     this.errorDomain = document.getElementById('errorDomain');

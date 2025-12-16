@@ -55,7 +55,7 @@ function calculateFinancialMetrics(tasks) {
   const lastMonthRevenue = calculateRevenueForMonth(tasks, lastMonthInfo.month, lastMonthInfo.year);
   const revenueChange = calculateRevenueChange(currentMonthRevenue, lastMonthRevenue);
 
-  const metrics = calculateDashboardMetrics();
+  const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
 
   return {
     mrr: metrics.mrr,
@@ -308,7 +308,7 @@ function renderFinancialHeader(metrics) {
 
 function exportFinancialData() {
   const tasks = AppState.getTasks();
-  const metrics = calculateDashboardMetrics();
+  const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
   const financialMetrics = calculateFinancialMetrics(tasks);
   const monthlyRevenue = calculateMonthlyRevenue(tasks, 12);
   const projectedRevenue = calculateProjectedRevenue(tasks, 12);
