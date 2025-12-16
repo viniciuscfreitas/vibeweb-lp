@@ -225,13 +225,19 @@ function initDatabase() {
                 });
               }
 
-              // Migration: public_uuid
+              // Migration: public_uuid (SQLite não permite UNIQUE diretamente, adicionar sem UNIQUE primeiro)
               if (!columnNames.includes('public_uuid')) {
-                db.run(`ALTER TABLE tasks ADD COLUMN public_uuid TEXT UNIQUE`, (err) => {
+                db.run(`ALTER TABLE tasks ADD COLUMN public_uuid TEXT`, (err) => {
                   if (err) {
                     console.error('Error adding public_uuid column:', err);
                   } else {
                     console.log('Added public_uuid column to tasks table');
+                    // Criar índice único separadamente se necessário
+                    db.run(`CREATE UNIQUE INDEX IF NOT EXISTS idx_tasks_public_uuid ON tasks(public_uuid) WHERE public_uuid IS NOT NULL`, (idxErr) => {
+                      if (idxErr) {
+                        console.error('Error creating unique index for public_uuid:', idxErr);
+                      }
+                    });
                   }
                 });
               }
@@ -415,7 +421,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// Rate limiting helper
+// Rate limiting helper for login
 function checkRateLimit(ip) {
   const now = Date.now();
   const attempts = loginAttempts.get(ip) || { count: 0, resetTime: now + RATE_LIMIT_WINDOW };
@@ -431,6 +437,25 @@ function checkRateLimit(ip) {
 
   attempts.count++;
   loginAttempts.set(ip, attempts);
+  return true;
+}
+
+// Rate limiting helper for leads (separado)
+function checkLeadRateLimit(ip) {
+  const now = Date.now();
+  const attempts = leadAttempts.get(ip) || { count: 0, resetTime: now + LEAD_RATE_LIMIT_WINDOW };
+
+  if (now > attempts.resetTime) {
+    attempts.count = 0;
+    attempts.resetTime = now + LEAD_RATE_LIMIT_WINDOW;
+  }
+
+  if (attempts.count >= MAX_LEAD_ATTEMPTS) {
+    return false;
+  }
+
+  attempts.count++;
+  leadAttempts.set(ip, attempts);
   return true;
 }
 
