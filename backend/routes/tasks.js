@@ -311,7 +311,9 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
           hosting,
           col_id,
           order_position,
-          is_recurring
+          is_recurring,
+          assets_link,
+          public_uuid
         } = req.body;
 
         // Validation
