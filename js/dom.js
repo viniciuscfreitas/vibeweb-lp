@@ -57,6 +57,12 @@ const DOM = {
   errorProfileEmail: null,
   errorProfilePassword: null,
   errorProfileNewPassword: null,
+  bottomNavItems: null,
+  bottomNavCentral: null,
+  bottomNavProfile: null,
+  bottomNavProjects: null,
+  bottomNavDashboard: null,
+  bottomNavFinancial: null,
 
   init() {
     this.boardGrid = document.getElementById('boardGrid');
@@ -116,5 +122,11 @@ const DOM = {
     this.errorProfileEmail = document.getElementById('errorProfileEmail');
     this.errorProfilePassword = document.getElementById('errorProfilePassword');
     this.errorProfileNewPassword = document.getElementById('errorProfileNewPassword');
+    this.bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-view]');
+    this.bottomNavCentral = document.getElementById('bottomNavCentral');
+    this.bottomNavProfile = document.getElementById('bottomNavProfile');
+    this.bottomNavProjects = document.getElementById('bottomNavProjects');
+    this.bottomNavDashboard = document.getElementById('bottomNavDashboard');
+    this.bottomNavFinancial = document.getElementById('bottomNavFinancial');
   }
 };

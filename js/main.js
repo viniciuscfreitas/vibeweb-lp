@@ -540,6 +540,51 @@ function switchToFinancial() {
   }, 150);
 }
 
+function updateBottomNavCentralButton(view) {
+  const centralBtn = DOM.bottomNavCentral;
+  if (!centralBtn) return;
+
+  const shouldShow = view === 'projects';
+  const isCurrentlyVisible = centralBtn.style.display !== 'none';
+  const currentView = centralBtn._currentView;
+
+  if (currentView === view && shouldShow === isCurrentlyVisible) {
+    return;
+  }
+
+  if (currentView !== view) {
+    centralBtn.innerHTML = '';
+    const oldHandler = centralBtn._clickHandler;
+    if (oldHandler) {
+      centralBtn.removeEventListener('click', oldHandler);
+      centralBtn._clickHandler = null;
+    }
+  }
+
+  if (shouldShow) {
+    if (!centralBtn.querySelector('i')) {
+      const icon = document.createElement('i');
+      icon.className = 'fa-solid fa-plus';
+      icon.setAttribute('aria-hidden', 'true');
+      const text = document.createElement('span');
+      text.textContent = 'Novo';
+      centralBtn.appendChild(icon);
+      centralBtn.appendChild(text);
+    }
+
+    if (!centralBtn._clickHandler) {
+      const clickHandler = () => openModal();
+      centralBtn.addEventListener('click', clickHandler);
+      centralBtn._clickHandler = clickHandler;
+    }
+    centralBtn.style.display = 'flex';
+  } else {
+    centralBtn.style.display = 'none';
+  }
+
+  centralBtn._currentView = view;
+}
+
 function updateNavButtons(isProjects, isDashboard, isFinancial) {
   if (!DOM.navButtons || DOM.navButtons.length < 3) return;
 
@@ -548,32 +593,78 @@ function updateNavButtons(isProjects, isDashboard, isFinancial) {
   const financialBtn = DOM.navButtons[2];
 
   if (projectsBtn) {
-    if (isProjects) {
-      projectsBtn.classList.add('active');
-      projectsBtn.setAttribute('aria-current', 'page');
-    } else {
-      projectsBtn.classList.remove('active');
-      projectsBtn.removeAttribute('aria-current');
+    const isActive = projectsBtn.classList.contains('active');
+    if (isProjects !== isActive) {
+      projectsBtn.classList.toggle('active', isProjects);
+      if (isProjects) {
+        projectsBtn.setAttribute('aria-current', 'page');
+      } else {
+        projectsBtn.removeAttribute('aria-current');
+      }
     }
   }
 
   if (dashboardBtn) {
-    if (isDashboard) {
-      dashboardBtn.classList.add('active');
-      dashboardBtn.setAttribute('aria-current', 'page');
-    } else {
-      dashboardBtn.classList.remove('active');
-      dashboardBtn.removeAttribute('aria-current');
+    const isActive = dashboardBtn.classList.contains('active');
+    if (isDashboard !== isActive) {
+      dashboardBtn.classList.toggle('active', isDashboard);
+      if (isDashboard) {
+        dashboardBtn.setAttribute('aria-current', 'page');
+      } else {
+        dashboardBtn.removeAttribute('aria-current');
+      }
     }
   }
 
   if (financialBtn) {
-    if (isFinancial) {
-      financialBtn.classList.add('active');
-      financialBtn.setAttribute('aria-current', 'page');
-    } else {
-      financialBtn.classList.remove('active');
-      financialBtn.removeAttribute('aria-current');
+    const isActive = financialBtn.classList.contains('active');
+    if (isFinancial !== isActive) {
+      financialBtn.classList.toggle('active', isFinancial);
+      if (isFinancial) {
+        financialBtn.setAttribute('aria-current', 'page');
+      } else {
+        financialBtn.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  const bottomProjectsBtn = DOM.bottomNavProjects;
+  const bottomDashboardBtn = DOM.bottomNavDashboard;
+  const bottomFinancialBtn = DOM.bottomNavFinancial;
+
+  if (bottomProjectsBtn) {
+    const isActive = bottomProjectsBtn.classList.contains('active');
+    if (isProjects !== isActive) {
+      bottomProjectsBtn.classList.toggle('active', isProjects);
+      if (isProjects) {
+        bottomProjectsBtn.setAttribute('aria-current', 'page');
+      } else {
+        bottomProjectsBtn.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  if (bottomDashboardBtn) {
+    const isActive = bottomDashboardBtn.classList.contains('active');
+    if (isDashboard !== isActive) {
+      bottomDashboardBtn.classList.toggle('active', isDashboard);
+      if (isDashboard) {
+        bottomDashboardBtn.setAttribute('aria-current', 'page');
+      } else {
+        bottomDashboardBtn.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  if (bottomFinancialBtn) {
+    const isActive = bottomFinancialBtn.classList.contains('active');
+    if (isFinancial !== isActive) {
+      bottomFinancialBtn.classList.toggle('active', isFinancial);
+      if (isFinancial) {
+        bottomFinancialBtn.setAttribute('aria-current', 'page');
+      } else {
+        bottomFinancialBtn.removeAttribute('aria-current');
+      }
     }
   }
 }
@@ -659,7 +750,8 @@ function updateViewContent(state) {
     renderFinancial();
     updateHeader('financial');
   } else {
-    updateHeader(state.isDashboard ? 'dashboard' : state.isProjects ? 'projects' : 'financial');
+    const view = state.isDashboard ? 'dashboard' : state.isProjects ? 'projects' : 'financial';
+    updateHeader(view);
   }
 
   if (state.isProjects) {
@@ -690,6 +782,7 @@ function switchView(view, currentPath = null) {
   updateNavButtons(state.isProjects, state.isDashboard, state.isFinancial);
   updateAriaHiddenForViews();
   updateUrl(view, path);
+  updateBottomNavCentralButton(view);
 
   // Announce view change to screen readers
   if (state.isDashboard) {
@@ -707,11 +800,13 @@ function updateHeader(view) {
     renderDashboardHeader(metrics);
     if (DOM.btnNewProject) DOM.btnNewProject.style.display = 'none';
     if (DOM.searchContainer) DOM.searchContainer.style.display = 'none';
+    updateBottomNavCentralButton('dashboard');
   } else if (view === 'financial') {
     const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
     renderFinancialHeader(metrics);
     if (DOM.btnNewProject) DOM.btnNewProject.style.display = 'none';
     if (DOM.searchContainer) DOM.searchContainer.style.display = 'flex';
+    updateBottomNavCentralButton('financial');
     // Placeholder is set by renderFinancial() in financial.js
   } else {
     renderProjectsHeader();
@@ -720,6 +815,7 @@ function updateHeader(view) {
     if (DOM.searchInput) {
       DOM.searchInput.placeholder = 'Buscar projeto... (/)';
     }
+    updateBottomNavCentralButton('projects');
   }
 }
 
@@ -785,6 +881,36 @@ function setupEventListeners() {
       }
     });
   });
+
+  if (DOM.bottomNavItems && DOM.bottomNavItems.length > 0) {
+    DOM.bottomNavItems.forEach((btn) => {
+      const view = btn.getAttribute('data-view');
+      if (view) {
+        const oldHandler = btn._clickHandler;
+        if (oldHandler) {
+          btn.removeEventListener('click', oldHandler);
+        }
+        const clickHandler = () => {
+          switchView(view);
+        };
+        btn.addEventListener('click', clickHandler);
+        btn._clickHandler = clickHandler;
+      }
+    });
+  }
+
+  if (DOM.bottomNavProfile) {
+    const oldProfileHandler = DOM.bottomNavProfile._clickHandler;
+    if (oldProfileHandler) {
+      DOM.bottomNavProfile.removeEventListener('click', oldProfileHandler);
+    }
+    const profileClickHandler = (e) => {
+      e.stopPropagation();
+      toggleUserDropdown(e);
+    };
+    DOM.bottomNavProfile.addEventListener('click', profileClickHandler);
+    DOM.bottomNavProfile._clickHandler = profileClickHandler;
+  }
 
   window.addEventListener('popstate', (e) => {
     const currentPath = window.location.pathname;
@@ -1248,9 +1374,13 @@ function closeUserDropdown() {
 function closeUserDropdownOnOutsideClick(e) {
   const userProfile = document.getElementById('userProfile');
   const userDropdown = document.getElementById('userDropdown');
+  const bottomNavProfile = DOM.bottomNavProfile;
 
-  if (userProfile && userDropdown &&
-    !userProfile.contains(e.target)) {
+  const clickedOutside = userDropdown && !userDropdown.contains(e.target);
+  const clickedOutsideProfile = userProfile && !userProfile.contains(e.target);
+  const clickedOutsideBottomNav = bottomNavProfile && !bottomNavProfile.contains(e.target);
+
+  if (clickedOutside && clickedOutsideProfile && clickedOutsideBottomNav) {
     closeUserDropdown();
   }
 }
