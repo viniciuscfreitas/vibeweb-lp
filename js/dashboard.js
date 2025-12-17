@@ -605,16 +605,10 @@ function toggleUrgentExpand() {
   const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
 
   if (isExpanded) {
-    urgentCard.classList.add('collapsing');
-    requestAnimationFrame(() => {
-      urgentCard.classList.remove('expanded');
-    });
+    urgentCard.classList.remove('expanded');
     expandIcon.className = 'fa-solid fa-expand';
     expandBtn.setAttribute('aria-label', 'Expandir lista de urgentes');
     expandBtn.setAttribute('title', 'Expandir');
-    setTimeout(() => {
-      urgentCard.classList.remove('collapsing');
-    }, 200);
   } else {
     urgentCard.classList.add('expanded');
     expandIcon.className = 'fa-solid fa-compress';
@@ -636,16 +630,10 @@ async function toggleActivityExpand() {
   const isExpanded = activityCard.classList.contains('expanded');
 
   if (isExpanded) {
-    activityCard.classList.add('collapsing');
-    requestAnimationFrame(() => {
-      activityCard.classList.remove('expanded');
-    });
+    activityCard.classList.remove('expanded');
     expandIcon.className = 'fa-solid fa-expand';
     expandBtn.setAttribute('aria-label', 'Expandir lista de atividades');
     expandBtn.setAttribute('title', 'Expandir');
-    setTimeout(() => {
-      activityCard.classList.remove('collapsing');
-    }, 200);
 
     const tasks = AppState.getTasks();
     const activities = await generateRecentActivities(tasks, true);

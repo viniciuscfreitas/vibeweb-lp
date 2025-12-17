@@ -1506,6 +1506,8 @@ html[data-authenticated="true"] #appContainer.hidden {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 10;
 }
 
 .expand-btn {
@@ -1632,7 +1634,8 @@ html[data-authenticated="true"] #appContainer.hidden {
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.25rem;
-  padding: 0.5rem 0 2.5rem 0;
+  padding: 2rem 0 2.5rem 0;
+  overflow: visible;
 }
 
 .chart-bar {
@@ -1661,6 +1664,8 @@ html[data-authenticated="true"] #appContainer.hidden {
   opacity: 0;
   transition: opacity 0.2s;
   white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .chart-bar:hover .chart-bar-value {
