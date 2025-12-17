@@ -11,6 +11,12 @@ function getViewFromUrl(path = null) {
   if (currentPath === '/financeiro' || currentPath.endsWith('/financeiro')) {
     return 'financial';
   }
+  if (currentPath === '/projetos' || currentPath.endsWith('/projetos')) {
+    return 'projects';
+  }
+  if (currentPath === '/' || currentPath === '') {
+    return 'projects';
+  }
   return 'projects';
 }
 
@@ -24,6 +30,8 @@ function updateUrl(view, currentPath = null) {
     newPath = '/dashboard';
   } else if (view === 'financial') {
     newPath = '/financeiro';
+  } else if (view === 'projects') {
+    newPath = '/projetos';
   }
 
   if (path !== newPath) {
@@ -161,6 +169,7 @@ function switchToProjects() {
 
     fadeContainer(DOM.boardContainer, true);
     updateHeader('projects');
+    renderBoard();
   }, 150);
 }
 
@@ -281,6 +290,10 @@ function updateViewContent(state) {
     updateHeader('financial');
   } else {
     updateHeader(state.isDashboard ? 'dashboard' : state.isProjects ? 'projects' : 'financial');
+  }
+
+  if (state.isProjects) {
+    renderBoard();
   }
 }
 
@@ -778,11 +791,6 @@ function initAuth() {
   const viewFromUrl = getViewFromUrl(currentPath);
 
   if (isAuthenticated()) {
-    if (viewFromUrl === 'login') {
-      window.location.pathname = '/';
-      return;
-    }
-
     if (loginOverlay) {
       loginOverlay.classList.add('hidden');
       loginOverlay.classList.remove('fade-out', 'fade-in');
@@ -790,6 +798,14 @@ function initAuth() {
     if (appContainer) {
       appContainer.classList.remove('hidden', 'fade-out');
       appContainer.classList.remove('fade-in');
+    }
+
+    if (viewFromUrl === 'login') {
+      window.location.pathname = '/';
+      return;
+    }
+
+    if (appContainer) {
       requestAnimationFrame(() => {
         appContainer.classList.add('fade-in');
       });
