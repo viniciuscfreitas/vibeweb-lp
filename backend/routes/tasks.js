@@ -103,7 +103,8 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
           al.action_type,
           al.action_description,
           al.created_at,
-          u.name as user_name
+          u.name as user_name,
+          u.avatar_url as user_avatar_url
         FROM activity_log al
         LEFT JOIN users u ON al.user_id = u.id
       `;

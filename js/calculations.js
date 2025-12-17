@@ -445,6 +445,10 @@ async function generateRecentActivities(tasks, useCache = true) {
         const userName = activity.user_name || 'Usuário';
         const userInitials = getInitials(userName);
         const escapedDescription = escapeHtml(activity.action_description || '');
+        const apiBaseUrl = getApiBaseUrl();
+        const userAvatarUrl = activity.user_avatar_url
+          ? (activity.user_avatar_url.startsWith('http') ? activity.user_avatar_url : `${apiBaseUrl}${activity.user_avatar_url}`)
+          : null;
 
         activities.push({
           text: escapedDescription,
@@ -452,7 +456,8 @@ async function generateRecentActivities(tasks, useCache = true) {
           icon: icon,
           taskId: activity.task_id,
           userName: userName,
-          userInitials: userInitials
+          userInitials: userInitials,
+          userAvatarUrl: userAvatarUrl
         });
       });
 

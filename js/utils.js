@@ -2,6 +2,15 @@
 
 const DEADLINE_HOURS_REGEX = /(\d+)h/i;
 
+function getApiBaseUrl() {
+  const isFileProtocol = window.location.protocol === 'file:';
+  const isLocalhost = window.location.hostname === 'localhost' ||
+                      window.location.hostname === '127.0.0.1' ||
+                      window.location.hostname === '' ||
+                      isFileProtocol;
+  return isLocalhost ? 'http://localhost:3000' : '';
+}
+
 function parseDeadlineHours(deadlineStr) {
   const match = deadlineStr.match(DEADLINE_HOURS_REGEX);
   return match ? parseInt(match[1]) : null;

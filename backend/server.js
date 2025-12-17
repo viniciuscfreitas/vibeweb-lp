@@ -52,6 +52,9 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.disable('x-powered-by');
 
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Trust proxy for accurate IP addresses (needed for rate limiting behind reverse proxy)
 if (NODE_ENV === 'production') {
   app.set('trust proxy', 1);
@@ -107,6 +110,7 @@ function initDatabase() {
               // Check if username column already exists
               // PRAGMA table_info returns an array of column objects
               const hasUsernameColumn = Array.isArray(columns) && columns.some(col => col.name === 'username');
+              const hasAvatarUrlColumn = Array.isArray(columns) && columns.some(col => col.name === 'avatar_url');
 
               if (!hasUsernameColumn) {
                 db.run(`ALTER TABLE users ADD COLUMN username TEXT`, (err) => {
@@ -123,6 +127,16 @@ function initDatabase() {
                 // Column already exists - just ensure index exists
                 db.run(`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users(username) WHERE username IS NOT NULL`, (err) => {
                   if (err) console.error('Error creating username index:', err);
+                });
+              }
+
+              if (!hasAvatarUrlColumn) {
+                db.run(`ALTER TABLE users ADD COLUMN avatar_url TEXT`, (err) => {
+                  if (err) {
+                    console.error('Error adding avatar_url column:', err);
+                  } else {
+                    console.log('Added avatar_url column to users table');
+                  }
                 });
               }
             });

@@ -217,8 +217,17 @@ async function loadSettingsIntoForm() {
     if (DOM.profileName) DOM.profileName.value = user.name || '';
     if (DOM.profileEmail) DOM.profileEmail.value = user.email || '';
     if (DOM.profileAvatarPreview) {
-      DOM.profileAvatarPreview.textContent = getInitials(user.name);
-      clearAvatarPreview();
+      if (user.avatar_url) {
+        const apiBaseUrl = getApiBaseUrl();
+        const fullUrl = user.avatar_url.startsWith('http') ? user.avatar_url : `${apiBaseUrl}${user.avatar_url}`;
+        DOM.profileAvatarPreview.style.backgroundImage = `url(${fullUrl})`;
+        DOM.profileAvatarPreview.style.backgroundSize = 'cover';
+        DOM.profileAvatarPreview.style.backgroundPosition = 'center';
+        DOM.profileAvatarPreview.textContent = '';
+      } else {
+        DOM.profileAvatarPreview.textContent = getInitials(user.name);
+        clearAvatarPreview();
+      }
     }
     if (DOM.profileCurrentPassword) DOM.profileCurrentPassword.value = '';
     if (DOM.profileNewPassword) DOM.profileNewPassword.value = '';
@@ -257,6 +266,7 @@ function closeSettingsModal() {
 
   if (DOM.profileAvatar) {
     DOM.profileAvatar.value = '';
+    delete DOM.profileAvatar._cachedData;
   }
 
   if (DOM.profileAvatarPreview) {
@@ -310,7 +320,42 @@ async function saveSettingsFromForm() {
   const hasName = nameRaw.length > 0;
   const hasEmail = emailRaw.length > 0;
 
-  if (hasName || hasEmail) {
+  let avatarUrl = null;
+  if (DOM.profileAvatar?.files?.[0]) {
+    const file = DOM.profileAvatar.files[0];
+    if (file.size > 2 * 1024 * 1024) {
+      NotificationManager.error('Arquivo muito grande. Máximo 2MB');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      NotificationManager.error('Apenas imagens são permitidas');
+      return;
+    }
+
+    try {
+      const avatarData = DOM.profileAvatar._cachedData || await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const uploadResult = await api.uploadAvatar(avatarData);
+      if (uploadResult?.user) {
+        setCurrentUser(uploadResult.user);
+        await renderUserAvatar(uploadResult.user);
+        profileUpdated = true;
+        avatarUrl = uploadResult.avatarUrl || uploadResult.user.avatar_url;
+      } else if (uploadResult?.avatarUrl) {
+        avatarUrl = uploadResult.avatarUrl;
+      }
+    } catch (error) {
+      NotificationManager.error(error.message || 'Erro ao fazer upload da foto');
+      return;
+    }
+  }
+
+  if (hasName || hasEmail || avatarUrl) {
     if (hasName && (nameRaw.length < 2 || nameRaw.length > 100)) {
       NotificationManager.error('Nome deve ter entre 2 e 100 caracteres');
       return;
@@ -324,7 +369,8 @@ async function saveSettingsFromForm() {
     try {
       const updatedUser = await api.updateProfile(
         hasName ? nameRaw : undefined,
-        hasEmail ? emailRaw : undefined
+        hasEmail ? emailRaw : undefined,
+        avatarUrl || undefined
       );
       if (updatedUser) {
         setCurrentUser(updatedUser);
@@ -1015,8 +1061,10 @@ function setupEventListeners() {
 
       const reader = new FileReader();
       reader.onload = (event) => {
+        const avatarData = event.target.result;
+        DOM.profileAvatar._cachedData = avatarData;
         if (DOM.profileAvatarPreview) {
-          DOM.profileAvatarPreview.style.backgroundImage = `url(${event.target.result})`;
+          DOM.profileAvatarPreview.style.backgroundImage = `url(${avatarData})`;
           DOM.profileAvatarPreview.style.backgroundSize = 'cover';
           DOM.profileAvatarPreview.style.backgroundPosition = 'center';
           DOM.profileAvatarPreview.textContent = '';
@@ -1072,6 +1120,23 @@ function setupEventListeners() {
   }
 }
 
+function setAvatarImage(element, avatarUrl, initials) {
+  if (!element) return;
+  const apiBaseUrl = getApiBaseUrl();
+  if (avatarUrl) {
+    const fullUrl = avatarUrl.startsWith('http') ? avatarUrl : `${apiBaseUrl}${avatarUrl}`;
+    element.style.backgroundImage = `url(${fullUrl})`;
+    element.style.backgroundSize = 'cover';
+    element.style.backgroundPosition = 'center';
+    element.textContent = '';
+  } else {
+    element.style.backgroundImage = '';
+    element.style.backgroundSize = '';
+    element.style.backgroundPosition = '';
+    element.textContent = initials;
+  }
+}
+
 async function renderUserAvatar(userParam = null) {
   const user = userParam || await getCurrentUser();
   if (!user) return;
@@ -1087,12 +1152,12 @@ async function renderUserAvatar(userParam = null) {
 
   const initials = getInitials(user.name);
   if (avatar) {
-    avatar.textContent = initials;
+    setAvatarImage(avatar, user.avatar_url, initials);
     avatar.title = user.name;
   }
 
   if (dropdownAvatar) {
-    dropdownAvatar.textContent = initials;
+    setAvatarImage(dropdownAvatar, user.avatar_url, initials);
   }
 
   if (dropdownName) {

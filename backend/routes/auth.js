@@ -3,6 +3,8 @@
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+const path = require('path');
 
 // Dummy hash válido de bcrypt para prevenir timing attacks
 const DUMMY_PASSWORD_HASH = '$2b$10$QifQjXA8GUTxPTixOWuG8eIaT0Grw/o9C1FkQye/KKnJy5hH6KWQe';
@@ -11,7 +13,7 @@ const USERNAME_REGEX = /^[a-zA-Z0-9_-]{3,30}$/;
 
 const QUERY_USER_BY_EMAIL = 'SELECT * FROM users WHERE email = ?';
 const QUERY_USER_BY_USERNAME = 'SELECT * FROM users WHERE username = ?';
-const QUERY_USER_BY_ID = 'SELECT id, name, email, created_at FROM users WHERE id = ?';
+const QUERY_USER_BY_ID = 'SELECT id, name, email, avatar_url, created_at FROM users WHERE id = ?';
 
 function getClientIp(req) {
   if (req.ip) return req.ip;
@@ -193,14 +195,102 @@ function createAuthRoutes(config) {
     }
   });
 
-  // Update profile route (name, email)
+  // Upload avatar route
+  router.post('/avatar', authenticateToken, (req, res) => {
+    try {
+      if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({ success: false, error: 'Corpo da requisição inválido' });
+      }
+
+      const { avatarData } = req.body;
+      if (!avatarData || typeof avatarData !== 'string') {
+        return res.status(400).json({ success: false, error: 'Dados da imagem são obrigatórios' });
+      }
+
+      if (!avatarData.startsWith('data:image/')) {
+        return res.status(400).json({ success: false, error: 'Formato de imagem inválido' });
+      }
+
+      const matches = avatarData.match(/^data:image\/(\w+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res.status(400).json({ success: false, error: 'Formato base64 inválido' });
+      }
+
+      const imageType = matches[1];
+      const base64Data = matches[2];
+
+      if (!['jpeg', 'jpg', 'png', 'gif', 'webp'].includes(imageType.toLowerCase())) {
+        return res.status(400).json({ success: false, error: 'Tipo de imagem não suportado' });
+      }
+
+      const imageBuffer = Buffer.from(base64Data, 'base64');
+      if (imageBuffer.length > 2 * 1024 * 1024) {
+        return res.status(400).json({ success: false, error: 'Imagem muito grande. Máximo 2MB' });
+      }
+
+      const uploadsDir = path.join(__dirname, '..', 'uploads', 'avatars');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      db.get('SELECT avatar_url FROM users WHERE id = ?', [req.user.id], async (err, oldUser) => {
+        if (err) {
+          console.error('[UploadAvatar] Error fetching old avatar:', err);
+        }
+
+        const filename = `avatar_${req.user.id}_${Date.now()}.${imageType}`;
+        const filepath = path.join(uploadsDir, filename);
+
+        try {
+          await fs.promises.writeFile(filepath, imageBuffer);
+        } catch (writeErr) {
+          console.error('[UploadAvatar] Error writing file:', writeErr);
+          return res.status(500).json({ success: false, error: 'Erro ao salvar arquivo' });
+        }
+
+        const avatarUrl = `/uploads/avatars/${filename}`;
+
+        db.run('UPDATE users SET avatar_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+          [avatarUrl, req.user.id], async function(err) {
+          if (err) {
+            console.error('[UploadAvatar] Database error:', err);
+            fs.promises.unlink(filepath).catch(() => {});
+            return res.status(500).json({ success: false, error: 'Erro ao salvar avatar' });
+          }
+
+          if (oldUser?.avatar_url) {
+            const normalizedPath = path.normalize(path.join(__dirname, '..', oldUser.avatar_url));
+            if (normalizedPath.startsWith(path.join(__dirname, '..', 'uploads', 'avatars'))) {
+              fs.promises.unlink(normalizedPath).catch((unlinkErr) => {
+                if (unlinkErr.code !== 'ENOENT') {
+                  console.error('[UploadAvatar] Error deleting old avatar:', unlinkErr);
+                }
+              });
+            }
+          }
+
+          db.get(QUERY_USER_BY_ID, [req.user.id], (err, user) => {
+            if (err || !user) {
+              return res.status(500).json({ success: false, error: 'Erro ao buscar usuário atualizado' });
+            }
+            res.json({ success: true, data: { user, avatarUrl } });
+          });
+        });
+      });
+    } catch (error) {
+      console.error('[UploadAvatar] Unexpected error:', error);
+      res.status(500).json({ success: false, error: 'Erro interno do servidor' });
+    }
+  });
+
+  // Update profile route (name, email, avatar_url)
   router.put('/profile', authenticateToken, (req, res) => {
     try {
       if (!req.body || typeof req.body !== 'object') {
         return res.status(400).json({ success: false, error: 'Corpo da requisição inválido' });
       }
 
-      const { name, email } = req.body;
+      const { name, email, avatar_url } = req.body;
       const updates = [];
       const values = [];
 
@@ -212,6 +302,38 @@ function createAuthRoutes(config) {
         updates.push('name = ?');
         values.push(nameTrimmed);
       }
+
+      if (avatar_url !== undefined) {
+        const avatarUrlTrimmed = sanitizeString(avatar_url, 500);
+        if (avatarUrlTrimmed) {
+          updates.push('avatar_url = ?');
+          values.push(avatarUrlTrimmed);
+        } else {
+          updates.push('avatar_url = NULL');
+        }
+      }
+
+      const processUpdate = () => {
+        if (updates.length === 0) {
+          return res.status(400).json({ success: false, error: 'Nenhum campo para atualizar' });
+        }
+
+        values.push(req.user.id);
+        const updateQuery = `UPDATE users SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
+        db.run(updateQuery, values, function(err) {
+          if (err) {
+            console.error('[UpdateProfile] Database error:', err);
+            return res.status(500).json({ success: false, error: 'Erro ao atualizar perfil' });
+          }
+
+          db.get(QUERY_USER_BY_ID, [req.user.id], (err, user) => {
+            if (err || !user) {
+              return res.status(500).json({ success: false, error: 'Erro ao buscar usuário atualizado' });
+            }
+            res.json({ success: true, data: { user } });
+          });
+        });
+      };
 
       if (email !== undefined) {
         const emailTrimmed = sanitizeString(email.toLowerCase(), 255);
@@ -230,45 +352,11 @@ function createAuthRoutes(config) {
 
           updates.push('email = ?');
           values.push(emailTrimmed);
-
-          values.push(req.user.id);
-          const updateQuery = `UPDATE users SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
-          db.run(updateQuery, values, function(err) {
-            if (err) {
-              console.error('[UpdateProfile] Database error:', err);
-              return res.status(500).json({ success: false, error: 'Erro ao atualizar perfil' });
-            }
-
-            db.get(QUERY_USER_BY_ID, [req.user.id], (err, user) => {
-              if (err || !user) {
-                return res.status(500).json({ success: false, error: 'Erro ao buscar usuário atualizado' });
-              }
-              res.json({ success: true, data: { user } });
-            });
-          });
+          processUpdate();
         });
-        return;
+      } else {
+        processUpdate();
       }
-
-      if (updates.length === 0) {
-        return res.status(400).json({ success: false, error: 'Nenhum campo para atualizar' });
-      }
-
-      values.push(req.user.id);
-      const updateQuery = `UPDATE users SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
-      db.run(updateQuery, values, function(err) {
-        if (err) {
-          console.error('[UpdateProfile] Database error:', err);
-          return res.status(500).json({ success: false, error: 'Erro ao atualizar perfil' });
-        }
-
-        db.get(QUERY_USER_BY_ID, [req.user.id], (err, user) => {
-          if (err || !user) {
-            return res.status(500).json({ success: false, error: 'Erro ao buscar usuário atualizado' });
-          }
-          res.json({ success: true, data: { user } });
-        });
-      });
     } catch (error) {
       console.error('[UpdateProfile] Unexpected error:', error);
       res.status(500).json({ success: false, error: 'Erro interno do servidor' });

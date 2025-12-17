@@ -249,8 +249,13 @@ const api = {
     return result.data;
   },
 
-  async updateProfile(name, email) {
-    const result = await apiRequest('PUT', '/api/auth/profile', { name, email });
+  async uploadAvatar(avatarData) {
+    const result = await apiRequest('POST', '/api/auth/avatar', { avatarData });
+    return result.data;
+  },
+
+  async updateProfile(name, email, avatar_url) {
+    const result = await apiRequest('PUT', '/api/auth/profile', { name, email, avatar_url });
     return result.data.user;
   },
 
