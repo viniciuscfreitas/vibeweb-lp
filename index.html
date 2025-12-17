@@ -259,7 +259,7 @@
         <span>Financeiro</span>
       </button>
       <button class="bottom-nav-item" id="bottomNavProfile" aria-label="Perfil">
-        <i class="fa-solid fa-user" aria-hidden="true"></i>
+        <div class="bottom-nav-avatar" id="bottomNavAvatar"></div>
         <span>Perfil</span>
       </button>
     </nav>
@@ -519,6 +519,34 @@
               aria-label="Cancelar e fechar configurações">Cancelar</button>
             <button type="button" class="btn-primary" id="btnSaveSettings" aria-label="Salvar configurações">Salvar</button>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- PROFILE MODAL (Mobile) -->
+    <div class="profile-modal-overlay hidden" id="profileModalOverlay" role="dialog" aria-modal="true" aria-label="Menu de Perfil" aria-hidden="true">
+      <div class="profile-modal-sheet">
+        <div class="profile-modal-header">
+          <div class="profile-modal-avatar-container">
+            <div class="profile-modal-avatar" id="profileModalAvatar"></div>
+            <div class="profile-modal-name" id="profileModalName"></div>
+          </div>
+          <button type="button" class="btn-text" id="btnCloseProfileModal" aria-label="Fechar perfil">
+            <i class="fa-solid fa-xmark close-icon"></i>
+          </button>
+        </div>
+        <div class="profile-modal-menu">
+          <button class="profile-modal-item" id="profileModalSettings">
+            <i class="fa-solid fa-gear"></i>
+            <span>Configurações</span>
+          </button>
+          <button class="profile-modal-item" id="profileModalTheme">
+            <i class="fa-solid fa-moon" id="profileModalThemeIcon"></i>
+            <span id="profileModalThemeText">Tema Escuro</span>
+          </button>
+          <button class="profile-modal-item" id="profileModalLogout">
+            <i class="fa-solid fa-sign-out-alt"></i>
+            <span>Sair</span>
+          </button>
         </div>
       </div>
     </div>

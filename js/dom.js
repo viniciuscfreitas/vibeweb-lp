@@ -63,6 +63,25 @@ const DOM = {
   bottomNavProjects: null,
   bottomNavDashboard: null,
   bottomNavFinancial: null,
+  bottomNavAvatar: null,
+  profileModalOverlay: null,
+  profileModalAvatar: null,
+  profileModalName: null,
+  profileModalSettings: null,
+  profileModalTheme: null,
+  profileModalLogout: null,
+  userAvatar: null,
+  userProfile: null,
+  userDropdown: null,
+  dropdownAvatar: null,
+  dropdownName: null,
+  dropdownSettings: null,
+  dropdownTheme: null,
+  dropdownLogout: null,
+  dropdownThemeIcon: null,
+  dropdownThemeText: null,
+  profileModalThemeIcon: null,
+  profileModalThemeText: null,
 
   init() {
     this.boardGrid = document.getElementById('boardGrid');
@@ -128,5 +147,24 @@ const DOM = {
     this.bottomNavProjects = document.getElementById('bottomNavProjects');
     this.bottomNavDashboard = document.getElementById('bottomNavDashboard');
     this.bottomNavFinancial = document.getElementById('bottomNavFinancial');
+    this.bottomNavAvatar = document.getElementById('bottomNavAvatar');
+    this.profileModalOverlay = document.getElementById('profileModalOverlay');
+    this.profileModalAvatar = document.getElementById('profileModalAvatar');
+    this.profileModalName = document.getElementById('profileModalName');
+    this.profileModalSettings = document.getElementById('profileModalSettings');
+    this.profileModalTheme = document.getElementById('profileModalTheme');
+    this.profileModalLogout = document.getElementById('profileModalLogout');
+    this.userAvatar = document.getElementById('userAvatar');
+    this.userProfile = document.getElementById('userProfile');
+    this.userDropdown = document.getElementById('userDropdown');
+    this.dropdownAvatar = document.getElementById('dropdownAvatar');
+    this.dropdownName = document.getElementById('dropdownName');
+    this.dropdownSettings = document.getElementById('dropdownSettings');
+    this.dropdownTheme = document.getElementById('dropdownTheme');
+    this.dropdownLogout = document.getElementById('dropdownLogout');
+    this.dropdownThemeIcon = document.getElementById('dropdownThemeIcon');
+    this.dropdownThemeText = document.getElementById('dropdownThemeText');
+    this.profileModalThemeIcon = document.getElementById('profileModalThemeIcon');
+    this.profileModalThemeText = document.getElementById('profileModalThemeText');
   }
 };

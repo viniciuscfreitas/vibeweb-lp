@@ -101,30 +101,31 @@ function setTheme(theme) {
 function updateThemeIcon(theme) {
   const isDark = theme === 'dark';
   const isLight = theme === 'light';
-  const dropdownThemeIcon = document.getElementById('dropdownThemeIcon');
-  const dropdownThemeText = document.getElementById('dropdownThemeText');
 
   if (isDark) {
-    if (dropdownThemeIcon) {
-      dropdownThemeIcon.className = 'fa-solid fa-sun';
+    if (DOM.dropdownThemeIcon) {
+      DOM.dropdownThemeIcon.className = 'fa-solid fa-sun';
     }
-    if (dropdownThemeText) {
-      dropdownThemeText.textContent = 'Tema Claro';
+    if (DOM.dropdownThemeText) {
+      DOM.dropdownThemeText.textContent = 'Tema Claro';
     }
   } else if (isLight) {
-    if (dropdownThemeIcon) {
-      dropdownThemeIcon.className = 'fa-solid fa-moon';
+    if (DOM.dropdownThemeIcon) {
+      DOM.dropdownThemeIcon.className = 'fa-solid fa-moon';
     }
-    if (dropdownThemeText) {
-      dropdownThemeText.textContent = 'Tema Escuro';
+    if (DOM.dropdownThemeText) {
+      DOM.dropdownThemeText.textContent = 'Tema Escuro';
     }
   }
+
+  updateProfileModalThemeIcon(theme);
 }
 
 function toggleTheme() {
   const currentTheme = getCurrentTheme();
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
   setTheme(newTheme);
+  updateProfileModalThemeIcon(newTheme);
   AppState.log('Theme toggled', { theme: newTheme });
 }
 
@@ -906,10 +907,81 @@ function setupEventListeners() {
     }
     const profileClickHandler = (e) => {
       e.stopPropagation();
-      toggleUserDropdown(e);
+      openProfileModal();
     };
     DOM.bottomNavProfile.addEventListener('click', profileClickHandler);
     DOM.bottomNavProfile._clickHandler = profileClickHandler;
+  }
+
+  const btnCloseProfileModal = document.getElementById('btnCloseProfileModal');
+  if (btnCloseProfileModal) {
+    const oldCloseHandler = btnCloseProfileModal._closeClickHandler;
+    if (oldCloseHandler) {
+      btnCloseProfileModal.removeEventListener('click', oldCloseHandler);
+    }
+    const closeClickHandler = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeProfileModal();
+    };
+    btnCloseProfileModal._closeClickHandler = closeClickHandler;
+    btnCloseProfileModal.addEventListener('click', closeClickHandler);
+  }
+
+  if (DOM.profileModalSettings) {
+    const oldSettingsHandler = DOM.profileModalSettings._settingsClickHandler;
+    if (oldSettingsHandler) {
+      DOM.profileModalSettings.removeEventListener('click', oldSettingsHandler);
+    }
+    const settingsClickHandler = (e) => {
+      e.stopPropagation();
+      closeProfileModal();
+      openSettingsModal();
+    };
+    DOM.profileModalSettings._settingsClickHandler = settingsClickHandler;
+    DOM.profileModalSettings.addEventListener('click', settingsClickHandler);
+  }
+
+  if (DOM.profileModalTheme) {
+    const oldThemeHandler = DOM.profileModalTheme._themeClickHandler;
+    if (oldThemeHandler) {
+      DOM.profileModalTheme.removeEventListener('click', oldThemeHandler);
+    }
+    const themeClickHandler = (e) => {
+      e.stopPropagation();
+      toggleTheme();
+    };
+    DOM.profileModalTheme._themeClickHandler = themeClickHandler;
+    DOM.profileModalTheme.addEventListener('click', themeClickHandler);
+  }
+
+  if (DOM.profileModalLogout) {
+    const oldLogoutHandler = DOM.profileModalLogout._logoutClickHandler;
+    if (oldLogoutHandler) {
+      DOM.profileModalLogout.removeEventListener('click', oldLogoutHandler);
+    }
+    const logoutClickHandler = (e) => {
+      e.stopPropagation();
+      closeProfileModal();
+      logout();
+    };
+    DOM.profileModalLogout._logoutClickHandler = logoutClickHandler;
+    DOM.profileModalLogout.addEventListener('click', logoutClickHandler);
+  }
+
+  if (DOM.profileModalOverlay) {
+    const oldOverlayHandler = DOM.profileModalOverlay._overlayClickHandler;
+    if (oldOverlayHandler) {
+      DOM.profileModalOverlay.removeEventListener('click', oldOverlayHandler);
+    }
+    const overlayClickHandler = (e) => {
+      if (e.target === DOM.profileModalOverlay) {
+        e.preventDefault();
+        closeProfileModal();
+      }
+    };
+    DOM.profileModalOverlay._overlayClickHandler = overlayClickHandler;
+    DOM.profileModalOverlay.addEventListener('click', overlayClickHandler);
   }
 
   window.addEventListener('popstate', (e) => {
@@ -955,6 +1027,11 @@ function setupEventListeners() {
       if (DOM.settingsModalOverlay && DOM.settingsModalOverlay.classList.contains('open')) {
         e.preventDefault();
         closeSettingsModal();
+        return;
+      }
+      if (DOM.profileModalOverlay && DOM.profileModalOverlay.classList.contains('open')) {
+        e.preventDefault();
+        closeProfileModal();
         return;
       }
       if (DOM.modalOverlay && DOM.modalOverlay.classList.contains('open')) {
@@ -1268,80 +1345,122 @@ async function renderUserAvatar(userParam = null) {
   const user = userParam || await getCurrentUser();
   if (!user) return;
 
-  const avatar = document.getElementById('userAvatar');
-  const userProfile = document.getElementById('userProfile');
-  const userDropdown = document.getElementById('userDropdown');
-  const dropdownAvatar = document.getElementById('dropdownAvatar');
-  const dropdownName = document.getElementById('dropdownName');
-  const dropdownSettings = document.getElementById('dropdownSettings');
-  const dropdownTheme = document.getElementById('dropdownTheme');
-  const dropdownLogout = document.getElementById('dropdownLogout');
-
   const initials = getInitials(user.name);
-  if (avatar) {
-    setAvatarImage(avatar, user.avatar_url, initials);
-    avatar.title = user.name;
+  if (DOM.userAvatar) {
+    setAvatarImage(DOM.userAvatar, user.avatar_url, initials);
+    DOM.userAvatar.title = user.name;
   }
 
-  if (dropdownAvatar) {
-    setAvatarImage(dropdownAvatar, user.avatar_url, initials);
+  if (DOM.dropdownAvatar) {
+    setAvatarImage(DOM.dropdownAvatar, user.avatar_url, initials);
   }
 
-  if (dropdownName) {
-    dropdownName.textContent = user.name;
+  if (DOM.dropdownName) {
+    DOM.dropdownName.textContent = user.name;
   }
 
-  if (userProfile) {
-    userProfile.style.display = 'flex';
-    if (avatar) {
-      avatar.removeEventListener('click', toggleUserDropdown);
-      avatar.addEventListener('click', toggleUserDropdown);
+  if (DOM.bottomNavAvatar) {
+    setAvatarImage(DOM.bottomNavAvatar, user.avatar_url, initials);
+  }
+
+  if (DOM.profileModalAvatar) {
+    setAvatarImage(DOM.profileModalAvatar, user.avatar_url, initials);
+  }
+
+  if (DOM.profileModalName) {
+    DOM.profileModalName.textContent = user.name;
+  }
+
+  if (DOM.userProfile) {
+    DOM.userProfile.style.display = 'flex';
+    if (DOM.userAvatar) {
+      DOM.userAvatar.removeEventListener('click', toggleUserDropdown);
+      DOM.userAvatar.addEventListener('click', toggleUserDropdown);
     }
   }
 
-  if (dropdownSettings) {
-    const oldSettingsHandler = dropdownSettings._settingsClickHandler;
+  if (DOM.dropdownSettings) {
+    const oldSettingsHandler = DOM.dropdownSettings._settingsClickHandler;
     if (oldSettingsHandler) {
-      dropdownSettings.removeEventListener('click', oldSettingsHandler);
+      DOM.dropdownSettings.removeEventListener('click', oldSettingsHandler);
     }
     const settingsClickHandler = (e) => {
       e.stopPropagation();
       closeUserDropdown();
       openSettingsModal();
     };
-    dropdownSettings._settingsClickHandler = settingsClickHandler;
-    dropdownSettings.addEventListener('click', settingsClickHandler);
+    DOM.dropdownSettings._settingsClickHandler = settingsClickHandler;
+    DOM.dropdownSettings.addEventListener('click', settingsClickHandler);
   }
 
-  if (dropdownTheme) {
-    const oldThemeHandler = dropdownTheme._themeClickHandler;
+  if (DOM.dropdownTheme) {
+    const oldThemeHandler = DOM.dropdownTheme._themeClickHandler;
     if (oldThemeHandler) {
-      dropdownTheme.removeEventListener('click', oldThemeHandler);
+      DOM.dropdownTheme.removeEventListener('click', oldThemeHandler);
     }
     const themeClickHandler = (e) => {
       e.stopPropagation();
       toggleTheme();
     };
-    dropdownTheme._themeClickHandler = themeClickHandler;
-    dropdownTheme.addEventListener('click', themeClickHandler);
+    DOM.dropdownTheme._themeClickHandler = themeClickHandler;
+    DOM.dropdownTheme.addEventListener('click', themeClickHandler);
   }
 
-  if (dropdownLogout) {
-    const oldLogoutHandler = dropdownLogout._logoutClickHandler;
+  if (DOM.dropdownLogout) {
+    const oldLogoutHandler = DOM.dropdownLogout._logoutClickHandler;
     if (oldLogoutHandler) {
-      dropdownLogout.removeEventListener('click', oldLogoutHandler);
+      DOM.dropdownLogout.removeEventListener('click', oldLogoutHandler);
     }
     const logoutClickHandler = (e) => {
       e.stopPropagation();
       closeUserDropdown();
       logout();
     };
-    dropdownLogout._logoutClickHandler = logoutClickHandler;
-    dropdownLogout.addEventListener('click', logoutClickHandler);
+    DOM.dropdownLogout._logoutClickHandler = logoutClickHandler;
+    DOM.dropdownLogout.addEventListener('click', logoutClickHandler);
   }
 
   const currentTheme = getCurrentTheme();
   updateThemeIcon(currentTheme);
+}
+
+function openProfileModal() {
+  if (!DOM.profileModalOverlay) return;
+  DOM.profileModalOverlay.classList.remove('hidden');
+  DOM.profileModalOverlay.classList.add('open');
+  DOM.profileModalOverlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  announceToScreenReader('Menu de perfil aberto');
+}
+
+function closeProfileModal() {
+  if (!DOM.profileModalOverlay) return;
+  DOM.profileModalOverlay.classList.add('hidden');
+  DOM.profileModalOverlay.classList.remove('open');
+  DOM.profileModalOverlay.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  announceToScreenReader('Menu de perfil fechado');
+}
+
+function updateProfileModalThemeIcon(theme) {
+  const isDark = theme === 'dark';
+  const isLight = theme === 'light';
+
+  if (isDark) {
+    if (DOM.profileModalThemeIcon) {
+      DOM.profileModalThemeIcon.className = 'fa-solid fa-sun';
+    }
+    if (DOM.profileModalThemeText) {
+      DOM.profileModalThemeText.textContent = 'Tema Claro';
+    }
+  } else if (isLight) {
+    if (DOM.profileModalThemeIcon) {
+      DOM.profileModalThemeIcon.className = 'fa-solid fa-moon';
+    }
+    if (DOM.profileModalThemeText) {
+      DOM.profileModalThemeText.textContent = 'Tema Escuro';
+    }
+  }
 }
 
 function toggleUserDropdown(e) {
@@ -1349,12 +1468,11 @@ function toggleUserDropdown(e) {
     e.stopPropagation();
   }
 
-  const userDropdown = document.getElementById('userDropdown');
-  if (!userDropdown) return;
+  if (!DOM.userDropdown) return;
 
-  const isHidden = userDropdown.classList.contains('hidden');
+  const isHidden = DOM.userDropdown.classList.contains('hidden');
   if (isHidden) {
-    userDropdown.classList.remove('hidden');
+    DOM.userDropdown.classList.remove('hidden');
     setTimeout(() => {
       document.addEventListener('click', closeUserDropdownOnOutsideClick, true);
     }, 0);
@@ -1364,21 +1482,16 @@ function toggleUserDropdown(e) {
 }
 
 function closeUserDropdown() {
-  const userDropdown = document.getElementById('userDropdown');
-  if (userDropdown) {
-    userDropdown.classList.add('hidden');
+  if (DOM.userDropdown) {
+    DOM.userDropdown.classList.add('hidden');
   }
   document.removeEventListener('click', closeUserDropdownOnOutsideClick, true);
 }
 
 function closeUserDropdownOnOutsideClick(e) {
-  const userProfile = document.getElementById('userProfile');
-  const userDropdown = document.getElementById('userDropdown');
-  const bottomNavProfile = DOM.bottomNavProfile;
-
-  const clickedOutside = userDropdown && !userDropdown.contains(e.target);
-  const clickedOutsideProfile = userProfile && !userProfile.contains(e.target);
-  const clickedOutsideBottomNav = bottomNavProfile && !bottomNavProfile.contains(e.target);
+  const clickedOutside = DOM.userDropdown && !DOM.userDropdown.contains(e.target);
+  const clickedOutsideProfile = DOM.userProfile && !DOM.userProfile.contains(e.target);
+  const clickedOutsideBottomNav = DOM.bottomNavProfile && !DOM.bottomNavProfile.contains(e.target);
 
   if (clickedOutside && clickedOutsideProfile && clickedOutsideBottomNav) {
     closeUserDropdown();
