@@ -562,7 +562,9 @@ let _cachedExpandElements = {
   urgentCard: null,
   activityCard: null,
   expandUrgentBtn: null,
-  expandActivityBtn: null
+  expandActivityBtn: null,
+  expandUrgentIcon: null,
+  expandActivityIcon: null
 };
 
 function getExpandElements() {
@@ -571,8 +573,14 @@ function getExpandElements() {
     _cachedExpandElements.activityCard = document.getElementById('activityCard');
     _cachedExpandElements.expandUrgentBtn = document.getElementById('expandUrgentBtn');
     _cachedExpandElements.expandActivityBtn = document.getElementById('expandActivityBtn');
+    _cachedExpandElements.expandUrgentIcon = _cachedExpandElements.expandUrgentBtn?.querySelector('i');
+    _cachedExpandElements.expandActivityIcon = _cachedExpandElements.expandActivityBtn?.querySelector('i');
   }
   return _cachedExpandElements;
+}
+
+function removeAnimationClasses(card) {
+  card.classList.remove('animating', 'collapsing');
 }
 
 function setupExpandButtons() {
@@ -593,25 +601,29 @@ function toggleUrgentExpand() {
   const elements = getExpandElements();
   const urgentCard = elements.urgentCard;
   const expandBtn = elements.expandUrgentBtn;
-  const expandIcon = expandBtn.querySelector('i');
+  const expandIcon = elements.expandUrgentIcon;
 
-  if (!urgentCard || !expandBtn) return;
+  if (!urgentCard || !expandBtn || !expandIcon) return;
 
   const isExpanded = urgentCard.classList.contains('expanded');
 
+  const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
+
   if (isExpanded) {
-    urgentCard.classList.remove('expanded');
+    urgentCard.classList.add('collapsing');
+    urgentCard.classList.remove('expanded', 'animating');
     expandIcon.className = 'fa-solid fa-expand';
     expandBtn.setAttribute('aria-label', 'Expandir lista de urgentes');
     expandBtn.setAttribute('title', 'Expandir');
+    setTimeout(() => removeAnimationClasses(urgentCard), 250);
   } else {
-    urgentCard.classList.add('expanded');
+    urgentCard.classList.add('expanded', 'animating');
     expandIcon.className = 'fa-solid fa-compress';
     expandBtn.setAttribute('aria-label', 'Recolher lista de urgentes');
     expandBtn.setAttribute('title', 'Recolher');
+    setTimeout(() => removeAnimationClasses(urgentCard), 300);
   }
 
-  const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
   renderUrgentProjects(metrics.urgentProjects || []);
 }
 
@@ -619,26 +631,31 @@ async function toggleActivityExpand() {
   const elements = getExpandElements();
   const activityCard = elements.activityCard;
   const expandBtn = elements.expandActivityBtn;
-  const expandIcon = expandBtn.querySelector('i');
+  const expandIcon = elements.expandActivityIcon;
 
-  if (!activityCard || !expandBtn) return;
+  if (!activityCard || !expandBtn || !expandIcon) return;
 
   const isExpanded = activityCard.classList.contains('expanded');
 
   if (isExpanded) {
-    activityCard.classList.remove('expanded');
+    activityCard.classList.add('collapsing');
+    activityCard.classList.remove('expanded', 'animating');
     expandIcon.className = 'fa-solid fa-expand';
     expandBtn.setAttribute('aria-label', 'Expandir lista de atividades');
     expandBtn.setAttribute('title', 'Expandir');
+
+    setTimeout(() => removeAnimationClasses(activityCard), 250);
 
     const tasks = AppState.getTasks();
     const activities = await generateRecentActivities(tasks, true);
     renderRecentActivities(activities || []);
   } else {
-    activityCard.classList.add('expanded');
+    activityCard.classList.add('expanded', 'animating');
     expandIcon.className = 'fa-solid fa-compress';
     expandBtn.setAttribute('aria-label', 'Recolher lista de atividades');
     expandBtn.setAttribute('title', 'Recolher');
+
+    setTimeout(() => removeAnimationClasses(activityCard), 300);
 
     const allActivities = await api.getActivities(100);
     if (allActivities && Array.isArray(allActivities) && allActivities.length > 0) {

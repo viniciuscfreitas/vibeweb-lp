@@ -151,7 +151,7 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 1rem;
   outline: none;
 }
@@ -221,7 +221,7 @@ body {
   position: relative;
   width: 40px;
   flex-shrink: 0;
-  transition: flex 0.2s ease-out, width 0.2s ease-out;
+  transition: flex 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-container.expanded {
@@ -241,7 +241,7 @@ body {
   justify-content: center;
   color: var(--text-muted);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
@@ -265,7 +265,7 @@ body {
   border-radius: 6px;
   font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   pointer-events: none;
   position: absolute;
@@ -295,7 +295,7 @@ body {
 
 .search-btn-icon {
   font-size: 0.875rem;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-container.expanded .search-btn-icon {
@@ -314,7 +314,7 @@ body {
   justify-content: center;
   color: var(--text-muted);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
@@ -338,7 +338,7 @@ body {
   justify-content: center;
   color: var(--text-muted);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
@@ -383,7 +383,7 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   opacity: 1;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .board-container.hidden {
@@ -666,7 +666,7 @@ body {
   font-weight: 500;
   border-radius: 6px;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
 }
 
@@ -715,7 +715,7 @@ body {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease-out;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :root[data-theme="dark"] .modal-overlay {
@@ -736,6 +736,21 @@ body {
   display: flex;
   flex-direction: column;
   max-height: 90vh;
+}
+
+.modal-overlay.open .modal-card {
+  animation: modalAppear 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-header {
@@ -799,7 +814,7 @@ body {
   border-radius: 4px;
   font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-input:focus {
@@ -844,7 +859,7 @@ body {
   color: var(--text-muted);
   cursor: pointer;
   font-size: 0.875rem;
-  transition: color 0.15s;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
@@ -866,7 +881,7 @@ body {
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  transition: all 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
@@ -883,7 +898,7 @@ body {
   font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
-  transition: opacity 0.15s;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
@@ -934,7 +949,7 @@ body {
   font-size: 0.875rem;
   flex-shrink: 0;
   cursor: pointer;
-  transition: transform 0.15s;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .avatar:hover {
@@ -1028,7 +1043,7 @@ body {
   font-size: 0.875rem;
   cursor: pointer;
   border-radius: 6px;
-  transition: background-color 0.15s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   text-align: left;
 }
@@ -1058,8 +1073,8 @@ body {
   height: 100vh;
   width: 100%;
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease-in, transform 0.5s ease-in;
+  transform: translateY(10px);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .app-container.hidden {
@@ -1073,8 +1088,8 @@ body {
 
 .app-container.fade-out {
   opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  transform: translateY(-10px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Login Screen - Split Layout */
@@ -1090,7 +1105,7 @@ body {
   justify-content: center;
   z-index: 1000;
   opacity: 1;
-  transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   visibility: visible;
 }
 
@@ -1246,7 +1261,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.15s, transform 0.1s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 0.5rem;
   padding: 0.75rem 1.5rem;
 }
@@ -1362,7 +1377,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   overflow-y: auto;
   display: none;
   opacity: 0;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
@@ -1483,6 +1498,12 @@ html[data-authenticated="true"] #appContainer.hidden {
   border: none;
   border-radius: 8px;
   padding: 1rem;
+  transform-origin: center center;
+}
+
+.dashboard-card.animating {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
 }
 
 .dashboard-card-header {
@@ -1503,7 +1524,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   justify-content: center;
   color: var(--text-muted);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
   flex-shrink: 0;
 }
@@ -1521,7 +1542,7 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .expand-btn i {
   font-size: 0.75rem;
-  transition: transform 0.2s;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dashboard-card.expanded {
@@ -1537,7 +1558,41 @@ html[data-authenticated="true"] #appContainer.hidden {
   padding: 1.5rem;
   overflow-y: auto;
   background-color: var(--bg-card);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  transform: scale(1);
+  animation: expandCard 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.dashboard-card.expanded.animating {
+  will-change: transform, opacity;
+}
+
+@keyframes expandCard {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dashboard-card.collapsing {
+  animation: collapseCard 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes collapseCard {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.95;
+    transform: scale(0.98);
+  }
 }
 
 .dashboard-card.expanded .dashboard-card-header {
@@ -1548,6 +1603,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   margin-bottom: 1rem;
   z-index: 10;
   border-bottom: 1px solid var(--border-subtle);
+  transition: border-bottom-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dashboard-card.expanded .urgent-list,
@@ -1556,9 +1612,27 @@ html[data-authenticated="true"] #appContainer.hidden {
   overflow-y: auto;
 }
 
+.dashboard-card.expanded.animating .urgent-list,
+.dashboard-card.expanded.animating .activity-list {
+  animation: fadeInList 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes fadeInList {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .dashboard-card.expanded .urgent-item,
 .dashboard-card.expanded .activity-item {
   padding: 1rem;
+  transition: padding 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chart-toggle {
@@ -1578,7 +1652,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   font-weight: 500;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chart-toggle-btn:hover {
@@ -1614,7 +1688,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   border-radius: 4px 4px 0 0;
   min-height: 8px;
   position: relative;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -1735,10 +1809,12 @@ html[data-authenticated="true"] #appContainer.hidden {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .urgent-item:hover {
   background-color: var(--bg-main);
+  transform: translateX(2px);
 }
 
 .urgent-item-icon {
@@ -1794,6 +1870,12 @@ html[data-authenticated="true"] #appContainer.hidden {
   background-color: transparent;
   border: none;
   border-radius: 6px;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.activity-item:hover {
+  background-color: var(--bg-main);
+  transform: translateX(2px);
 }
 
 .activity-item-icon {
@@ -1916,7 +1998,7 @@ html[data-authenticated="true"] #appContainer.hidden {
 .mrr-projection-fill {
   height: 100%;
   border-radius: 4px;
-  transition: width 0.3s ease;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mrr-projection-fill.orange {
@@ -2020,7 +2102,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   text-decoration: none;
   box-shadow: 0 2px 4px rgba(37, 211, 102, 0.3);
@@ -2195,7 +2277,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   gap: 0.75rem;
   opacity: 0;
   transform: translateX(100%);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: auto;
   min-width: 300px;
 }
@@ -2274,7 +2356,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   width: 24px;
   height: 24px;
