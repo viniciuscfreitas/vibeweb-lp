@@ -282,24 +282,44 @@ function calculateAverageTicketFromRecentTasks(recentTasks) {
 function calculateProjectedRevenue(tasks, monthsCount = 12) {
   const projectedMonths = [];
   const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
 
   let liveProjectsWithHostingCount = 0;
   let paidTasksCount = 0;
+  let pipelineRevenue = 0;
+  const recentTasks = [];
+  const MONTHS_FOR_AVERAGE = 6;
 
-  tasks.forEach(task => {
-    if (task.col_id === 3 && task.hosting === HOSTING_YES) {
+  for (let i = 0; i < tasks.length; i++) {
+    const task = tasks[i];
+    const colId = task.col_id;
+
+    if (colId === 3 && task.hosting === HOSTING_YES) {
       liveProjectsWithHostingCount++;
     }
     if (task.payment_status === PAYMENT_STATUS_PAID || task.payment_status === PAYMENT_STATUS_PARTIAL) {
       paidTasksCount++;
     }
-  });
+    if ((colId === 1 || colId === 2) && task.payment_status === PAYMENT_STATUS_PENDING) {
+      pipelineRevenue += parseFloat(task.price) || 0;
+    }
+
+    const taskCreatedDate = parseTaskDate(task.created_at);
+    if (taskCreatedDate) {
+      const monthsSinceCreation = (currentYear - taskCreatedDate.getFullYear()) * 12 +
+        (currentMonth - taskCreatedDate.getMonth());
+      if (monthsSinceCreation >= 0 && monthsSinceCreation <= (MONTHS_FOR_AVERAGE - 1)) {
+        recentTasks.push(task);
+      }
+    }
+  }
 
   const monthlyRecurringRevenue = liveProjectsWithHostingCount * HOSTING_PRICE_EUR;
 
   if (liveProjectsWithHostingCount === 0 && paidTasksCount === 0) {
     for (let monthsAhead = 1; monthsAhead <= monthsCount; monthsAhead++) {
-      const futureDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + monthsAhead, 1);
+      const futureDate = new Date(currentYear, currentMonth + monthsAhead, 1);
       const monthName = futureDate.toLocaleDateString('pt-BR', { month: 'short' });
       projectedMonths.push({
         name: monthName,
@@ -311,31 +331,41 @@ function calculateProjectedRevenue(tasks, monthsCount = 12) {
     return projectedMonths;
   }
 
-  const recentTasks = tasks.filter(t => {
-    const taskCreatedDate = parseTaskDate(t.created_at);
-    if (!taskCreatedDate) return false;
-    const monthsSinceCreation = (currentDate.getFullYear() - taskCreatedDate.getFullYear()) * 12 +
-      (currentDate.getMonth() - taskCreatedDate.getMonth());
-    return monthsSinceCreation >= 0 && monthsSinceCreation <= 5;
-  });
+  const pipelineDistribution = [0.5, 0.3, 0.2];
 
-  const averageJobsPerMonth = recentTasks.length > 0 ? recentTasks.length / 6 : 0;
+  const averageJobsPerMonth = recentTasks.length > 0 ? recentTasks.length / MONTHS_FOR_AVERAGE : 0;
   const averageTicketPrice = calculateAverageTicketFromRecentTasks(recentTasks);
   const baseNewProjectsRevenue = averageJobsPerMonth * averageTicketPrice;
-  const monthlyGrowthRate = 1.01;
+
+  const monthlyGrowthRate = 1.02;
+  const currentYearMonth = currentYear * 12 + currentMonth;
 
   for (let monthsAhead = 1; monthsAhead <= monthsCount; monthsAhead++) {
-    const futureDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + monthsAhead, 1);
+    const futureYearMonth = currentYearMonth + monthsAhead;
+    const futureYear = Math.floor(futureYearMonth / 12);
+    const futureMonth = futureYearMonth % 12;
+    const futureDate = new Date(futureYear, futureMonth, 1);
     const monthName = futureDate.toLocaleDateString('pt-BR', { month: 'short' });
+
+    let pipelineRevenueThisMonth = 0;
+    if (monthsAhead <= 3) {
+      pipelineRevenueThisMonth = pipelineRevenue * pipelineDistribution[monthsAhead - 1];
+    }
+
     const growthFactor = Math.pow(monthlyGrowthRate, monthsAhead);
     const projectedNewProjectsRevenue = baseNewProjectsRevenue * growthFactor;
-    const projectedRevenue = Math.round(monthlyRecurringRevenue + projectedNewProjectsRevenue);
+
+    const projectedRevenue = Math.round(
+      monthlyRecurringRevenue +
+      pipelineRevenueThisMonth +
+      projectedNewProjectsRevenue
+    );
 
     projectedMonths.push({
       name: monthName,
       value: projectedRevenue,
-      month: futureDate.getMonth(),
-      year: futureDate.getFullYear()
+      month: futureMonth,
+      year: futureYear
     });
   }
 

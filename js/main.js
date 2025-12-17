@@ -239,21 +239,41 @@ function switchToFinancial() {
 }
 
 function updateNavButtons(isProjects, isDashboard, isFinancial) {
-  DOM.navButtons.forEach((btn, index) => {
-    if (index === 0 && isProjects) {
-      btn.classList.add('active');
-      btn.setAttribute('aria-current', 'page');
-    } else if (index === 1 && isDashboard) {
-      btn.classList.add('active');
-      btn.setAttribute('aria-current', 'page');
-    } else if (index === 2 && isFinancial) {
-      btn.classList.add('active');
-      btn.setAttribute('aria-current', 'page');
+  if (!DOM.navButtons || DOM.navButtons.length < 3) return;
+
+  const projectsBtn = DOM.navButtons[0];
+  const dashboardBtn = DOM.navButtons[1];
+  const financialBtn = DOM.navButtons[2];
+
+  if (projectsBtn) {
+    if (isProjects) {
+      projectsBtn.classList.add('active');
+      projectsBtn.setAttribute('aria-current', 'page');
     } else {
-      btn.classList.remove('active');
-      btn.removeAttribute('aria-current');
+      projectsBtn.classList.remove('active');
+      projectsBtn.removeAttribute('aria-current');
     }
-  });
+  }
+
+  if (dashboardBtn) {
+    if (isDashboard) {
+      dashboardBtn.classList.add('active');
+      dashboardBtn.setAttribute('aria-current', 'page');
+    } else {
+      dashboardBtn.classList.remove('active');
+      dashboardBtn.removeAttribute('aria-current');
+    }
+  }
+
+  if (financialBtn) {
+    if (isFinancial) {
+      financialBtn.classList.add('active');
+      financialBtn.setAttribute('aria-current', 'page');
+    } else {
+      financialBtn.classList.remove('active');
+      financialBtn.removeAttribute('aria-current');
+    }
+  }
 }
 
 function updateAriaHiddenForViews() {
@@ -480,7 +500,8 @@ function setupEventListeners() {
 
       if (taskId && hasOpenModal) {
         const tasks = AppState.getTasks();
-        const task = tasks.find(t => t.id.toString() === taskId);
+        const taskIdNum = parseInt(taskId, 10);
+        const task = isNaN(taskIdNum) ? null : tasks.find(t => t.id === taskIdNum);
         if (task) {
           setTimeout(() => {
             window.openModal(task);
@@ -593,10 +614,13 @@ function setupEventListeners() {
     DOM.btnGeneratePDF.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const tasks = AppState.getTasks();
-      const currentTask = tasks.find(t => t.id === AppState.currentTaskId);
-      if (currentTask) {
-        generateInvoice(currentTask);
+      const currentTaskId = AppState.currentTaskId;
+      if (currentTaskId) {
+        const tasks = AppState.getTasks();
+        const currentTask = tasks.find(t => t.id === currentTaskId);
+        if (currentTask) {
+          generateInvoice(currentTask);
+        }
       }
     });
   }
@@ -610,15 +634,48 @@ function setupEventListeners() {
     DOM.searchInput.addEventListener('blur', collapseSearch);
   }
 
-  // Chart toggle buttons (WCAG - Update aria-selected for screen readers)
+  let cachedChartData = {
+    historical: null,
+    projection: null,
+    tasksHash: null
+  };
+
   const chartToggleHistory = document.getElementById('chartToggleHistory');
   const chartToggleProjection = document.getElementById('chartToggleProjection');
+
+  function getChartData(type) {
+    const tasks = AppState.getTasks();
+    let tasksHash = tasks.length;
+    if (tasks.length > 0) {
+      for (let i = 0; i < tasks.length; i++) {
+        tasksHash = ((tasksHash << 5) - tasksHash) + (tasks[i].id || 0);
+        tasksHash = tasksHash & tasksHash;
+      }
+    }
+
+    if (cachedChartData.tasksHash !== tasksHash) {
+      cachedChartData.historical = null;
+      cachedChartData.projection = null;
+      cachedChartData.tasksHash = tasksHash;
+    }
+
+    if (type === 'history') {
+      if (!cachedChartData.historical) {
+        cachedChartData.historical = calculateMonthlyRevenue(tasks, 12);
+      }
+      return cachedChartData.historical;
+    } else {
+      if (!cachedChartData.projection) {
+        cachedChartData.projection = calculateProjectedRevenue(tasks, 12);
+      }
+      return cachedChartData.projection;
+    }
+  }
+
   if (chartToggleHistory) {
     chartToggleHistory.addEventListener('click', () => {
-      const tasks = AppState.getTasks();
-      const historicalData = calculateMonthlyRevenue(tasks, 12);
+      const historicalData = getChartData('history');
       renderRevenueChart(historicalData, 'history');
-      // Update aria-selected for accessibility
       chartToggleHistory.setAttribute('aria-selected', 'true');
       if (chartToggleProjection) {
         chartToggleProjection.setAttribute('aria-selected', 'false');
@@ -629,10 +686,8 @@ function setupEventListeners() {
   }
   if (chartToggleProjection) {
     chartToggleProjection.addEventListener('click', () => {
-      const tasks = AppState.getTasks();
-      const projectionData = calculateProjectedRevenue(tasks, 12);
+      const projectionData = getChartData('projection');
       renderRevenueChart(projectionData, 'projection');
-      // Update aria-selected for accessibility
       chartToggleProjection.setAttribute('aria-selected', 'true');
       if (chartToggleHistory) {
         chartToggleHistory.setAttribute('aria-selected', 'false');
@@ -688,22 +743,37 @@ async function renderUserAvatar() {
 
   if (userProfile) {
     userProfile.style.display = 'flex';
-    avatar.addEventListener('click', toggleUserDropdown);
+    if (avatar) {
+      avatar.removeEventListener('click', toggleUserDropdown);
+      avatar.addEventListener('click', toggleUserDropdown);
+    }
   }
 
   if (dropdownTheme) {
-    dropdownTheme.addEventListener('click', (e) => {
+    const oldThemeHandler = dropdownTheme._themeClickHandler;
+    if (oldThemeHandler) {
+      dropdownTheme.removeEventListener('click', oldThemeHandler);
+    }
+    const themeClickHandler = (e) => {
       e.stopPropagation();
       toggleTheme();
-    });
+    };
+    dropdownTheme._themeClickHandler = themeClickHandler;
+    dropdownTheme.addEventListener('click', themeClickHandler);
   }
 
   if (dropdownLogout) {
-    dropdownLogout.addEventListener('click', (e) => {
+    const oldLogoutHandler = dropdownLogout._logoutClickHandler;
+    if (oldLogoutHandler) {
+      dropdownLogout.removeEventListener('click', oldLogoutHandler);
+    }
+    const logoutClickHandler = (e) => {
       e.stopPropagation();
       closeUserDropdown();
       logout();
-    });
+    };
+    dropdownLogout._logoutClickHandler = logoutClickHandler;
+    dropdownLogout.addEventListener('click', logoutClickHandler);
   }
 
   const currentTheme = getCurrentTheme();
@@ -810,7 +880,8 @@ async function initApp() {
 
     if (taskId && hasOpenModal) {
       const tasks = AppState.getTasks();
-      const task = tasks.find(t => t.id.toString() === taskId);
+      const taskIdNum = parseInt(taskId, 10);
+      const task = isNaN(taskIdNum) ? null : tasks.find(t => t.id === taskIdNum);
       if (task) {
         setTimeout(() => {
           window.openModal(task);
@@ -828,8 +899,15 @@ async function initApp() {
   function startUpdateInterval() {
     if (updateInterval) return;
 
+    let lastUpdateTime = Date.now();
+    const UPDATE_INTERVAL_MS = 60000;
+
     updateInterval = setInterval(() => {
       if (document.hidden) return;
+
+      const now = Date.now();
+      if (now - lastUpdateTime < UPDATE_INTERVAL_MS - 1000) return;
+      lastUpdateTime = now;
 
       updateDeadlineDisplays();
 
@@ -840,7 +918,7 @@ async function initApp() {
       } else {
         updateHeader('projects');
       }
-    }, 60000);
+    }, UPDATE_INTERVAL_MS);
   }
 
   function stopUpdateInterval() {
