@@ -320,7 +320,7 @@ async function saveSettingsFromForm() {
   const hasName = nameRaw.length > 0;
   const hasEmail = emailRaw.length > 0;
 
-  let avatarUrl = null;
+  let avatarUploaded = false;
   if (DOM.profileAvatar?.files?.[0]) {
     const file = DOM.profileAvatar.files[0];
     if (file.size > 2 * 1024 * 1024) {
@@ -345,9 +345,7 @@ async function saveSettingsFromForm() {
         setCurrentUser(uploadResult.user);
         await renderUserAvatar(uploadResult.user);
         profileUpdated = true;
-        avatarUrl = uploadResult.avatarUrl || uploadResult.user.avatar_url;
-      } else if (uploadResult?.avatarUrl) {
-        avatarUrl = uploadResult.avatarUrl;
+        avatarUploaded = true;
       }
     } catch (error) {
       NotificationManager.error(error.message || 'Erro ao fazer upload da foto');
@@ -355,7 +353,7 @@ async function saveSettingsFromForm() {
     }
   }
 
-  if (hasName || hasEmail || avatarUrl) {
+  if (hasName || hasEmail) {
     if (hasName && (nameRaw.length < 2 || nameRaw.length > 100)) {
       NotificationManager.error('Nome deve ter entre 2 e 100 caracteres');
       return;
@@ -370,7 +368,7 @@ async function saveSettingsFromForm() {
       const updatedUser = await api.updateProfile(
         hasName ? nameRaw : undefined,
         hasEmail ? emailRaw : undefined,
-        avatarUrl || undefined
+        undefined
       );
       if (updatedUser) {
         setCurrentUser(updatedUser);
