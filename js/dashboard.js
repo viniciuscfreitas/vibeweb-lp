@@ -610,9 +610,7 @@ function toggleUrgentExpand() {
     expandBtn.setAttribute('aria-label', 'Expandir lista de urgentes');
     expandBtn.setAttribute('title', 'Expandir');
   } else {
-    requestAnimationFrame(() => {
-      urgentCard.classList.add('expanded');
-    });
+    urgentCard.classList.add('expanded');
     expandIcon.className = 'fa-solid fa-compress';
     expandBtn.setAttribute('aria-label', 'Recolher lista de urgentes');
     expandBtn.setAttribute('title', 'Recolher');
@@ -641,9 +639,7 @@ async function toggleActivityExpand() {
     const activities = await generateRecentActivities(tasks, true);
     renderRecentActivities(activities || []);
   } else {
-    requestAnimationFrame(() => {
-      activityCard.classList.add('expanded');
-    });
+    activityCard.classList.add('expanded');
     expandIcon.className = 'fa-solid fa-compress';
     expandBtn.setAttribute('aria-label', 'Recolher lista de atividades');
     expandBtn.setAttribute('title', 'Recolher');

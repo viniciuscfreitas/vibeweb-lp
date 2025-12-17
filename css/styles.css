@@ -1498,7 +1498,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   border: none;
   border-radius: 8px;
   padding: 1rem;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dashboard-card-header {
@@ -1519,7 +1519,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   justify-content: center;
   color: var(--text-muted);
   cursor: pointer;
-  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
   outline: none;
   flex-shrink: 0;
 }
@@ -1537,7 +1537,6 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .expand-btn i {
   font-size: 0.75rem;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dashboard-card.expanded {
@@ -1554,6 +1553,18 @@ html[data-authenticated="true"] #appContainer.hidden {
   overflow-y: auto;
   background-color: var(--bg-card);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: expandCard 0.2s ease;
+}
+
+@keyframes expandCard {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .dashboard-card.expanded .dashboard-card-header {
@@ -1564,7 +1575,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   margin-bottom: 1rem;
   z-index: 10;
   border-bottom: 1px solid var(--border-subtle);
-  transition: border-bottom-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dashboard-card.expanded .urgent-list,
@@ -1576,7 +1586,6 @@ html[data-authenticated="true"] #appContainer.hidden {
 .dashboard-card.expanded .urgent-item,
 .dashboard-card.expanded .activity-item {
   padding: 1rem;
-  transition: padding 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chart-toggle {
@@ -1632,7 +1641,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   border-radius: 4px 4px 0 0;
   min-height: 8px;
   position: relative;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -1641,8 +1649,6 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .chart-bar:hover {
   background-color: var(--primary-hover);
-  transform: scaleY(1.05);
-  transform-origin: bottom;
 }
 
 .chart-bar-value {
@@ -1753,12 +1759,10 @@ html[data-authenticated="true"] #appContainer.hidden {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .urgent-item:hover {
   background-color: var(--bg-main);
-  transform: translateX(2px);
 }
 
 .urgent-item-icon {
@@ -1814,12 +1818,10 @@ html[data-authenticated="true"] #appContainer.hidden {
   background-color: transparent;
   border: none;
   border-radius: 6px;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .activity-item:hover {
   background-color: var(--bg-main);
-  transform: translateX(2px);
 }
 
 .activity-item-icon {
@@ -1879,7 +1881,6 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .activity-item:hover .activity-user-badge {
   background-color: var(--primary-hover);
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .empty-state {
@@ -1942,7 +1943,7 @@ html[data-authenticated="true"] #appContainer.hidden {
 .mrr-projection-fill {
   height: 100%;
   border-radius: 4px;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.2s ease;
 }
 
 .mrr-projection-fill.orange {
@@ -2046,21 +2047,13 @@ html[data-authenticated="true"] #appContainer.hidden {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.15s ease;
   flex-shrink: 0;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(37, 211, 102, 0.3);
 }
 
 .wa-button:hover {
   background-color: #20ba5a;
-  box-shadow: 0 4px 8px rgba(37, 211, 102, 0.4);
-  transform: translateY(-1px);
-}
-
-.wa-button:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(37, 211, 102, 0.3);
 }
 
 .wa-button i {
