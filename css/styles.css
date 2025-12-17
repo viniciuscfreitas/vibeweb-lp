@@ -1556,6 +1556,23 @@ html[data-authenticated="true"] #appContainer.hidden {
   animation: expandCard 0.2s ease;
 }
 
+.dashboard-card.collapsing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background-color: var(--bg-card);
+  box-shadow: none;
+  animation: collapseCard 0.2s ease;
+}
+
 @keyframes expandCard {
   from {
     opacity: 0;
@@ -1564,6 +1581,17 @@ html[data-authenticated="true"] #appContainer.hidden {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes collapseCard {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.98);
   }
 }
 
