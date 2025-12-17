@@ -429,7 +429,6 @@ async function generateRecentActivities(tasks, useCache = true) {
       dbActivities.forEach(activity => {
         const activityDate = parseTaskDate(activity.created_at);
         if (!activityDate) return;
-        const timeAgo = getTimeAgo(activityDate);
 
         let icon = 'fa-file-invoice';
         if (activity.action_type === 'create') {
@@ -452,7 +451,7 @@ async function generateRecentActivities(tasks, useCache = true) {
 
         activities.push({
           text: escapedDescription,
-          time: timeAgo,
+          createdAt: activityDate,
           icon: icon,
           taskId: activity.task_id,
           userName: userName,
@@ -519,7 +518,6 @@ async function generateRecentActivities(tasks, useCache = true) {
   selectedTasks.slice(0, 3).forEach(task => {
     const taskCreatedDate = parseTaskDate(task.created_at);
     if (!taskCreatedDate) return;
-    const timeAgo = getTimeAgo(taskCreatedDate);
 
     let activityText = '';
     let icon = 'fa-file-invoice';
@@ -541,7 +539,7 @@ async function generateRecentActivities(tasks, useCache = true) {
 
     activities.push({
       text: activityText,
-      time: timeAgo,
+      createdAt: taskCreatedDate,
       icon: icon,
       taskId: task.id
     });

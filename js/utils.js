@@ -110,13 +110,22 @@ function calculateRevenueChange(currentRevenue, lastRevenue) {
   return ((currentRevenue - lastRevenue) / lastRevenue * 100).toFixed(1);
 }
 
-function getTimeAgo(date) {
-  if (!date || !(date instanceof Date)) {
+function getTimeAgo(date, currentTime = null) {
+  if (!date) {
     return 'Agora';
   }
 
-  const now = Date.now();
-  const diff = now - date.getTime();
+  if (!(date instanceof Date)) {
+    return 'Agora';
+  }
+
+  const dateTime = date.getTime();
+  if (isNaN(dateTime)) {
+    return 'Agora';
+  }
+
+  const now = currentTime ?? Date.now();
+  const diff = now - dateTime;
 
   if (diff < 0) {
     return 'Agora';

@@ -442,14 +442,19 @@ function renderRecentActivities(activities) {
 
   DOM.activityList.innerHTML = '';
 
+  const currentTime = Date.now();
+
   activitiesList.forEach(activity => {
+    const activityDate = activity.createdAt;
+    const timeDisplay = activityDate ? getTimeAgo(activityDate, currentTime) : (activity.time || 'Agora');
+
     const item = document.createElement('div');
     item.className = 'activity-item';
     item.style.cursor = 'pointer';
     item.setAttribute('role', 'button');
     item.setAttribute('tabindex', '0');
     const userInfo = activity.userName ? ` por ${activity.userName}` : '';
-    item.setAttribute('aria-label', `Atividade: ${activity.text}${userInfo}, ${activity.time}`);
+    item.setAttribute('aria-label', `Atividade: ${activity.text}${userInfo}, ${timeDisplay}`);
 
     const userBadgeHtml = activity.userName && activity.userInitials
       ? activity.userAvatarUrl
@@ -467,7 +472,7 @@ function renderRecentActivities(activities) {
       </div>
       <div class="activity-item-content">
         <div class="activity-item-text">${activity.text}${userInfoHtml}</div>
-        <div class="activity-item-time">${activity.time}</div>
+        <div class="activity-item-time">${timeDisplay}</div>
       </div>
       ${userBadgeHtml}
     `;
