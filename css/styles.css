@@ -1634,7 +1634,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.25rem;
-  padding: 2rem 0 2.5rem 0;
+  padding: 3rem 0 2.5rem 0;
   overflow: visible;
 }
 
@@ -1656,7 +1656,7 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .chart-bar-value {
   position: absolute;
-  top: -1.5rem;
+  top: -2.5rem;
   font-size: 0.65rem;
   font-weight: 600;
   color: var(--text-main);
@@ -1664,7 +1664,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   opacity: 0;
   transition: opacity 0.2s;
   white-space: nowrap;
-  z-index: 1;
+  z-index: 20;
   pointer-events: none;
 }
 
