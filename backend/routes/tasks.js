@@ -358,19 +358,20 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
         const descriptionSanitized = description ? sanitizeString(description, 5000) : null;
         const assetsLinkSanitized = assets_link ? sanitizeString(assets_link, 2000) : null;
         const publicUuidSanitized = public_uuid ? sanitizeString(public_uuid, 100) : null;
+        const stackSanitized = stack ? sanitizeString(stack, 255) : null;
 
-        // Calculate deadline_timestamp if deadline changed
         let finalDeadlineTimestamp = deadline_timestamp;
         if (deadline && deadline !== existing.deadline) {
-          // Deadline changed - calculate new timestamp
           finalDeadlineTimestamp = calculateDeadlineTimestamp(deadline);
         } else if (deadline === existing.deadline && existing.deadline_timestamp) {
-          // Deadline unchanged - preserve existing timestamp
           finalDeadlineTimestamp = existing.deadline_timestamp;
         } else if (deadline && !finalDeadlineTimestamp) {
-          // New deadline without timestamp - calculate it
           finalDeadlineTimestamp = calculateDeadlineTimestamp(deadline);
         }
+
+        const isRecurringValue = is_recurring !== undefined
+          ? (is_recurring === 1 || is_recurring === true ? 1 : 0)
+          : (existing.is_recurring || 0);
 
         db.run(
           `UPDATE tasks SET
@@ -382,7 +383,7 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
             clientSanitized,
             contactSanitized,
             type || null,
-            stack ? sanitizeString(stack, 255) : null,
+            stackSanitized,
             domainSanitized,
             descriptionSanitized,
             priceNum,
@@ -392,7 +393,7 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
             hosting || existing.hosting,
             colIdNum,
             orderNum,
-            is_recurring !== undefined ? (is_recurring === 1 || is_recurring === true ? 1 : 0) : (existing.is_recurring || 0),
+            isRecurringValue,
             assetsLinkSanitized !== null ? assetsLinkSanitized : existing.assets_link,
             publicUuidSanitized !== null ? publicUuidSanitized : existing.public_uuid,
             taskId
@@ -407,7 +408,7 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
               client: clientSanitized,
               contact: contactSanitized,
               type: type || null,
-              stack: stack ? sanitizeString(stack, 255) : null,
+              stack: stackSanitized,
               domain: domainSanitized,
               description: descriptionSanitized,
               price: priceNum,
@@ -417,7 +418,7 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
               hosting: hosting || existing.hosting,
               col_id: colIdNum,
               order_position: orderNum,
-              is_recurring: is_recurring !== undefined ? (is_recurring === 1 || is_recurring === true ? 1 : 0) : (existing.is_recurring || 0),
+              is_recurring: isRecurringValue,
               assets_link: assetsLinkSanitized !== null ? assetsLinkSanitized : existing.assets_link,
               public_uuid: publicUuidSanitized !== null ? publicUuidSanitized : existing.public_uuid,
               updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
