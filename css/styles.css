@@ -1156,6 +1156,16 @@ body {
   visibility: visible;
 }
 
+/* Prevent login flick on page load when authenticated */
+html[data-authenticated="true"] #loginOverlay {
+  display: none !important;
+}
+
+html[data-authenticated="true"] #appContainer.hidden {
+  display: flex !important;
+  opacity: 0;
+}
+
 .login-container {
   display: grid;
   grid-template-columns: 1fr 1fr;

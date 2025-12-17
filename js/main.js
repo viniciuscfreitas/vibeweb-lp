@@ -70,7 +70,15 @@ function updateUrl(view, currentPath = null) {
   } else if (view === 'financial') {
     newPath = '/financeiro';
   } else if (view === 'projects') {
-    newPath = '/projetos';
+    const taskId = getTaskIdFromUrl(path);
+    const isNew = isNewProjectUrl(path);
+    if (taskId !== null && taskId !== undefined) {
+      newPath = `/projetos/${taskId}`;
+    } else if (isNew) {
+      newPath = '/projetos/novo';
+    } else {
+      newPath = '/projetos';
+    }
   }
 
   if (path !== newPath) {

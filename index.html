@@ -33,6 +33,19 @@
       crossorigin="anonymous" referrerpolicy="no-referrer">
   </noscript>
   <link rel="stylesheet" href="/css/styles.css">
+  <script>
+    // Prevent login flick on page load - check auth synchronously before rendering
+    (function() {
+      try {
+        const token = localStorage.getItem('vibeTasks_token');
+        if (token) {
+          document.documentElement.setAttribute('data-authenticated', 'true');
+        }
+      } catch (e) {
+        // localStorage might not be available in some contexts
+      }
+    })();
+  </script>
 </head>
 
 <body>

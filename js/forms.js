@@ -79,6 +79,33 @@ function clearFormDraft() {
   lastSavedFormState = null;
 }
 
+function resetFormToDefaults() {
+  if (!DOM.formClient) return;
+
+  const formFields = [
+    { el: DOM.formClient, prop: 'value', val: '' },
+    { el: DOM.formContact, prop: 'value', val: '' },
+    { el: DOM.formType, prop: 'value', val: 'Landing Essencial' },
+    { el: DOM.formStack, prop: 'value', val: '' },
+    { el: DOM.formDomain, prop: 'value', val: '' },
+    { el: DOM.formDesc, prop: 'value', val: '' },
+    { el: DOM.formPrice, prop: 'value', val: '' },
+    { el: DOM.formPayment, prop: 'value', val: PAYMENT_STATUS_PENDING },
+    { el: DOM.formDeadline, prop: 'value', val: '' },
+    { el: DOM.formHosting, prop: 'value', val: HOSTING_NO },
+    { el: DOM.formAssetsLink, prop: 'value', val: '' }
+  ];
+
+  formFields.forEach(field => {
+    if (field.el) {
+      field.el[field.prop] = field.val;
+    }
+  });
+
+  if (DOM.formRecurring) DOM.formRecurring.checked = false;
+  if (DOM.formPublic) DOM.formPublic.checked = false;
+}
+
 function openModal(task = null) {
   if (!DOM.modalOverlay || !DOM.modalTitle || !DOM.btnDelete) return;
 
@@ -154,19 +181,7 @@ function openModal(task = null) {
   } else {
     const restored = restoreFormState();
     if (!restored) {
-      DOM.formClient.value = '';
-      DOM.formContact.value = '';
-      DOM.formType.value = 'Landing Essencial';
-      DOM.formStack.value = '';
-      DOM.formDomain.value = '';
-      DOM.formDesc.value = '';
-      DOM.formPrice.value = '';
-      DOM.formPayment.value = PAYMENT_STATUS_PENDING;
-      DOM.formDeadline.value = '';
-      DOM.formHosting.value = HOSTING_NO;
-      if (DOM.formRecurring) DOM.formRecurring.checked = false;
-      if (DOM.formPublic) DOM.formPublic.checked = false;
-      if (DOM.formAssetsLink) DOM.formAssetsLink.value = '';
+      resetFormToDefaults();
     }
   }
 
@@ -580,10 +595,38 @@ async function saveForm() {
       const updatedTasks = [...tasks, normalizedNewTask];
       AppState.setTasks(updatedTasks);
       AppState.log('Task created', { taskId: normalizedNewTask.id });
+
+      clearFormDraft();
+      clearFormErrors();
+      AppState.currentTaskId = null;
+
+      requestAnimationFrame(() => {
+        resetFormToDefaults();
+
+        if (DOM.modalTitle) DOM.modalTitle.innerText = 'Novo Projeto';
+        if (DOM.btnDelete) DOM.btnDelete.style.display = 'none';
+        if (DOM.btnGeneratePDF) {
+          DOM.btnGeneratePDF.style.display = 'none';
+          DOM.btnGeneratePDF.classList.add('hidden');
+        }
+
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/projetos/novo') {
+          window.history.pushState({ view: 'projects', taskId: 'new' }, '', '/projetos/novo');
+        }
+
+        requestAnimationFrame(() => {
+          if (DOM.formClient) {
+            DOM.formClient.focus();
+          }
+        });
+      });
+    } else {
+      // Update existing task - close modal normally
+      clearFormDraft();
+      closeModal();
     }
 
-    clearFormDraft();
-    closeModal();
     renderBoard();
 
     if (DOM.dashboardContainer.classList.contains('active')) {
