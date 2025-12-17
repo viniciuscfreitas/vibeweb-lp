@@ -1371,11 +1371,6 @@ async function initApp() {
     } else {
       startUpdateInterval();
       updateDeadlineDisplays();
-      if (DOM.dashboardContainer && DOM.dashboardContainer.classList.contains('active')) {
-        renderDashboard();
-      } else if (DOM.financialContainer && DOM.financialContainer.classList.contains('active')) {
-        renderFinancial();
-      }
     }
   };
 
