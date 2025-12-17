@@ -79,6 +79,18 @@ let financialSearchState = {
   gridElement: null
 };
 
+const paymentStatusHtml = {
+  [PAYMENT_STATUS_PAID]: '<span style="color: var(--success);"><i class="fa-solid fa-check"></i> Pago</span>',
+  [PAYMENT_STATUS_PARTIAL]: '<span style="color: var(--warning);">50%</span>',
+  [PAYMENT_STATUS_PENDING]: '<span style="color: var(--danger);">Pendente</span>'
+};
+
+const hostingHtml = {
+  [HOSTING_YES]: '<span style="color: var(--success);"><i class="fa-solid fa-check"></i></span>',
+  [HOSTING_LATER]: '<span style="color: var(--warning);"><i class="fa-solid fa-clock"></i></span>',
+  [HOSTING_NO]: ''
+};
+
 function resetFinancialRenderState() {
   financialSearchState.lastRenderHash = null;
   financialSearchState.isRendered = false;
@@ -279,26 +291,19 @@ function renderProjectsTable(tasks, showNoResults = false) {
     return;
   }
 
-  const sortedTasks = [...tasks].sort((a, b) => {
-    const priceA = parseFloat(a.price) || 0;
-    const priceB = parseFloat(b.price) || 0;
-    return priceB - priceA;
-  });
+  const tasksWithPrice = tasks.map(task => ({
+    task,
+    price: parseFloat(task.price) || 0
+  }));
+  tasksWithPrice.sort((a, b) => b.price - a.price);
+  const sortedTasks = tasksWithPrice.map(item => item.task);
 
-  tableBody.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+
   sortedTasks.forEach(task => {
     const formattedPrice = formatCurrency(task.price);
-    const paymentStatus = task.payment_status === PAYMENT_STATUS_PAID
-      ? '<span style="color: var(--success);"><i class="fa-solid fa-check"></i> Pago</span>'
-      : task.payment_status === PAYMENT_STATUS_PARTIAL
-        ? '<span style="color: var(--warning);">50%</span>'
-        : '<span style="color: var(--danger);">Pendente</span>';
-    let hosting = '';
-    if (task.hosting === HOSTING_YES) {
-      hosting = '<span style="color: var(--success);"><i class="fa-solid fa-check"></i></span>';
-    } else if (task.hosting === HOSTING_LATER) {
-      hosting = '<span style="color: var(--warning);"><i class="fa-solid fa-clock"></i></span>';
-    }
+    const paymentStatus = paymentStatusHtml[task.payment_status] || paymentStatusHtml[PAYMENT_STATUS_PENDING];
+    const hosting = hostingHtml[task.hosting] || '';
 
     const row = document.createElement('tr');
     row.style.cursor = 'pointer';
@@ -318,8 +323,11 @@ function renderProjectsTable(tasks, showNoResults = false) {
       <td>${paymentStatus}</td>
       <td>${hosting}</td>
     `;
-    tableBody.appendChild(row);
+    fragment.appendChild(row);
   });
+
+  tableBody.innerHTML = '';
+  tableBody.appendChild(fragment);
 }
 
 function renderFinancialHeader(metrics) {

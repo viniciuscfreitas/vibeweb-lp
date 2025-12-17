@@ -418,9 +418,7 @@ async function saveSettingsFromForm() {
     if (DOM.dashboardContainer && DOM.dashboardContainer.classList.contains('active')) {
       renderDashboard();
     } else if (DOM.financialContainer && DOM.financialContainer.classList.contains('active')) {
-      if (typeof resetFinancialRenderState === 'function') {
-        resetFinancialRenderState();
-      }
+      resetFinancialRenderState();
       renderFinancial();
     }
   } else {
@@ -536,9 +534,7 @@ function switchToFinancial() {
     DOM.financialContainer.style.display = 'block';
 
     fadeContainer(DOM.financialContainer, true);
-    if (typeof resetFinancialRenderState === 'function') {
-      resetFinancialRenderState();
-    }
+    resetFinancialRenderState();
     renderFinancial();
     updateHeader('financial');
   }, 150);
@@ -659,9 +655,7 @@ function updateViewContent(state) {
   }
 
   if (state.isFinancial) {
-    if (typeof resetFinancialRenderState === 'function') {
-      resetFinancialRenderState();
-    }
+    resetFinancialRenderState();
     renderFinancial();
     updateHeader('financial');
   } else {
