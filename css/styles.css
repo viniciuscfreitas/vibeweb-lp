@@ -1750,6 +1750,34 @@ html[data-authenticated="true"] #appContainer.hidden {
   font-family: 'JetBrains Mono', monospace;
 }
 
+.activity-user-info {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 0.25rem;
+}
+
+.activity-user-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.activity-item:hover .activity-user-badge {
+  background-color: var(--primary-hover);
+  font-family: 'JetBrains Mono', monospace;
+}
+
 .empty-state {
   text-align: center;
   padding: 2rem 1rem;

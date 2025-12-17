@@ -233,5 +233,20 @@ const api = {
   async deleteSubtask(subtaskId) {
     const result = await apiRequest('DELETE', `/api/tasks/subtasks/${subtaskId}`);
     return result.data;
+  },
+
+  async getActivities(limit = 50, taskId = null) {
+    const params = new URLSearchParams();
+    if (limit !== null && limit !== undefined) {
+      params.append('limit', limit);
+    }
+    if (taskId !== null && taskId !== undefined) {
+      params.append('task_id', taskId);
+    }
+
+    const queryString = params.toString();
+    const endpoint = `/api/tasks/activities/recent${queryString ? `?${queryString}` : ''}`;
+    const result = await apiRequest('GET', endpoint);
+    return result.data;
   }
 };

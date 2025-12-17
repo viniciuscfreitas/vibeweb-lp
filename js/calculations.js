@@ -187,7 +187,7 @@ function calculateDashboardMetrics() {
   const averageTicket = paidTasksCount > 0 ? totalRevenue / paidTasksCount : 0;
   const activeProjects = projectCounts.agreementCount + projectCounts.buildCount;
   const urgentProjects = calculateUrgentProjects(tasks);
-  const recentActivities = generateRecentActivities(tasks);
+  // Activities will be loaded asynchronously in dashboard
 
   return {
     mrr,
@@ -210,8 +210,7 @@ function calculateDashboardMetrics() {
     urgentCount: urgentProjects.length,
     urgentProjects,
     upsellPending,
-    statusDistribution,
-    recentActivities
+    statusDistribution
   };
 }
 
@@ -386,7 +385,72 @@ function calculateStatusDistribution(tasks) {
   return distribution;
 }
 
-function generateRecentActivities(tasks) {
+function getInitials(fullName) {
+  if (!fullName) return 'U';
+  const parts = fullName.trim().split(' ');
+  if (parts.length === 1) {
+    return parts[0].substring(0, 2).toUpperCase();
+  }
+  const firstInitial = parts[0][0];
+  const lastInitial = parts[parts.length - 1][0];
+  return (firstInitial + lastInitial).toUpperCase();
+}
+
+async function generateRecentActivities(tasks, useCache = true) {
+  // Check cache first (30 second TTL)
+  if (useCache) {
+    const cached = AppState.getCachedActivities(30000);
+    if (cached) {
+      return cached;
+    }
+  }
+
+  try {
+    // Try to fetch activities from database (with user info)
+    // Only fetch 3 since that's all we use
+    const dbActivities = await api.getActivities(3);
+
+    if (dbActivities && Array.isArray(dbActivities) && dbActivities.length > 0) {
+      const activities = [];
+
+      dbActivities.forEach(activity => {
+        const activityDate = parseTaskDate(activity.created_at);
+        if (!activityDate) return;
+        const timeAgo = getTimeAgo(activityDate);
+
+        let icon = 'fa-file-invoice';
+        if (activity.action_type === 'create') {
+          icon = 'fa-plus-circle';
+        } else if (activity.action_type === 'move') {
+          icon = 'fa-arrows-left-right';
+        } else if (activity.action_type === 'update') {
+          icon = 'fa-edit';
+        } else if (activity.action_type === 'delete') {
+          icon = 'fa-trash';
+        }
+
+        const userName = activity.user_name || 'Usuário';
+        const userInitials = getInitials(userName);
+        const escapedDescription = escapeHtml(activity.action_description || '');
+
+        activities.push({
+          text: escapedDescription,
+          time: timeAgo,
+          icon: icon,
+          taskId: activity.task_id,
+          userName: userName,
+          userInitials: userInitials
+        });
+      });
+
+      AppState.setCachedActivities(activities);
+      return activities;
+    }
+  } catch (error) {
+    console.warn('[Activities] Error fetching from database, falling back to task-based generation:', error);
+  }
+
+  // Fallback: generate from tasks (legacy behavior)
   const activities = [];
   const currentDate = Date.now();
 
@@ -465,5 +529,6 @@ function generateRecentActivities(tasks) {
     });
   });
 
+  // Always return an array, never undefined
   return activities;
 }

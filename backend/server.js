@@ -242,36 +242,81 @@ function initDatabase() {
                 });
               }
 
-              // Create subtasks table
               db.run(`
-                CREATE TABLE IF NOT EXISTS subtasks (
+                CREATE TABLE IF NOT EXISTS activity_log (
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  task_id INTEGER NOT NULL,
-                  title TEXT NOT NULL,
-                  completed INTEGER DEFAULT 0,
-                  order_position INTEGER NOT NULL,
+                  user_id INTEGER NOT NULL,
+                  task_id INTEGER,
+                  action_type TEXT NOT NULL,
+                  action_description TEXT,
+                  old_data TEXT,
+                  new_data TEXT,
                   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                  FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+                  FOREIGN KEY (user_id) REFERENCES users(id),
+                  FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE SET NULL
                 )
               `, (err) => {
                 if (err) {
-                  console.error('Error creating subtasks table:', err);
+                  console.error('Error creating activity_log table:', err);
                 } else {
-                  console.log('Subtasks table created successfully');
+                  console.log('Activity log table created successfully');
                 }
 
-                // Create index for subtasks
                 db.run(`
-                  CREATE INDEX IF NOT EXISTS idx_subtasks_task_id ON subtasks(task_id)
+                  CREATE INDEX IF NOT EXISTS idx_activity_log_user_id ON activity_log(user_id)
                 `, (err) => {
-                  if (err) console.error('Error creating subtasks index:', err);
+                  if (err) console.error('Error creating activity_log user_id index:', err);
+                });
 
-                  console.log('Database initialized successfully');
+                db.run(`
+                  CREATE INDEX IF NOT EXISTS idx_activity_log_task_id ON activity_log(task_id)
+                `, (err) => {
+                  if (err) console.error('Error creating activity_log task_id index:', err);
+                });
 
-                  // Start uptime monitor after database is ready
-                  startUptimeMonitor(db, NODE_ENV);
+                db.run(`
+                  CREATE INDEX IF NOT EXISTS idx_activity_log_created_at ON activity_log(created_at DESC)
+                `, (err) => {
+                  if (err) console.error('Error creating activity_log created_at index:', err);
+                });
 
-                  resolve();
+                db.run(`
+                  CREATE INDEX IF NOT EXISTS idx_activity_log_task_created ON activity_log(task_id, created_at DESC)
+                `, (err) => {
+                  if (err) console.error('Error creating activity_log composite index:', err);
+                });
+
+                // Create subtasks table
+                db.run(`
+                  CREATE TABLE IF NOT EXISTS subtasks (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    task_id INTEGER NOT NULL,
+                    title TEXT NOT NULL,
+                    completed INTEGER DEFAULT 0,
+                    order_position INTEGER NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+                  )
+                `, (err) => {
+                  if (err) {
+                    console.error('Error creating subtasks table:', err);
+                  } else {
+                    console.log('Subtasks table created successfully');
+                  }
+
+                  // Create index for subtasks
+                  db.run(`
+                    CREATE INDEX IF NOT EXISTS idx_subtasks_task_id ON subtasks(task_id)
+                  `, (err) => {
+                    if (err) console.error('Error creating subtasks index:', err);
+
+                    console.log('Database initialized successfully');
+
+                    // Start uptime monitor after database is ready
+                    startUptimeMonitor(db, NODE_ENV);
+
+                    resolve();
+                  });
                 });
               });
             });

@@ -9,6 +9,8 @@ const AppState = {
   error: null,
   _metricsCache: null,
   _tasksHash: null,
+  _activitiesCache: null,
+  _activitiesCacheTime: null,
 
   setTasks(newTasks) {
     this.tasks = newTasks;
@@ -17,6 +19,7 @@ const AppState = {
     if (this._tasksHash !== newHash) {
       this._metricsCache = null;
       this._tasksHash = newHash;
+      this.clearActivitiesCache();
     }
     this.log('State updated', { taskCount: newTasks.length });
   },
@@ -36,6 +39,26 @@ const AppState = {
   clearMetricsCache() {
     this._metricsCache = null;
     this._tasksHash = null;
+  },
+
+  clearActivitiesCache() {
+    this._activitiesCache = null;
+    this._activitiesCacheTime = null;
+  },
+
+  getCachedActivities(cacheTimeMs = 30000) {
+    if (this._activitiesCache && this._activitiesCacheTime) {
+      const age = Date.now() - this._activitiesCacheTime;
+      if (age < cacheTimeMs) {
+        return this._activitiesCache;
+      }
+    }
+    return null;
+  },
+
+  setCachedActivities(activities) {
+    this._activitiesCache = activities;
+    this._activitiesCacheTime = Date.now();
   },
 
   setLoading(loading) {

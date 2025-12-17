@@ -26,24 +26,51 @@ function renderDashboardHeader(metrics) {
   `;
 }
 
-function renderDashboard() {
-  const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
-  const tasks = AppState.getTasks();
+let renderDashboardInProgress = false;
+let renderDashboardPending = false;
 
-  renderMRRCard(metrics);
-  renderStatsCards(metrics);
-
-  if (currentChartView === 'history') {
-    const historicalData = calculateMonthlyRevenue(tasks, 12);
-    renderRevenueChart(historicalData, 'history');
-  } else {
-    const projectionData = calculateProjectedRevenue(tasks, 12);
-    renderRevenueChart(projectionData, 'projection');
+async function renderDashboard() {
+  if (renderDashboardInProgress) {
+    renderDashboardPending = true;
+    return;
   }
 
-  renderPieChart(metrics.statusDistribution);
-  renderUrgentProjects(metrics.urgentProjects || []);
-  renderRecentActivities(metrics.recentActivities || []);
+  renderDashboardInProgress = true;
+  renderDashboardPending = false;
+
+  try {
+    const metrics = AppState.getCachedMetrics(() => calculateDashboardMetrics());
+    const tasks = AppState.getTasks();
+
+    renderMRRCard(metrics);
+    renderStatsCards(metrics);
+
+    if (currentChartView === 'history') {
+      const historicalData = calculateMonthlyRevenue(tasks, 12);
+      renderRevenueChart(historicalData, 'history');
+    } else {
+      const projectionData = calculateProjectedRevenue(tasks, 12);
+      renderRevenueChart(projectionData, 'projection');
+    }
+
+    renderPieChart(metrics.statusDistribution);
+    renderUrgentProjects(metrics.urgentProjects || []);
+
+    try {
+      const activities = await generateRecentActivities(tasks, true);
+      renderRecentActivities(activities || []);
+    } catch (error) {
+      console.error('[Dashboard] Error loading activities:', error);
+      renderRecentActivities([]);
+    }
+  } finally {
+    renderDashboardInProgress = false;
+
+    if (renderDashboardPending) {
+      renderDashboardPending = false;
+      setTimeout(() => renderDashboard(), 0);
+    }
+  }
 }
 
 function renderMRRCard(metrics) {
@@ -419,15 +446,26 @@ function renderRecentActivities(activities) {
     item.style.cursor = 'pointer';
     item.setAttribute('role', 'button');
     item.setAttribute('tabindex', '0');
-    item.setAttribute('aria-label', `Atividade: ${activity.text}, ${activity.time}`);
+    const userInfo = activity.userName ? ` por ${activity.userName}` : '';
+    item.setAttribute('aria-label', `Atividade: ${activity.text}${userInfo}, ${activity.time}`);
+
+    const userBadgeHtml = activity.userName && activity.userInitials
+      ? `<div class="activity-user-badge" title="${escapeHtml(activity.userName)}">${escapeHtml(activity.userInitials)}</div>`
+      : '';
+
+    const userInfoHtml = activity.userName
+      ? `<span class="activity-user-info"> por ${escapeHtml(activity.userName)}</span>`
+      : '';
+
     item.innerHTML = `
       <div class="activity-item-icon">
         <i class="fa-solid ${activity.icon}"></i>
       </div>
       <div class="activity-item-content">
-        <div class="activity-item-text">${activity.text}</div>
+        <div class="activity-item-text">${activity.text}${userInfoHtml}</div>
         <div class="activity-item-time">${activity.time}</div>
       </div>
+      ${userBadgeHtml}
     `;
 
     item.addEventListener('click', () => {

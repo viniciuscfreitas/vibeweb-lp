@@ -35,6 +35,51 @@ function sendDbError(res, err, NODE_ENV, context = '') {
   });
 }
 
+function logActivity(db, userId, taskId, actionType, actionDescription, oldData = null, newData = null) {
+  if (!db || !userId || !actionType) {
+    return;
+  }
+
+  const validActionTypes = ['create', 'update', 'delete', 'move'];
+  if (!validActionTypes.includes(actionType)) {
+    console.error('[ActivityLog] Invalid action_type:', actionType);
+    return;
+  }
+
+  let oldDataJson = null;
+  let newDataJson = null;
+
+  try {
+    oldDataJson = oldData ? JSON.stringify(oldData) : null;
+  } catch (err) {
+    console.error('[ActivityLog] Error stringifying oldData:', err);
+    oldDataJson = '[Error serializing data]';
+  }
+
+  try {
+    newDataJson = newData ? JSON.stringify(newData) : null;
+  } catch (err) {
+    console.error('[ActivityLog] Error stringifying newData:', err);
+    newDataJson = '[Error serializing data]';
+  }
+
+  db.run(
+    `INSERT INTO activity_log (user_id, task_id, action_type, action_description, old_data, new_data)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [userId, taskId, actionType, actionDescription || null, oldDataJson, newDataJson],
+    (err) => {
+      if (err) {
+        console.error('[ActivityLog] Error logging activity:', {
+          error: err.message,
+          userId,
+          taskId,
+          actionType
+        });
+      }
+    }
+  );
+}
+
 function createTasksRoutes(db, NODE_ENV, sanitizeString) {
   const router = require('express').Router();
 
@@ -253,6 +298,18 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
               updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
             };
 
+            setImmediate(() => {
+              logActivity(
+                db,
+                req.user.id,
+                task.id,
+                'create',
+                `Criou projeto ${clientSanitized}`,
+                null,
+                { client: clientSanitized, col_id: colIdNum, price: priceNum }
+              );
+            });
+
             res.status(201).json({
               success: true,
               data: task
@@ -424,6 +481,34 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
               updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
             };
 
+            // Log activity - detect what changed
+            const changes = [];
+            if (existing.client !== clientSanitized) changes.push(`cliente: ${existing.client} → ${clientSanitized}`);
+            if (existing.col_id !== colIdNum) {
+              const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
+              changes.push(`status: ${colNames[existing.col_id] || existing.col_id} → ${colNames[colIdNum] || colIdNum}`);
+            }
+            if (existing.price !== priceNum) changes.push(`preço: €${existing.price} → €${priceNum}`);
+            if (existing.payment_status !== (payment_status || existing.payment_status)) {
+              changes.push(`pagamento: ${existing.payment_status} → ${payment_status || existing.payment_status}`);
+            }
+
+            const actionDescription = changes.length > 0
+              ? `Editou projeto ${clientSanitized}: ${changes.join(', ')}`
+              : `Editou projeto ${clientSanitized}`;
+
+            setImmediate(() => {
+              logActivity(
+                db,
+                req.user.id,
+                taskId,
+                'update',
+                actionDescription,
+                { client: existing.client, col_id: existing.col_id, price: existing.price, payment_status: existing.payment_status },
+                { client: clientSanitized, col_id: colIdNum, price: priceNum, payment_status: payment_status || existing.payment_status }
+              );
+            });
+
             res.json({
               success: true,
               data: task
@@ -462,20 +547,39 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
           return res.status(404).json({ success: false, error: 'Recurso não encontrado' });
         }
 
-        db.run(
-          'DELETE FROM tasks WHERE id = ?',
-          [taskId],
-          function (err) {
-            if (err) {
-              return sendDbError(res, err, NODE_ENV, 'DeleteTask');
-            }
-
-            res.json({
-              success: true,
-              data: { message: 'Task deletada com sucesso' }
-            });
+        // Get task data before deletion for logging
+        db.get('SELECT client, user_id FROM tasks WHERE id = ?', [taskId], (err, taskData) => {
+          if (err) {
+            return sendDbError(res, err, NODE_ENV, 'DeleteTask');
           }
-        );
+
+          db.run(
+            'DELETE FROM tasks WHERE id = ?',
+            [taskId],
+            function (err) {
+              if (err) {
+                return sendDbError(res, err, NODE_ENV, 'DeleteTask');
+              }
+
+              setImmediate(() => {
+                logActivity(
+                  db,
+                  req.user.id,
+                  taskId,
+                  'delete',
+                  `Deletou projeto ${taskData?.client || 'ID ' + taskId}`,
+                  taskData ? { client: taskData.client } : null,
+                  null
+                );
+              });
+
+              res.json({
+                success: true,
+                data: { message: 'Task deletada com sucesso' }
+              });
+            }
+          );
+        });
       });
     } catch (error) {
       console.error('[DeleteTask] Unexpected error:', {
@@ -540,6 +644,24 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
               order_position: orderNum,
               updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
             };
+
+            if (task.col_id !== colIdNum) {
+              const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
+              const fromCol = colNames[task.col_id] || task.col_id;
+              const toCol = colNames[colIdNum] || colIdNum;
+
+              setImmediate(() => {
+                logActivity(
+                  db,
+                  req.user.id,
+                  taskId,
+                  'move',
+                  `Moveu projeto ${task.client} de ${fromCol} para ${toCol}`,
+                  { col_id: task.col_id, client: task.client },
+                  { col_id: colIdNum, client: task.client }
+                );
+              });
+            }
 
             // Check if task was moved to col_id = 3 (Suporte / Live) and is recurring
             if (colIdNum === 3 && task.is_recurring === 1) {
@@ -831,6 +953,63 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString) {
       console.error('[DeleteSubtask] Unexpected error:', {
         error: error.message,
         subtaskId: req.params.id,
+        stack: NODE_ENV === 'development' ? error.stack : undefined
+      });
+      res.status(500).json({
+        success: false,
+        error: NODE_ENV === 'production' ? 'Erro interno do servidor' : error.message
+      });
+    }
+  });
+
+  router.get('/activities/recent', (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit) || 50;
+      const taskIdParam = req.query.task_id;
+      let taskId = null;
+
+      if (taskIdParam) {
+        taskId = parseInt(taskIdParam);
+        if (isNaN(taskId)) {
+          return res.status(400).json({ success: false, error: 'task_id inválido' });
+        }
+      }
+
+      let query = `
+        SELECT
+          al.task_id,
+          al.action_type,
+          al.action_description,
+          al.created_at,
+          u.name as user_name,
+          t.client as task_client
+        FROM activity_log al
+        LEFT JOIN users u ON al.user_id = u.id
+        LEFT JOIN tasks t ON al.task_id = t.id
+      `;
+
+      const params = [];
+      if (taskId !== null) {
+        query += ' WHERE al.task_id = ?';
+        params.push(taskId);
+      }
+
+      query += ' ORDER BY al.created_at DESC LIMIT ?';
+      params.push(limit);
+
+      db.all(query, params, (err, activities) => {
+        if (err) {
+          return sendDbError(res, err, NODE_ENV, 'GetActivities');
+        }
+
+        res.json({
+          success: true,
+          data: activities || []
+        });
+      });
+    } catch (error) {
+      console.error('[GetActivities] Unexpected error:', {
+        error: error.message,
         stack: NODE_ENV === 'development' ? error.stack : undefined
       });
       res.status(500).json({
