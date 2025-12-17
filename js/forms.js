@@ -603,6 +603,9 @@ async function saveForm() {
     if (DOM.dashboardContainer.classList.contains('active')) {
       renderDashboard();
     } else if (DOM.financialContainer.classList.contains('active')) {
+      if (typeof resetFinancialRenderState === 'function') {
+        resetFinancialRenderState();
+      }
       renderFinancial();
     }
   } catch (error) {
@@ -670,6 +673,9 @@ function deleteItem() {
       if (DOM.dashboardContainer.classList.contains('active')) {
         renderDashboard();
       } else if (DOM.financialContainer.classList.contains('active')) {
+        if (typeof resetFinancialRenderState === 'function') {
+          resetFinancialRenderState();
+        }
         renderFinancial();
       }
     } catch (error) {

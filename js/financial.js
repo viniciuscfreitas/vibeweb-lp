@@ -71,11 +71,19 @@ function calculateFinancialMetrics(tasks) {
   };
 }
 
-// Financial search state - encapsulated in module
 let financialSearchState = {
   tasks: [],
-  timeout: null
+  timeout: null,
+  lastRenderHash: null,
+  isRendered: false,
+  gridElement: null
 };
+
+function resetFinancialRenderState() {
+  financialSearchState.lastRenderHash = null;
+  financialSearchState.isRendered = false;
+  financialSearchState.gridElement = null;
+}
 
 function handleFinancialSearch() {
   if (!DOM.financialContainer || !DOM.financialContainer.classList.contains('active')) {
@@ -120,28 +128,54 @@ function filterAndRenderProjects(searchTerm) {
 function renderFinancial() {
   if (!DOM.financialContainer) return;
 
+  const tasks = AppState.getTasks();
+
+  if (!tasks || tasks.length === 0) {
+    if (financialSearchState.isRendered && financialSearchState.gridElement) {
+      return;
+    }
+    DOM.financialContainer.classList.remove('hidden');
+    DOM.financialContainer.classList.add('active');
+    DOM.financialContainer.style.display = 'block';
+    DOM.financialContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">Nenhum projeto cadastrado</div>';
+    financialSearchState.tasks = [];
+    financialSearchState.isRendered = true;
+    financialSearchState.lastRenderHash = null;
+    financialSearchState.gridElement = null;
+    return;
+  }
+
+  let taskDataHash = '';
+  for (let i = 0; i < tasks.length; i++) {
+    const t = tasks[i];
+    if (i > 0) taskDataHash += '|';
+    taskDataHash += `${t.id}:${t.price || 0}:${t.payment_status || ''}:${t.hosting || ''}:${t.col_id || ''}`;
+  }
+  const tasksHash = tasks.length + '-' + taskDataHash;
+
+  if (financialSearchState.isRendered && financialSearchState.lastRenderHash === tasksHash) {
+    if (!financialSearchState.gridElement) {
+      financialSearchState.gridElement = DOM.financialContainer.querySelector('.financial-grid');
+    }
+    if (financialSearchState.gridElement) {
+      return;
+    }
+  }
+
   DOM.financialContainer.classList.remove('hidden');
   DOM.financialContainer.classList.add('active');
   DOM.financialContainer.style.display = 'block';
 
-  const tasks = AppState.getTasks();
-
-  if (!tasks || tasks.length === 0) {
-    DOM.financialContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">Nenhum projeto cadastrado</div>';
-    financialSearchState.tasks = [];
-    return;
-  }
-
-  // Store tasks for search - local to this render cycle
+  financialSearchState.lastRenderHash = tasksHash;
+  financialSearchState.isRendered = true;
+  financialSearchState.gridElement = null;
   financialSearchState.tasks = tasks;
 
-  // Clear search timeout if exists
   if (financialSearchState.timeout) {
     clearTimeout(financialSearchState.timeout);
     financialSearchState.timeout = null;
   }
 
-  // Clear search input when switching to financial view
   if (DOM.searchInput) {
     DOM.searchInput.value = '';
     DOM.searchInput.placeholder = 'Buscar projeto financeiro... (/)';
@@ -227,9 +261,9 @@ function renderFinancial() {
     </div>
   `;
 
-  // Delay to ensure DOM is ready after innerHTML
   setTimeout(() => {
     renderProjectsTable(tasks);
+    financialSearchState.gridElement = DOM.financialContainer.querySelector('.financial-grid');
   }, FINANCIAL_RENDER_DELAY_MS);
 }
 
