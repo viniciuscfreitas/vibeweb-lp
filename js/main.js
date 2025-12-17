@@ -567,10 +567,7 @@ function updateBottomNavCentralButton(view) {
       const icon = document.createElement('i');
       icon.className = 'fa-solid fa-plus';
       icon.setAttribute('aria-hidden', 'true');
-      const text = document.createElement('span');
-      text.textContent = 'Novo';
       centralBtn.appendChild(icon);
-      centralBtn.appendChild(text);
     }
 
     if (!centralBtn._clickHandler) {
@@ -1329,13 +1326,8 @@ function setAvatarImage(element, avatarUrl, initials) {
   const apiBaseUrl = getApiBaseUrl();
   if (avatarUrl) {
     const fullUrl = avatarUrl.startsWith('http') ? avatarUrl : `${apiBaseUrl}${avatarUrl}`;
-    if (element.id === 'bottomNavAvatar') {
-      element.style.backgroundImage = `url(${fullUrl}), linear-gradient(45deg, #a855f7, #3b82f6)`;
-      element.style.backgroundSize = 'cover, 100%';
-    } else {
-      element.style.backgroundImage = `url(${fullUrl})`;
-      element.style.backgroundSize = 'cover';
-    }
+    element.style.backgroundImage = `url(${fullUrl})`;
+    element.style.backgroundSize = 'cover';
     element.style.backgroundPosition = 'center';
     element.textContent = '';
   } else {

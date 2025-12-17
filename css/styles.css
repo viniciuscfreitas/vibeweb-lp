@@ -2400,27 +2400,17 @@ html[data-authenticated="true"] #appContainer.hidden {
 
   .bottom-nav-item.central {
     flex: 0 0 auto;
-    flex-direction: column;
     width: 56px;
-    height: auto;
-    min-height: 56px;
+    height: 56px;
     border-radius: 50%;
     background-color: var(--primary);
     color: #ffffff;
     margin: 0 0.5rem;
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-    padding: 0.5rem 0;
-    gap: 0.25rem;
   }
 
   .bottom-nav-item.central i {
-    font-size: 1.25rem;
-  }
-
-  .bottom-nav-item.central span {
-    font-size: 0.65rem;
-    font-weight: 500;
-    line-height: 1;
+    font-size: 1.5rem;
   }
 
   .bottom-nav-item.central:hover {
@@ -2525,11 +2515,8 @@ html[data-authenticated="true"] #appContainer.hidden {
     font-weight: 600;
     font-size: 0.75rem;
     flex-shrink: 0;
-    background-size: cover, 100%;
+    background-size: cover;
     background-position: center;
-    border: 2px solid var(--bg-shell);
-    box-sizing: border-box;
-    box-shadow: 0 0 0 1px var(--border-subtle);
   }
 
   /* Profile Modal - Mobile Sheet */
