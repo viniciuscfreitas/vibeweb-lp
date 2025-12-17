@@ -1498,6 +1498,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   border: none;
   border-radius: 8px;
   padding: 1rem;
+  transition: opacity 0.2s ease;
 }
 
 .dashboard-card-header {
@@ -1551,6 +1552,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   padding: 1.5rem;
   overflow-y: auto;
   background-color: var(--bg-card);
+  box-shadow: none;
   animation: expandCard 0.2s ease;
 }
 
