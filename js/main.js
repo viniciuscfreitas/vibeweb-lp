@@ -1329,8 +1329,13 @@ function setAvatarImage(element, avatarUrl, initials) {
   const apiBaseUrl = getApiBaseUrl();
   if (avatarUrl) {
     const fullUrl = avatarUrl.startsWith('http') ? avatarUrl : `${apiBaseUrl}${avatarUrl}`;
-    element.style.backgroundImage = `url(${fullUrl})`;
-    element.style.backgroundSize = 'cover';
+    if (element.id === 'bottomNavAvatar') {
+      element.style.backgroundImage = `url(${fullUrl}), linear-gradient(45deg, #a855f7, #3b82f6)`;
+      element.style.backgroundSize = 'cover, 100%';
+    } else {
+      element.style.backgroundImage = `url(${fullUrl})`;
+      element.style.backgroundSize = 'cover';
+    }
     element.style.backgroundPosition = 'center';
     element.textContent = '';
   } else {
