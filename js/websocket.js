@@ -23,6 +23,26 @@ let pendingRenders = {
 
 const hasNormalizeTasksData = typeof normalizeTasksData === 'function';
 
+const localActions = new Set();
+const actionTimeouts = new Map();
+
+function markLocalAction(taskId) {
+  if (!taskId) return;
+
+  const existingTimeout = actionTimeouts.get(taskId);
+  if (existingTimeout) {
+    clearTimeout(existingTimeout);
+  }
+
+  localActions.add(taskId);
+  const timeoutId = setTimeout(() => {
+    localActions.delete(taskId);
+    actionTimeouts.delete(taskId);
+  }, 1000);
+
+  actionTimeouts.set(taskId, timeoutId);
+}
+
 function connectWebSocket() {
   if (socket?.connected) {
     return;
@@ -118,6 +138,12 @@ function disconnectWebSocket() {
   }
   cachedUserId = null;
   cachedUserIdTimestamp = 0;
+
+  for (const timeoutId of actionTimeouts.values()) {
+    clearTimeout(timeoutId);
+  }
+  localActions.clear();
+  actionTimeouts.clear();
 }
 
 function scheduleRender() {
@@ -151,10 +177,11 @@ function scheduleRender() {
   });
 }
 
-function isCurrentUser(userId) {
-  if (userId === undefined) return false;
+function shouldIgnoreWebSocketEvent(taskId, userId) {
+  if (!taskId || userId === undefined) return false;
   const currentUserId = getCurrentUserId();
-  return currentUserId !== null && userId === currentUserId;
+  if (currentUserId === null || userId !== currentUserId) return false;
+  return localActions.has(taskId);
 }
 
 function normalizeTask(task) {
@@ -165,7 +192,7 @@ function normalizeTask(task) {
 
 function handleTaskCreated(data) {
   if (!data?.task || !AppState) return;
-  if (isCurrentUser(data.userId)) return;
+  if (shouldIgnoreWebSocketEvent(data.task.id, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const exists = tasks.some(t => t.id === data.task.id);
@@ -184,7 +211,7 @@ function handleTaskCreated(data) {
 
 function handleTaskUpdated(data) {
   if (!data?.task || !AppState) return;
-  if (isCurrentUser(data.userId)) return;
+  if (shouldIgnoreWebSocketEvent(data.task.id, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const taskIndex = tasks.findIndex(t => t.id === data.task.id);
@@ -206,12 +233,13 @@ function handleTaskUpdated(data) {
 
 function handleTaskDeleted(data) {
   if (!data?.taskId || !AppState) return;
-  if (isCurrentUser(data.userId)) return;
+  if (shouldIgnoreWebSocketEvent(data.taskId, data.userId)) return;
 
   const tasks = AppState.getTasks();
-  const updatedTasks = tasks.filter(t => t.id !== data.taskId);
+  const taskExists = tasks.some(t => t.id === data.taskId);
+  if (!taskExists) return;
 
-  if (updatedTasks.length === tasks.length) return;
+  const updatedTasks = tasks.filter(t => t.id !== data.taskId);
 
   AppState.setTasks(updatedTasks);
 
@@ -226,7 +254,7 @@ function handleTaskDeleted(data) {
 
 function handleTaskMoved(data) {
   if (!data?.task || !AppState) return;
-  if (isCurrentUser(data.userId)) return;
+  if (shouldIgnoreWebSocketEvent(data.task.id, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const taskIndex = tasks.findIndex(t => t.id === data.task.id);
@@ -278,4 +306,5 @@ function getCurrentUserId() {
 
 window.connectWebSocket = connectWebSocket;
 window.disconnectWebSocket = disconnectWebSocket;
+window.markLocalTaskAction = markLocalAction;
 })();

@@ -394,6 +394,10 @@ function handleKeyboardMove(e, task, cardElement) {
   // Update task position
   api.moveTask(task.id, newColId, newOrderPosition)
     .then((updatedTask) => {
+      if (typeof window.markLocalTaskAction === 'function') {
+        window.markLocalTaskAction(task.id);
+      }
+
       const normalizedTask = normalizeTasksData([updatedTask])[0];
       const updatedTasks = tasks.map(t => t.id === task.id ? normalizedTask : t);
       AppState.setTasks(updatedTasks);
@@ -511,6 +515,10 @@ function calculateNewTaskPosition(tasks, taskId, targetColId, insertIndex) {
 function updateTaskPosition(taskId, targetColId, insertIndex, previousState) {
   api.moveTask(taskId, targetColId, insertIndex)
     .then((updatedTaskFromServer) => {
+      if (typeof window.markLocalTaskAction === 'function') {
+        window.markLocalTaskAction(taskId);
+      }
+
       // Success: Update with server response (normalize to ensure defaults)
       const normalizedTask = normalizeTasksData([updatedTaskFromServer])[0];
       const currentTasks = AppState.getTasks();

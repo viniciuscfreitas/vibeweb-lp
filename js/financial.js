@@ -256,6 +256,10 @@ async function quickUpdatePaymentStatus(taskId, newStatus, e) {
       throw new Error('Resposta inválida do servidor');
     }
 
+    if (typeof window.markLocalTaskAction === 'function') {
+      window.markLocalTaskAction(taskId);
+    }
+
     const normalizedTask = normalizeTasksData([updatedTaskFromServer])[0];
 
     if (!normalizedTask) {

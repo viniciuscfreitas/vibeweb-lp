@@ -888,6 +888,10 @@ async function saveForm() {
 
       const updatedTaskFromServer = await api.updateTask(AppState.currentTaskId, formData);
 
+      if (typeof window.markLocalTaskAction === 'function') {
+        window.markLocalTaskAction(AppState.currentTaskId);
+      }
+
       // Normalize task to ensure defaults
       const normalizedTask = normalizeTasksData([updatedTaskFromServer])[0];
 
@@ -915,6 +919,11 @@ async function saveForm() {
 
       const newTaskFromServer = await api.createTask(formData);
       const normalizedNewTask = normalizeTasksData([newTaskFromServer])[0];
+
+      if (typeof window.markLocalTaskAction === 'function') {
+        window.markLocalTaskAction(normalizedNewTask.id);
+      }
+
       const updatedTasks = [...tasks, normalizedNewTask];
       AppState.setTasks(updatedTasks);
       AppState.log('Task created', { taskId: normalizedNewTask.id });
@@ -984,13 +993,18 @@ function deleteItem() {
 
   showConfirmDialog("Arquivar este projeto?", async () => {
     try {
-      await api.deleteTask(AppState.currentTaskId);
+      const taskId = AppState.currentTaskId;
+      await api.deleteTask(taskId);
+
+      if (typeof window.markLocalTaskAction === 'function') {
+        window.markLocalTaskAction(taskId);
+      }
 
       // Update local state
       const tasks = AppState.getTasks();
-      const updatedTasks = tasks.filter(t => t.id !== AppState.currentTaskId);
+      const updatedTasks = tasks.filter(t => t.id !== taskId);
       AppState.setTasks(updatedTasks);
-      AppState.log('Task deleted', { taskId: AppState.currentTaskId });
+      AppState.log('Task deleted', { taskId });
 
       closeModal();
       renderBoard();
