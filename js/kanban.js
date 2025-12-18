@@ -9,6 +9,8 @@ const isIOSSafari = (function() {
   return isIOS && isSafari;
 })();
 
+const COLUMNS_MAP = new Map(COLUMNS.map(col => [col.id, col]));
+
 function updateHeaderStats() {
   if (!DOM.dashboardContainer || !DOM.financialContainer) return;
 
@@ -28,6 +30,8 @@ function renderBoard() {
     console.warn('[Kanban] DOM elements not ready:', { boardGrid: !!DOM.boardGrid, searchInput: !!DOM.searchInput });
     return;
   }
+
+  currentTimestamp = Date.now();
 
   const searchTerm = DOM.searchInput.value.toLowerCase();
   const fragment = document.createDocumentFragment();
@@ -105,7 +109,7 @@ function renderBoard() {
     colDiv.innerHTML = `
       <div class="col-header">
         <h2 class="col-title">${col.name}</h2>
-        <span class="col-count" aria-label="${colTasks.length} ${colTasks.length === 1 ? 'projeto' : 'projetos'}">${colTasks.length}</span>
+        <span class="col-count ${colTasks.length > 0 ? 'col-count-active' : ''}" aria-label="${colTasks.length} ${colTasks.length === 1 ? 'projeto' : 'projetos'}">${colTasks.length}</span>
       </div>
       <div class="col-body" data-col-id="${col.id}" role="group" aria-label="Projetos em ${col.name}">
       </div>
@@ -119,12 +123,36 @@ function renderBoard() {
       bodyDiv.addEventListener('dragleave', handleDragLeave);
     }
 
-    colTasks.forEach(task => {
-      const card = createCardElement(task, hasColumnFilter);
-      if (card) {
-        bodyDiv.appendChild(card);
+    if (colTasks.length === 0) {
+      const emptyState = document.createElement('div');
+      emptyState.className = 'empty-state';
+      emptyState.innerHTML = `
+        <div class="empty-state-icon">📋</div>
+        <div class="empty-state-text">Nenhum projeto aqui</div>
+        ${col.id === 0 ? '<button class="btn-text empty-state-action" id="emptyStateCreateBtn">Criar primeiro projeto</button>' : ''}
+      `;
+      bodyDiv.appendChild(emptyState);
+
+      if (col.id === 0) {
+        const createBtn = emptyState.querySelector('#emptyStateCreateBtn');
+        if (createBtn) {
+          createBtn.addEventListener('click', () => {
+            if (DOM.btnNewProject && DOM.btnNewProject.offsetParent !== null) {
+              DOM.btnNewProject.click();
+            } else if (typeof openModal === 'function') {
+              openModal();
+            }
+          });
+        }
       }
-    });
+    } else {
+      colTasks.forEach(task => {
+        const card = createCardElement(task, hasColumnFilter, currentTimestamp);
+        if (card) {
+          bodyDiv.appendChild(card);
+        }
+      });
+    }
 
     fragment.appendChild(colDiv);
   });
@@ -134,6 +162,8 @@ function renderBoard() {
   updateHeaderStats();
   updateDeadlineDisplays();
 }
+
+let currentTimestamp = Date.now();
 
 function buildActionButtonsHtml(task) {
   if (!task.contact) return '';
@@ -146,7 +176,7 @@ function buildActionButtonsHtml(task) {
   if (!contact.startsWith('@')) {
     const phoneMatch = contact.replace(/\D/g, '');
     if (phoneMatch.length >= 10) {
-      const colName = COLUMNS.find(col => col.id === task.col_id)?.name || 'em andamento';
+      const colName = COLUMNS_MAP.get(task.col_id)?.name || 'em andamento';
       const message = `Olá! Segue o status do projeto ${task.client}: ${colName}.`;
       const whatsappUrl = `https://wa.me/${phoneMatch}?text=${encodeURIComponent(message)}`;
       whatsappHtml = `<a href="${whatsappUrl}" class="action-btn whatsapp" target="_blank" aria-label="Abrir WhatsApp" onclick="event.stopPropagation();">WhatsApp</a>`;
@@ -165,15 +195,19 @@ function buildActionButtonsHtml(task) {
   return `<div class="card-actions">${whatsappHtml}${emailHtml}</div>`;
 }
 
-function createCardElement(task, isExpanded = false) {
+function createCardElement(task, isExpanded = false, now = null) {
   if (!task) return null;
+
+  if (now === null) {
+    now = Date.now();
+  }
 
   const el = document.createElement('div');
   el.className = 'card';
   el.setAttribute('role', 'button');
   el.setAttribute('tabindex', '0');
   const deadlineInfo = task.deadline ? `, prazo: ${task.deadline}` : '';
-  const colName = COLUMNS.find(col => col.id === task.col_id)?.name || '';
+  const colName = COLUMNS_MAP.get(task.col_id)?.name || '';
   el.setAttribute('aria-label', `Projeto ${task.client}, ${formatPrice(task.price)}${deadlineInfo}, coluna: ${colName}. Use setas esquerda e direita para mover entre colunas, Enter ou Espaço para editar`);
   if (isExpanded) {
     el.classList.add('card-expanded');
@@ -187,6 +221,10 @@ function createCardElement(task, isExpanded = false) {
   el.dataset.deadlineTimestamp = task.deadline_timestamp || '';
   if (task.uptime_status) {
     el.dataset.uptimeStatus = task.uptime_status;
+  }
+
+  if (isTaskUrgent(task, now)) {
+    el.dataset.urgent = 'true';
   }
 
   const formattedPrice = formatPrice(task.price);
@@ -362,7 +400,7 @@ function handleKeyboardMove(e, task, cardElement) {
       renderBoard();
 
       // Announce move to screen readers
-      const colName = COLUMNS.find(col => col.id === newColId)?.name || 'Coluna';
+      const colName = COLUMNS_MAP.get(newColId)?.name || 'Coluna';
       NotificationManager.info(`Projeto ${task.client} movido para ${colName}`, 2000);
 
       // Focus the moved card
@@ -621,7 +659,7 @@ function clearKanbanFilter() {
 }
 
 function showFilterIndicator(columnId) {
-  const column = COLUMNS.find(col => col.id === columnId);
+  const column = COLUMNS_MAP.get(columnId);
   if (!column) return;
 
   let filterIndicator = document.getElementById('filterIndicator');
