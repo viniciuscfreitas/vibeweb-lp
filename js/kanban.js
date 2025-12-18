@@ -127,7 +127,7 @@ function renderBoard() {
       const emptyState = document.createElement('div');
       emptyState.className = 'empty-state';
       emptyState.innerHTML = `
-        <div class="empty-state-icon">📋</div>
+        <div class="empty-state-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div>
         <div class="empty-state-text">Nenhum projeto aqui</div>
         ${col.id === 0 ? '<button class="btn-text empty-state-action" id="emptyStateCreateBtn">Criar primeiro projeto</button>' : ''}
       `;

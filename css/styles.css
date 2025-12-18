@@ -2023,6 +2023,11 @@ html[data-authenticated="true"] #appContainer.hidden {
   font-size: 2rem;
   margin-bottom: 0.75rem;
   opacity: 0.4;
+  color: var(--text-muted);
+}
+
+.empty-state-icon i {
+  color: inherit;
 }
 
 .empty-state-text {
