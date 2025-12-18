@@ -204,49 +204,61 @@ function generateInvoice(taskData) {
       const { jsPDF } = window.jspdf || jspdf;
       const doc = new jsPDF();
 
-      // Configurações
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const margin = 20;
-      let yPos = margin;
+      const layout = {
+        margin: 20,
+        pageWidth: doc.internal.pageSize.getWidth(),
+        pageHeight: doc.internal.pageSize.getHeight(),
+        lineHeight: 7
+      };
+
+      const contentWidth = layout.pageWidth - 2 * layout.margin;
+      const pageBottomThreshold = layout.pageHeight - 30;
+      const footerY = layout.pageHeight - 15;
+
+      const numberFormatter = typeof formatPrice === 'function' ? null : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' });
+      const formatCurrency = (val) => {
+        if (typeof formatPrice === 'function') return formatPrice(val);
+        return numberFormatter.format(val);
+      };
 
       const now = new Date();
       const dateText = `Gerado em: ${now.toLocaleDateString('pt-BR')}`;
       const dateStr = now.toISOString().split('T')[0];
+      let yPos = layout.margin;
 
       // Header
       doc.setFontSize(24);
       doc.setFont('helvetica', 'bold');
-      doc.text('PROPOSTA COMERCIAL', pageWidth / 2, yPos, { align: 'center' });
+      doc.text('PROPOSTA COMERCIAL', layout.pageWidth / 2, yPos, { align: 'center' });
       yPos += 12;
 
       // Linha separadora
       doc.setLineWidth(1);
       doc.setDrawColor(100, 100, 100);
-      doc.line(margin, yPos, pageWidth - margin, yPos);
+      doc.line(layout.margin, yPos, layout.pageWidth - layout.margin, yPos);
       yPos += 12;
 
       // Seção: Informações do Cliente
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(0, 0, 0);
-      doc.text('INFORMAÇÕES DO CLIENTE', margin, yPos);
+      doc.text('INFORMAÇÕES DO CLIENTE', layout.margin, yPos);
       yPos += 8;
 
       // Cliente
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
-      doc.text('Cliente:', margin, yPos);
+      doc.text('Cliente:', layout.margin, yPos);
       doc.setFont('helvetica', 'normal');
-      doc.text(taskData.client || 'N/A', margin + 35, yPos);
+      doc.text(taskData.client || 'N/A', layout.margin + 35, yPos);
       yPos += 7;
 
       // Contato
       if (taskData.contact) {
         doc.setFont('helvetica', 'bold');
-        doc.text('Contato:', margin, yPos);
+        doc.text('Contato:', layout.margin, yPos);
         doc.setFont('helvetica', 'normal');
-        doc.text(taskData.contact, margin + 35, yPos);
+        doc.text(taskData.contact, layout.margin + 35, yPos);
         yPos += 7;
       }
 
@@ -255,34 +267,34 @@ function generateInvoice(taskData) {
       // Seção: Detalhes do Projeto
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
-      doc.text('DETALHES DO PROJETO', margin, yPos);
+      doc.text('DETALHES DO PROJETO', layout.margin, yPos);
       yPos += 8;
 
       // Tipo de Projeto
       if (taskData.type) {
         doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.text('Tipo:', margin, yPos);
+        doc.text('Tipo:', layout.margin, yPos);
         doc.setFont('helvetica', 'normal');
-        doc.text(taskData.type, margin + 35, yPos);
+        doc.text(taskData.type, layout.margin + 35, yPos);
         yPos += 7;
       }
 
       // Stack
       if (taskData.stack) {
         doc.setFont('helvetica', 'bold');
-        doc.text('Stack:', margin, yPos);
+        doc.text('Stack:', layout.margin, yPos);
         doc.setFont('helvetica', 'normal');
-        doc.text(taskData.stack, margin + 35, yPos);
+        doc.text(taskData.stack, layout.margin + 35, yPos);
         yPos += 7;
       }
 
       // Domínio
       if (taskData.domain) {
         doc.setFont('helvetica', 'bold');
-        doc.text('Domínio:', margin, yPos);
+        doc.text('Domínio:', layout.margin, yPos);
         doc.setFont('helvetica', 'normal');
-        doc.text(taskData.domain, margin + 35, yPos);
+        doc.text(taskData.domain, layout.margin + 35, yPos);
         yPos += 7;
       }
 
@@ -291,12 +303,12 @@ function generateInvoice(taskData) {
       // Descrição
       if (taskData.description) {
         doc.setFont('helvetica', 'bold');
-        doc.text('Descrição:', margin, yPos);
+        doc.text('Descrição:', layout.margin, yPos);
         yPos += 7;
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
-        const descriptionLines = doc.splitTextToSize(taskData.description, pageWidth - 2 * margin);
-        doc.text(descriptionLines, margin, yPos);
+        const descriptionLines = doc.splitTextToSize(taskData.description, contentWidth);
+        doc.text(descriptionLines, layout.margin, yPos);
         yPos += descriptionLines.length * 5 + 5;
       }
 
@@ -306,15 +318,15 @@ function generateInvoice(taskData) {
       yPos += 5;
       doc.setLineWidth(1);
       doc.setDrawColor(100, 100, 100);
-      doc.line(margin, yPos, pageWidth - margin, yPos);
+      doc.line(layout.margin, yPos, layout.margin + contentWidth, yPos);
       yPos += 12;
 
       // Preço - Destaque visual
       doc.setFontSize(22);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(0, 0, 0);
-      const priceText = `Valor Total: ${formatPrice(taskData.price || 0)}`;
-      doc.text(priceText, margin, yPos);
+      const priceText = `Valor Total: ${formatCurrency(taskData.price || 0)}`;
+      doc.text(priceText, layout.margin, yPos);
       yPos += 12;
 
       // Status de Pagamento
@@ -322,7 +334,7 @@ function generateInvoice(taskData) {
         doc.setFontSize(11);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(100, 100, 100);
-        doc.text(`Status de Pagamento: ${taskData.payment_status}`, margin, yPos);
+        doc.text(`Status de Pagamento: ${taskData.payment_status}`, layout.margin, yPos);
         yPos += 8;
       }
 
@@ -330,9 +342,9 @@ function generateInvoice(taskData) {
       if (taskData.deadline) {
         doc.setFontSize(12);
         doc.setFont('helvetica', 'bold');
-        doc.text('Prazo:', margin, yPos);
+        doc.text('Prazo:', layout.margin, yPos);
         doc.setFont('helvetica', 'normal');
-        doc.text(taskData.deadline, margin + 30, yPos);
+        doc.text(taskData.deadline, layout.margin + 30, yPos);
         yPos += 10;
       }
 
@@ -340,7 +352,7 @@ function generateInvoice(taskData) {
       if (taskData.hosting === HOSTING_YES) {
         doc.setFontSize(10);
         doc.setFont('helvetica', 'italic');
-        doc.text('Inclui hospedagem: €29/mês', margin, yPos);
+        doc.text('Inclui hospedagem: €29/mês', layout.margin, yPos);
         yPos += 8;
       }
 
@@ -348,42 +360,42 @@ function generateInvoice(taskData) {
       if (taskData.assets_link) {
         yPos += 5;
         let assetsLinks = [];
-        try {
-          const parsed = JSON.parse(taskData.assets_link);
-          if (Array.isArray(parsed)) {
-            assetsLinks = parsed;
+
+        if (Array.isArray(taskData.assets_link)) {
+          assetsLinks = taskData.assets_link;
+        } else if (typeof taskData.assets_link === 'string') {
+          if (taskData.assets_link.trim().startsWith('[') || taskData.assets_link.trim().startsWith('{')) {
+            try {
+              const parsed = JSON.parse(taskData.assets_link);
+              assetsLinks = Array.isArray(parsed) ? parsed : [taskData.assets_link];
+            } catch (e) {
+              assetsLinks = [taskData.assets_link];
+            }
+          } else if (taskData.assets_link.includes('\n')) {
+            assetsLinks = taskData.assets_link.split('\n').filter(link => link.trim());
+          } else if (taskData.assets_link.includes(',')) {
+            assetsLinks = taskData.assets_link.split(',').map(link => link.trim()).filter(link => link);
           } else {
             assetsLinks = [taskData.assets_link];
           }
-        } catch (e) {
-          if (typeof taskData.assets_link === 'string') {
-            if (taskData.assets_link.includes('\n')) {
-              assetsLinks = taskData.assets_link.split('\n').filter(link => link.trim());
-            } else if (taskData.assets_link.includes(',')) {
-              assetsLinks = taskData.assets_link.split(',').map(link => link.trim()).filter(link => link);
-            } else {
-              assetsLinks = [taskData.assets_link];
-            }
-          } else {
-            assetsLinks = [String(taskData.assets_link)];
-          }
+        } else {
+          assetsLinks = [String(taskData.assets_link)];
         }
 
         if (assetsLinks.length > 0) {
           doc.setFontSize(10);
           doc.setFont('helvetica', 'bold');
-          doc.text('Links de Anexos:', margin, yPos);
+          doc.text('Links de Anexos:', layout.margin, yPos);
           yPos += 7;
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(9);
-          const pageBottomThreshold = pageHeight - 30;
           assetsLinks.forEach((link) => {
             if (yPos > pageBottomThreshold) {
               doc.addPage();
-              yPos = margin;
+              yPos = layout.margin;
             }
             const linkText = link.length > 60 ? link.substring(0, 57) + '...' : link;
-            doc.text(linkText, margin + 5, yPos);
+            doc.text(linkText, layout.margin + 5, yPos);
             yPos += 6;
           });
           yPos += 3;
@@ -394,13 +406,12 @@ function generateInvoice(taskData) {
       yPos += 5;
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
-      doc.text(dateText, margin, yPos);
+      doc.text(dateText, layout.margin, yPos);
 
       // Footer
-      const footerY = pageHeight - 15;
       doc.setFontSize(8);
       doc.setFont('helvetica', 'italic');
-      doc.text('VibeWeb OS - Sistema de Gestão de Projetos', pageWidth / 2, footerY, { align: 'center' });
+      doc.text('VibeWeb OS - Sistema de Gestão de Projetos', layout.pageWidth / 2, footerY, { align: 'center' });
 
       // Salvar PDF
       const clientName = (taskData.client || 'projeto')
