@@ -61,14 +61,21 @@
   outline-offset: 2px;
 }
 
+:root {
+  --vh: 1vh;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  height: -webkit-fill-available;
   display: flex;
   overflow: hidden;
   position: relative;
+  touch-action: manipulation;
 }
 
 .hidden {
@@ -155,6 +162,8 @@ body {
   transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 1rem;
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-btn.active {
@@ -244,6 +253,8 @@ body {
   cursor: pointer;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .search-btn:hover {
@@ -317,6 +328,8 @@ body {
   cursor: pointer;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .export-icon-btn:hover {
@@ -372,6 +385,8 @@ body {
   gap: 0.5rem;
   transition: background-color 0.15s;
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary:hover {
@@ -449,6 +464,8 @@ body {
   cursor: pointer;
   user-select: none;
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .card:hover {
@@ -862,6 +879,8 @@ body {
   font-size: 0.875rem;
   transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-text:hover {
@@ -884,6 +903,8 @@ body {
   font-weight: 500;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-secondary:hover {
@@ -901,6 +922,8 @@ body {
   text-transform: uppercase;
   transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-danger:hover {
@@ -1072,6 +1095,8 @@ body {
 .app-container {
   display: flex;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  height: -webkit-fill-available;
   width: 100%;
   opacity: 0;
   transform: translateY(10px);
@@ -1265,6 +1290,8 @@ html[data-authenticated="true"] #appContainer.hidden {
   transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 0.5rem;
   padding: 0.75rem 1.5rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-login-primary:hover {
@@ -2349,10 +2376,12 @@ html[data-authenticated="true"] #appContainer.hidden {
    MOBILE-FIRST STYLES (max-width: 767px)
    ============================================ */
 
-/* Bottom Navigation - Mobile Only */
-.bottom-nav {
-  display: none;
-}
+  /* Bottom Navigation - Mobile Only */
+  .bottom-nav {
+    display: none;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 
 .profile-modal-overlay {
   display: none;
@@ -2373,6 +2402,9 @@ html[data-authenticated="true"] #appContainer.hidden {
     align-items: center;
     justify-content: space-around;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
   }
 
   .bottom-nav-item {
@@ -2388,6 +2420,8 @@ html[data-authenticated="true"] #appContainer.hidden {
     transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     outline: none;
     padding: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .bottom-nav-item i {

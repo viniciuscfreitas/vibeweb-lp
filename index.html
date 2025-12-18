@@ -56,6 +56,20 @@
         return;
       }
 
+      // Fix viewport height for Safari iOS
+      function setViewportHeight() {
+        const height = window.innerHeight || window.visualViewport?.height || 0;
+        if (height > 0) {
+          const vh = height * 0.01;
+          document.documentElement.style.setProperty('--vh', vh + 'px');
+        }
+      }
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', function() {
+        setTimeout(setViewportHeight, 100);
+      });
+
       let styleElement = null;
       let lastMobileState = null;
       let resizeTimeout = null;

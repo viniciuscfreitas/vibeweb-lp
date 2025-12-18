@@ -1,6 +1,14 @@
 // Kanban Board Logic
 // URL_PATTERN is defined in forms.js (loaded before this file)
 
+// Cache iOS Safari detection (doesn't change during session)
+const isIOSSafari = (function() {
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|OPiOS/.test(ua);
+  return isIOS && isSafari;
+})();
+
 function updateHeaderStats() {
   if (!DOM.dashboardContainer || !DOM.financialContainer) return;
 
@@ -104,9 +112,12 @@ function renderBoard() {
     `;
 
     const bodyDiv = colDiv.querySelector('.col-body');
-    bodyDiv.addEventListener('dragover', handleDragOver);
-    bodyDiv.addEventListener('drop', handleDrop);
-    bodyDiv.addEventListener('dragleave', handleDragLeave);
+    // Only enable drag and drop on non-iOS devices (iOS Safari doesn't support drag and drop on touch)
+    if (!isIOSSafari) {
+      bodyDiv.addEventListener('dragover', handleDragOver);
+      bodyDiv.addEventListener('drop', handleDrop);
+      bodyDiv.addEventListener('dragleave', handleDragLeave);
+    }
 
     colTasks.forEach(task => {
       const card = createCardElement(task, hasColumnFilter);
@@ -167,7 +178,10 @@ function createCardElement(task, isExpanded = false) {
   if (isExpanded) {
     el.classList.add('card-expanded');
   }
-  el.draggable = true;
+  // Disable drag on iOS Safari (doesn't support drag and drop on touch)
+  if (!isIOSSafari) {
+    el.draggable = true;
+  }
   el.dataset.id = task.id;
   el.dataset.colId = task.col_id;
   el.dataset.deadlineTimestamp = task.deadline_timestamp || '';
