@@ -28,6 +28,10 @@ const DOM = {
   errorContact: null,
   errorDomain: null,
   errorPrice: null,
+  formProgress: null,
+  formProgressText: null,
+  formAdvancedToggle: null,
+  formAdvancedContent: null,
   statTotalValue: null,
   navButtons: null,
   statsGrid: null,
@@ -112,6 +116,10 @@ const DOM = {
     this.errorContact = document.getElementById('errorContact');
     this.errorDomain = document.getElementById('errorDomain');
     this.errorPrice = document.getElementById('errorPrice');
+    this.formProgress = document.getElementById('formProgress');
+    this.formProgressText = document.getElementById('formProgressText');
+    this.formAdvancedToggle = document.getElementById('formAdvancedToggle');
+    this.formAdvancedContent = document.getElementById('formAdvancedContent');
     this.statTotalValue = document.getElementById('statTotalValue');
     this.navButtons = document.querySelectorAll('.nav-btn');
     this.statsGrid = document.getElementById('statsGrid');

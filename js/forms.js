@@ -18,19 +18,19 @@ function saveFormState() {
   if (!DOM.formClient || !DOM.modalOverlay || !DOM.modalOverlay.classList.contains('open')) return;
 
   const formState = {
-    client: DOM.formClient.value || '',
-    contact: DOM.formContact?.value || '',
+    client: (DOM.formClient?.value || '').trim(),
+    contact: (DOM.formContact?.value || '').trim(),
     type: DOM.formType?.value || '',
-    stack: DOM.formStack?.value || '',
-    domain: DOM.formDomain?.value || '',
-    description: DOM.formDesc?.value || '',
-    price: DOM.formPrice?.value || '',
+    stack: (DOM.formStack?.value || '').trim(),
+    domain: (DOM.formDomain?.value || '').trim(),
+    description: (DOM.formDesc?.value || '').trim(),
+    price: (DOM.formPrice?.value || '').trim(),
     payment: DOM.formPayment?.value || '',
-    deadline: DOM.formDeadline?.value || '',
-    hosting: DOM.formHosting?.value || '',
+    deadline: (DOM.formDeadline?.value || '').trim(),
+    hosting: DOM.formHosting?.checked ? HOSTING_YES : HOSTING_NO,
     recurring: DOM.formRecurring?.checked || false,
     public: DOM.formPublic?.checked || false,
-    assetsLink: DOM.formAssetsLink?.value || ''
+    assetsLink: (DOM.formAssetsLink?.value || '').trim()
   };
 
   const formStateJson = JSON.stringify(formState);
@@ -41,6 +41,7 @@ function saveFormState() {
     sessionStorage.setItem('formDraft', formStateJson);
     lastSavedFormState = formStateJson;
   } else {
+    sessionStorage.removeItem('formDraft');
     lastSavedFormState = null;
   }
 }
@@ -62,7 +63,10 @@ function restoreFormState() {
     if (DOM.formPrice) DOM.formPrice.value = formState.price || '';
     if (DOM.formPayment) DOM.formPayment.value = formState.payment || PAYMENT_STATUS_PENDING;
     if (DOM.formDeadline) DOM.formDeadline.value = formState.deadline || '';
-    if (DOM.formHosting) DOM.formHosting.value = formState.hosting || 'nao';
+    if (DOM.formHosting) {
+      const hostingValue = formState.hosting || HOSTING_NO;
+      DOM.formHosting.checked = hostingValue === HOSTING_YES;
+    }
     if (DOM.formRecurring) DOM.formRecurring.checked = formState.recurring || false;
     if (DOM.formPublic) DOM.formPublic.checked = formState.public || false;
     if (DOM.formAssetsLink) DOM.formAssetsLink.value = formState.assetsLink || '';
@@ -92,7 +96,7 @@ function resetFormToDefaults() {
     { el: DOM.formPrice, prop: 'value', val: '' },
     { el: DOM.formPayment, prop: 'value', val: PAYMENT_STATUS_PENDING },
     { el: DOM.formDeadline, prop: 'value', val: '' },
-    { el: DOM.formHosting, prop: 'value', val: HOSTING_NO },
+    { el: DOM.formHosting, prop: 'checked', val: false },
     { el: DOM.formAssetsLink, prop: 'value', val: '' }
   ];
 
@@ -140,6 +144,11 @@ function openModal(task = null) {
   DOM.modalOverlay.setAttribute('aria-hidden', 'false');
   DOM.modalOverlay.classList.add('open');
 
+  if (DOM.formAdvancedToggle && DOM.formAdvancedContent) {
+    DOM.formAdvancedToggle.setAttribute('aria-expanded', 'false');
+    DOM.formAdvancedContent.setAttribute('aria-hidden', 'true');
+  }
+
   if (isEditingExistingTask) {
     DOM.formClient.value = task?.client || '';
     DOM.formContact.value = task?.contact || '';
@@ -152,7 +161,9 @@ function openModal(task = null) {
     DOM.formDeadline.value = task?.deadline || '';
 
     const hostingValue = task?.hosting || HOSTING_NO;
-    DOM.formHosting.value = hostingValue;
+    if (DOM.formHosting) {
+      DOM.formHosting.checked = hostingValue === HOSTING_YES;
+    }
 
     if (DOM.formRecurring) {
       DOM.formRecurring.checked = task?.is_recurring === 1 || task?.is_recurring === true;
@@ -191,6 +202,9 @@ function openModal(task = null) {
     }
   }, 100);
 
+  setupInlineValidation();
+  setupAdvancedSection();
+  updateFormProgress();
   trapFocusInModal();
   AppState.log('Modal opened', { isEditingExistingTask, taskId: AppState.currentTaskId });
 }
@@ -307,6 +321,220 @@ function clearFormErrors() {
   clearFormError('contact');
   clearFormError('domain');
   clearFormError('price');
+
+  lastProgressText = '';
+  lastValidationState.client = { value: null, isValid: null };
+  lastValidationState.contact = { value: null, isValid: null };
+  lastValidationState.domain = { value: null, isValid: null };
+  lastValidationState.price = { value: null, isValid: null };
+}
+
+const REQUIRED_FIELDS = [
+  { el: () => DOM.formClient, name: 'Cliente' },
+  { el: () => DOM.formType, name: 'Tipo' },
+  { el: () => DOM.formPrice, name: 'Preço' }
+];
+
+let progressUpdateTimeout = null;
+let lastProgressText = '';
+
+function updateFormProgress() {
+  if (!DOM.formProgressText) return;
+
+  if (progressUpdateTimeout) {
+    clearTimeout(progressUpdateTimeout);
+  }
+
+  progressUpdateTimeout = setTimeout(() => {
+    let filledCount = 0;
+    const totalCount = REQUIRED_FIELDS.length;
+
+    for (let i = 0; i < REQUIRED_FIELDS.length; i++) {
+      const field = REQUIRED_FIELDS[i];
+      if (field.el) {
+        const value = field.el.value ? field.el.value.trim() : '';
+        if (value !== '') {
+          filledCount++;
+        }
+      }
+    }
+
+    const newText = `${filledCount} de ${totalCount} campos obrigatórios preenchidos`;
+    if (newText !== lastProgressText) {
+      DOM.formProgressText.textContent = newText;
+      lastProgressText = newText;
+    }
+    progressUpdateTimeout = null;
+  }, 100);
+}
+
+const lastValidationState = {
+  client: { value: null, isValid: null },
+  contact: { value: null, isValid: null },
+  domain: { value: null, isValid: null },
+  price: { value: null, isValid: null }
+};
+
+function validateFieldInline(fieldId, value) {
+  if (value == null) return true;
+
+  const trimmedValue = String(value).trim();
+  const lastState = lastValidationState[fieldId];
+
+  if (lastState && lastState.value === trimmedValue && lastState.isValid !== null) {
+    return lastState.isValid;
+  }
+
+  let isValid = true;
+
+  switch (fieldId) {
+    case 'client':
+      if (!trimmedValue) {
+        showFormError('client', 'Nome do cliente é obrigatório');
+        isValid = false;
+      } else {
+        clearFormError('client');
+      }
+      break;
+
+    case 'contact':
+      if (trimmedValue && !validateContact(trimmedValue)) {
+        showFormError('contact', 'Formato inválido. Use email ou @username');
+        isValid = false;
+      } else {
+        clearFormError('contact');
+      }
+      break;
+
+    case 'domain':
+      if (trimmedValue && !validateDomain(trimmedValue)) {
+        showFormError('domain', 'Formato de URL/domínio inválido');
+        isValid = false;
+      } else {
+        clearFormError('domain');
+      }
+      break;
+
+    case 'price':
+      if (!trimmedValue) {
+        showFormError('price', 'Preço é obrigatório');
+        isValid = false;
+      } else {
+        const price = parseFloat(trimmedValue);
+        if (isNaN(price) || price < 0) {
+          showFormError('price', 'Preço deve ser um número positivo');
+          isValid = false;
+        } else {
+          clearFormError('price');
+        }
+      }
+      break;
+
+    default:
+      return true;
+  }
+
+  lastValidationState[fieldId] = { value: trimmedValue, isValid };
+  return isValid;
+}
+
+let inlineValidationHandlers = {
+  client: { blur: null, input: null },
+  contact: { blur: null, input: null },
+  domain: { blur: null, input: null },
+  price: { blur: null, input: null },
+  type: { change: null }
+};
+
+function setupInlineValidation() {
+  if (DOM.formClient && !inlineValidationHandlers.client.blur) {
+    const blurHandler = () => {
+      validateFieldInline('client', DOM.formClient.value);
+      updateFormProgress();
+    };
+    const inputHandler = () => {
+      if (DOM.formClient.classList.contains('error')) {
+        validateFieldInline('client', DOM.formClient.value);
+      }
+      updateFormProgress();
+    };
+    DOM.formClient.addEventListener('blur', blurHandler);
+    DOM.formClient.addEventListener('input', inputHandler);
+    inlineValidationHandlers.client.blur = blurHandler;
+    inlineValidationHandlers.client.input = inputHandler;
+  }
+
+  if (DOM.formContact && !inlineValidationHandlers.contact.blur) {
+    const blurHandler = () => {
+      validateFieldInline('contact', DOM.formContact.value);
+    };
+    const inputHandler = () => {
+      if (DOM.formContact.classList.contains('error')) {
+        validateFieldInline('contact', DOM.formContact.value);
+      }
+    };
+    DOM.formContact.addEventListener('blur', blurHandler);
+    DOM.formContact.addEventListener('input', inputHandler);
+    inlineValidationHandlers.contact.blur = blurHandler;
+    inlineValidationHandlers.contact.input = inputHandler;
+  }
+
+  if (DOM.formDomain && !inlineValidationHandlers.domain.blur) {
+    const blurHandler = () => {
+      validateFieldInline('domain', DOM.formDomain.value);
+    };
+    const inputHandler = () => {
+      if (DOM.formDomain.classList.contains('error')) {
+        validateFieldInline('domain', DOM.formDomain.value);
+      }
+    };
+    DOM.formDomain.addEventListener('blur', blurHandler);
+    DOM.formDomain.addEventListener('input', inputHandler);
+    inlineValidationHandlers.domain.blur = blurHandler;
+    inlineValidationHandlers.domain.input = inputHandler;
+  }
+
+  if (DOM.formPrice && !inlineValidationHandlers.price.blur) {
+    const blurHandler = () => {
+      validateFieldInline('price', DOM.formPrice.value);
+      updateFormProgress();
+    };
+    const inputHandler = () => {
+      if (DOM.formPrice.classList.contains('error')) {
+        validateFieldInline('price', DOM.formPrice.value);
+      }
+      updateFormProgress();
+    };
+    DOM.formPrice.addEventListener('blur', blurHandler);
+    DOM.formPrice.addEventListener('input', inputHandler);
+    inlineValidationHandlers.price.blur = blurHandler;
+    inlineValidationHandlers.price.input = inputHandler;
+  }
+
+  if (DOM.formType && !inlineValidationHandlers.type.change) {
+    const changeHandler = () => {
+      updateFormProgress();
+    };
+    DOM.formType.addEventListener('change', changeHandler);
+    inlineValidationHandlers.type.change = changeHandler;
+  }
+}
+
+let advancedToggleHandler = null;
+
+function setupAdvancedSection() {
+  if (!DOM.formAdvancedToggle || !DOM.formAdvancedContent) return;
+  if (advancedToggleHandler) return;
+
+  advancedToggleHandler = () => {
+    const isExpanded = DOM.formAdvancedToggle.getAttribute('aria-expanded') === 'true';
+    const newState = !isExpanded;
+
+    DOM.formAdvancedToggle.setAttribute('aria-expanded', newState);
+    DOM.formAdvancedContent.setAttribute('aria-hidden', !newState);
+  };
+
+  DOM.formAdvancedToggle.addEventListener('click', advancedToggleHandler);
 }
 
 function setupPasteHandler() {
@@ -494,10 +722,8 @@ async function saveForm() {
     return;
   }
 
-  if (!DOM.formClient || !DOM.formPrice || !DOM.formContact || !DOM.formType ||
-    !DOM.formStack || !DOM.formDomain || !DOM.formDesc || !DOM.formPayment ||
-    !DOM.formDeadline || !DOM.formHosting) {
-    AppState.log('Form save failed: missing form elements');
+  if (!DOM.formClient || !DOM.formPrice || !DOM.formType) {
+    AppState.log('Form save failed: missing required form elements');
     return;
   }
 
@@ -505,7 +731,7 @@ async function saveForm() {
   const priceValue = DOM.formPrice.value;
   const price = priceValue ? parseFloat(priceValue) : 0;
 
-  const deadlineValue = DOM.formDeadline.value.trim();
+  const deadlineValue = DOM.formDeadline ? DOM.formDeadline.value.trim() : '';
   const deadline = deadlineValue || DEADLINE_UNDEFINED;
 
   // Get save button and disable it
@@ -520,15 +746,15 @@ async function saveForm() {
     const tasks = AppState.getTasks();
     const formData = {
       client: clientName,
-      contact: DOM.formContact.value.trim(),
+      contact: DOM.formContact ? DOM.formContact.value.trim() : '',
       type: DOM.formType.value,
-      stack: DOM.formStack.value.trim(),
-      domain: DOM.formDomain.value.trim(),
-      description: DOM.formDesc.value.trim(),
+      stack: DOM.formStack ? DOM.formStack.value.trim() : '',
+      domain: DOM.formDomain ? DOM.formDomain.value.trim() : '',
+      description: DOM.formDesc ? DOM.formDesc.value.trim() : '',
       price: price,
-      payment_status: DOM.formPayment.value, // Use snake_case consistently
+      payment_status: DOM.formPayment ? DOM.formPayment.value : PAYMENT_STATUS_PENDING,
       deadline: deadline,
-      hosting: DOM.formHosting.value,
+      hosting: DOM.formHosting && DOM.formHosting.checked ? HOSTING_YES : HOSTING_NO,
       is_recurring: DOM.formRecurring && DOM.formRecurring.checked ? 1 : 0,
       public_uuid: DOM.formPublic && DOM.formPublic.checked
         ? (AppState.currentTaskId ? (tasks.find(t => t.id === AppState.currentTaskId)?.public_uuid || generateUUID()) : generateUUID())
