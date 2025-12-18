@@ -395,7 +395,7 @@ body {
 
 .board-container {
   flex: 1;
-  padding: 1rem;
+  padding: 1.5rem;
   overflow-x: auto;
   overflow-y: hidden;
   opacity: 1;
@@ -472,10 +472,6 @@ body {
     min-width: 185px;
   }
 
-  .board-container {
-    padding: 1rem;
-  }
-
   .card {
     padding: 0.75rem;
     min-height: 125px;
@@ -490,10 +486,6 @@ body {
 
   .column {
     min-width: 170px;
-  }
-
-  .board-container {
-    padding: 0.875rem;
   }
 
   .card {
