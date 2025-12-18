@@ -32,6 +32,8 @@ const DOM = {
   formProgressText: null,
   formAdvancedToggle: null,
   formAdvancedContent: null,
+  modalEditBadge: null,
+  modalPreview: null,
   statTotalValue: null,
   navButtons: null,
   statsGrid: null,
@@ -120,6 +122,8 @@ const DOM = {
     this.formProgressText = document.getElementById('formProgressText');
     this.formAdvancedToggle = document.getElementById('formAdvancedToggle');
     this.formAdvancedContent = document.getElementById('formAdvancedContent');
+    this.modalEditBadge = document.getElementById('modalEditBadge');
+    this.modalPreview = document.getElementById('modalPreview');
     this.statTotalValue = document.getElementById('statTotalValue');
     this.navButtons = document.querySelectorAll('.nav-btn');
     this.statsGrid = document.getElementById('statsGrid');

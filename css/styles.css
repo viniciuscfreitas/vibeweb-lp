@@ -1125,6 +1125,14 @@ body {
   outline-offset: 2px;
 }
 
+.btn-delete-visible.hidden {
+  display: none;
+}
+
+.btn-delete-visible:not(.hidden) {
+  display: block;
+}
+
 .nav-container {
   width: 100%;
   display: flex;
@@ -1538,12 +1546,34 @@ html[data-authenticated="true"] #appContainer.hidden {
   font-weight: bold;
   font-family: monospace;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-edit-badge {
+  margin-left: auto;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--primary);
+  color: #ffffff;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .modal-title {
   font-size: 1.25rem;
   font-weight: bold;
   color: var(--text-main);
+}
+
+.modal-preview {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  font-weight: 400;
 }
 
 .close-icon {

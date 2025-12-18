@@ -368,9 +368,12 @@
         <div class="modal-header">
           <div>
             <div class="modal-subtitle">
-              <i class="fa-solid fa-file-invoice"></i> Ficha de OS
+              <i class="fa-solid fa-file-invoice"></i>
+              <span>Ficha de OS</span>
+              <span class="modal-edit-badge hidden" id="modalEditBadge" aria-label="Modo de edição">Editando</span>
             </div>
             <h2 class="modal-title" id="modalTitle">Novo Projeto</h2>
+            <div class="modal-preview hidden" id="modalPreview" role="status" aria-live="polite"></div>
             <p class="sr-only" id="modalDescription">Formulário para criar ou editar projeto. Use Tab para navegar entre campos, Ctrl+Enter para salvar, Esc para cancelar.</p>
           </div>
           <button type="button" class="btn-text" id="btnCloseModal" aria-label="Fechar modal"><i
@@ -484,7 +487,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-danger hidden" id="btnDelete" aria-label="Arquivar projeto">Arquivar</button>
+          <button type="button" class="btn-danger btn-delete-visible" id="btnDelete" aria-label="Arquivar projeto">Arquivar</button>
           <div class="form-actions">
             <button type="button" class="btn-secondary hidden" id="btnGeneratePDF" aria-label="Gerar PDF da proposta">Gerar PDF</button>
             <button type="button" class="btn-text" id="btnCancel"

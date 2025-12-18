@@ -114,7 +114,7 @@ function openModal(task = null) {
   if (!DOM.modalOverlay || !DOM.modalTitle || !DOM.btnDelete) return;
 
   const isEditingExistingTask = !!task;
-  AppState.currentTaskId = isEditingExistingTask ? task.id : null;
+  AppState.currentTaskId = isEditingExistingTask && task?.id ? task.id : null;
   clearFormErrors();
 
   const currentPath = window.location.pathname;
@@ -130,12 +130,23 @@ function openModal(task = null) {
     window.history.pushState({ view: 'projects', taskId: task?.id || 'new' }, '', newPath);
   }
 
-  const modalTitle = isEditingExistingTask ? `Editar #${task.id}` : 'Novo Projeto';
-  const deleteButtonDisplay = isEditingExistingTask ? 'block' : 'none';
+  const modalTitle = isEditingExistingTask
+    ? `Editar: ${task?.client || (task?.id ? `OS #${task.id}` : 'Projeto')}`
+    : 'Novo Projeto';
   const pdfButtonDisplay = isEditingExistingTask ? 'block' : 'none';
 
   DOM.modalTitle.innerText = modalTitle;
-  DOM.btnDelete.style.display = deleteButtonDisplay;
+  if (DOM.modalTitle) {
+    DOM.modalTitle.setAttribute('data-editing', isEditingExistingTask ? 'true' : 'false');
+  }
+
+  if (DOM.modalEditBadge) {
+    DOM.modalEditBadge.classList.toggle('hidden', !isEditingExistingTask);
+  }
+
+  if (DOM.btnDelete) {
+    DOM.btnDelete.classList.toggle('hidden', !isEditingExistingTask);
+  }
   if (DOM.btnGeneratePDF) {
     DOM.btnGeneratePDF.style.display = pdfButtonDisplay;
     DOM.btnGeneratePDF.classList.toggle('hidden', !isEditingExistingTask);
@@ -143,11 +154,6 @@ function openModal(task = null) {
 
   DOM.modalOverlay.setAttribute('aria-hidden', 'false');
   DOM.modalOverlay.classList.add('open');
-
-  if (DOM.formAdvancedToggle && DOM.formAdvancedContent) {
-    DOM.formAdvancedToggle.setAttribute('aria-expanded', 'false');
-    DOM.formAdvancedContent.setAttribute('aria-hidden', 'true');
-  }
 
   if (isEditingExistingTask) {
     DOM.formClient.value = task?.client || '';
@@ -189,24 +195,118 @@ function openModal(task = null) {
       }
       DOM.formAssetsLink.value = assetsDisplay;
     }
+
+    const hasAdvancedData = !!(
+      (task?.stack && typeof task.stack === 'string' && task.stack.trim()) ||
+      (task?.domain && typeof task.domain === 'string' && task.domain.trim()) ||
+      (task?.description && typeof task.description === 'string' && task.description.trim()) ||
+      (task?.deadline && typeof task.deadline === 'string' && task.deadline.trim()) ||
+      task?.payment_status !== PAYMENT_STATUS_PENDING ||
+      task?.hosting === HOSTING_YES ||
+      task?.is_recurring ||
+      task?.public_uuid ||
+      task?.assets_link
+    );
+
+    if (DOM.formAdvancedToggle && DOM.formAdvancedContent && hasAdvancedData) {
+      DOM.formAdvancedToggle.setAttribute('aria-expanded', 'true');
+      DOM.formAdvancedContent.setAttribute('aria-hidden', 'false');
+    } else if (DOM.formAdvancedToggle && DOM.formAdvancedContent) {
+      DOM.formAdvancedToggle.setAttribute('aria-expanded', 'false');
+      DOM.formAdvancedContent.setAttribute('aria-hidden', 'true');
+    }
+
+    if (DOM.modalPreview) {
+      const previewParts = [];
+      if (task?.client) {
+        previewParts.push(`Cliente: ${task.client}`);
+      }
+      if (task?.price !== undefined && task?.price !== null && task?.price !== '') {
+        const priceNum = typeof task.price === 'number' ? task.price : parseFloat(task.price);
+        if (!isNaN(priceNum) && isFinite(priceNum)) {
+          previewParts.push(`Preço: €${priceNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+        } else if (task.price) {
+          previewParts.push(`Preço: €${task.price}`);
+        }
+      }
+      if (task?.type) {
+        previewParts.push(`Tipo: ${task.type}`);
+      }
+
+      if (previewParts.length > 0) {
+        const previewText = previewParts.join(' • ');
+        if (DOM.modalPreview.textContent !== previewText) {
+          DOM.modalPreview.textContent = previewText;
+        }
+        if (DOM.modalPreview.classList.contains('hidden')) {
+          DOM.modalPreview.classList.remove('hidden');
+        }
+      } else {
+        if (!DOM.modalPreview.classList.contains('hidden')) {
+          DOM.modalPreview.classList.add('hidden');
+        }
+      }
+    }
+
+    updateFormProgress();
+
+    setTimeout(() => {
+      const firstEmptyField = findFirstEmptyField();
+      if (firstEmptyField) {
+        firstEmptyField.focus();
+      } else if (DOM.formClient) {
+        DOM.formClient.focus();
+      }
+    }, 100);
   } else {
+    if (DOM.formAdvancedToggle && DOM.formAdvancedContent) {
+      DOM.formAdvancedToggle.setAttribute('aria-expanded', 'false');
+      DOM.formAdvancedContent.setAttribute('aria-hidden', 'true');
+    }
+
+    if (DOM.modalPreview) {
+      DOM.modalPreview.classList.add('hidden');
+    }
+
     const restored = restoreFormState();
     if (!restored) {
       resetFormToDefaults();
     }
-  }
 
-  setTimeout(() => {
-    if (DOM.formClient) {
-      DOM.formClient.focus();
-    }
-  }, 100);
+    setTimeout(() => {
+      if (DOM.formClient) {
+        DOM.formClient.focus();
+      }
+    }, 100);
+  }
 
   setupInlineValidation();
   setupAdvancedSection();
-  updateFormProgress();
+  if (!isEditingExistingTask) {
+    updateFormProgress();
+  }
   trapFocusInModal();
   AppState.log('Modal opened', { isEditingExistingTask, taskId: AppState.currentTaskId });
+}
+
+function findFirstEmptyField() {
+  const fields = [
+    DOM.formClient,
+    DOM.formContact,
+    DOM.formType,
+    DOM.formPrice,
+    DOM.formStack,
+    DOM.formDeadline,
+    DOM.formDomain,
+    DOM.formDesc
+  ];
+
+  for (const field of fields) {
+    if (field && (!field.value || field.value.trim() === '')) {
+      return field;
+    }
+  }
+  return null;
 }
 
 function closeModal() {
