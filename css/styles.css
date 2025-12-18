@@ -1557,6 +1557,32 @@ html[data-authenticated="true"] #appContainer.hidden {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card-clickable {
+  cursor: pointer;
+}
+
+.stat-card-clickable:hover {
+  background-color: var(--bg-main);
+}
+
+.stat-card-clickable:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.stat-card-hint {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card-clickable:hover .stat-card-hint {
+  opacity: 1;
 }
 
 .stat-card-header {
@@ -1604,6 +1630,12 @@ html[data-authenticated="true"] #appContainer.hidden {
   font-family: 'JetBrains Mono', monospace;
 }
 
+.stat-card-value.mrr-primary-value {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+}
+
 .stat-card-change {
   font-size: 0.75rem;
   color: var(--text-muted);
@@ -1645,14 +1677,17 @@ html[data-authenticated="true"] #appContainer.hidden {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   position: relative;
   z-index: 10;
+  padding-bottom: 0.75rem;
 }
 
 .expand-btn {
-  width: 32px;
-  height: 32px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   background-color: var(--bg-main);
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
@@ -1664,6 +1699,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
   outline: none;
   flex-shrink: 0;
+  touch-action: manipulation;
 }
 
 .expand-btn:hover {
@@ -1765,6 +1801,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   color: var(--text-main);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  opacity: 0.8;
 }
 
 .chart-container {
@@ -1829,7 +1866,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   gap: 0.5rem;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--border-subtle);
 }
 
 .chart-legend-item {
@@ -2052,7 +2088,15 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .empty-state-text {
   font-size: 0.875rem;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.empty-state-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
 }
 
 .empty-state-action {
@@ -2081,14 +2125,16 @@ html[data-authenticated="true"] #appContainer.hidden {
 }
 
 .mrr-projection-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-main);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .mrr-projection-gap {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
 }

@@ -2,6 +2,33 @@
 
 let currentChartView = 'history';
 
+const statCardClickHandler = (e) => {
+  const card = e.target.closest('.stat-card-clickable');
+  if (!card) return;
+
+  if (card.id === 'stat-active-jobs') {
+    filterKanbanByActiveJobs();
+  } else if (card.id === 'stat-pending-payments') {
+    filterKanbanByPendingPayments();
+  }
+};
+
+const statCardKeydownHandler = (e) => {
+  const card = e.target.closest('.stat-card-clickable');
+  if (!card) return;
+
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    if (card.id === 'stat-active-jobs') {
+      filterKanbanByActiveJobs();
+    } else if (card.id === 'stat-pending-payments') {
+      filterKanbanByPendingPayments();
+    }
+  }
+};
+
+let lastRenderedStats = null;
+
 function renderDashboardHeader(metrics) {
   if (!DOM.headerInfo || !metrics) return;
 
@@ -12,16 +39,16 @@ function renderDashboardHeader(metrics) {
   DOM.headerInfo.innerHTML = `
     <div class="header-stat">
       <span class="header-stat-label">MRR</span>
-      <span class="header-stat-value" style="color: var(--success);">${formatCurrency(metrics.mrr)}</span>
+      <span class="header-stat-value" style="color: var(--success);">${formatCurrency(metrics.mrr || 0)}</span>
     </div>
     <div class="header-stat" id="mrrProjection" title="Precisa de ${upsellsNeeded} upsells para atingir €10k">
       <span class="header-stat-label">Meta €10k</span>
-      <span class="header-stat-value" id="gapValue" style="color: ${gap > 0 ? 'var(--danger)' : 'var(--success)'};">€${gap.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+      <span class="header-stat-value" id="gapValue" style="color: ${gap > 0 ? 'var(--danger)' : 'var(--success)'};">€${(gap || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
     </div>
-    ${metrics.urgentCount > 0 ? `
+    ${(metrics.urgentCount || 0) > 0 ? `
       <div class="header-stat">
         <span class="header-stat-label">Urgentes</span>
-        <span class="header-stat-value" style="color: var(--danger);">${metrics.urgentCount}</span>
+        <span class="header-stat-value" style="color: var(--danger);">${metrics.urgentCount || 0}</span>
       </div>
     ` : ''}
   `;
@@ -76,51 +103,124 @@ async function renderDashboard() {
   }
 }
 
+let lastMRRValues = null;
+
 function renderMRRCard(metrics) {
   if (!metrics || !DOM.statsGrid) return;
 
-  const mrrPercent10k = Math.min(100, ((metrics.mrr || 0) / TARGET_MRR_10K) * 100);
+  const currentMRR = metrics.mrr || 0;
+  const currentGap = metrics.gap10k || 0;
+  const mrrPercent10k = Math.min(100, (currentMRR / TARGET_MRR_10K) * 100);
 
-  const mrrCard = document.getElementById('mrrCard');
+  const valuesChanged = !lastMRRValues ||
+    lastMRRValues.mrr !== currentMRR ||
+    lastMRRValues.gap !== currentGap;
+
+  let mrrCard = document.getElementById('mrrCard');
   if (!mrrCard) {
     const card = document.createElement('div');
     card.className = 'stat-card';
     card.id = 'mrrCard';
     card.style.gridColumn = 'span 2';
     DOM.statsGrid.insertBefore(card, DOM.statsGrid.firstChild);
+    mrrCard = document.getElementById('mrrCard');
   }
 
-  const card = document.getElementById('mrrCard');
-  card.innerHTML = `
-    <div class="stat-card-header">
-      <span class="stat-card-label">MRR</span>
-      <div class="stat-card-icon success">
-        <i class="fa-solid fa-chart-line"></i>
-      </div>
-    </div>
-    <div class="stat-card-value" style="color: var(--success); font-size: 2rem;">${formatCurrency(metrics.mrr)}</div>
-    <div class="mrr-projection" style="margin-top: 1rem;">
-      <div class="mrr-projection-header">
-        <div class="mrr-projection-label">Meta €10k</div>
-        <div class="mrr-projection-gap">${formatCurrency(metrics.gap10k)}</div>
-      </div>
-      <div class="mrr-projection-bar">
-        <div class="mrr-projection-fill ${mrrPercent10k >= 100 ? 'green' : 'orange'}"
-             style="width: ${mrrPercent10k}%">
+  if (mrrCard && valuesChanged && lastMRRValues) {
+    const valueEl = mrrCard.querySelector('.stat-card-value.mrr-primary-value');
+    const gapEl = mrrCard.querySelector('.mrr-projection-gap');
+    const fillEl = mrrCard.querySelector('.mrr-projection-fill');
+    const fillClass = mrrPercent10k >= 100 ? 'green' : 'orange';
+
+    if (valueEl) {
+      valueEl.textContent = formatCurrency(currentMRR);
+    }
+    if (gapEl) {
+      gapEl.textContent = formatCurrency(currentGap);
+    }
+    if (fillEl) {
+      fillEl.style.width = `${mrrPercent10k}%`;
+      fillEl.className = `mrr-projection-fill ${fillClass}`;
+    }
+
+    lastMRRValues = { mrr: currentMRR, gap: currentGap };
+    return;
+  }
+
+  if (mrrCard && !lastMRRValues) {
+    mrrCard.innerHTML = `
+      <div class="stat-card-header">
+        <span class="stat-card-label">MRR</span>
+        <div class="stat-card-icon success">
+          <i class="fa-solid fa-chart-line"></i>
         </div>
       </div>
-    </div>
-  `;
+      <div class="stat-card-value mrr-primary-value" style="color: var(--success);">${formatCurrency(currentMRR)}</div>
+      <div class="mrr-projection" style="margin-top: 1rem;">
+        <div class="mrr-projection-header">
+          <div class="mrr-projection-label">Meta €10k</div>
+          <div class="mrr-projection-gap">${formatCurrency(currentGap)}</div>
+        </div>
+        <div class="mrr-projection-bar">
+          <div class="mrr-projection-fill ${mrrPercent10k >= 100 ? 'green' : 'orange'}"
+               style="width: ${mrrPercent10k}%">
+          </div>
+        </div>
+      </div>
+    `;
+    lastMRRValues = { mrr: currentMRR, gap: currentGap };
+  }
 }
 
 function renderStatsCards(metrics) {
   if (!metrics || !DOM.statsGrid) return;
 
+  const currentStats = {
+    monthlyRevenue: metrics.monthlyRevenue || 0,
+    activeProjects: metrics.activeProjects || 0,
+    pendingPayments: metrics.pendingPayments || 0
+  };
+
+  const valuesChanged = !lastRenderedStats ||
+    lastRenderedStats.monthlyRevenue !== currentStats.monthlyRevenue ||
+    lastRenderedStats.activeProjects !== currentStats.activeProjects ||
+    lastRenderedStats.pendingPayments !== currentStats.pendingPayments;
+
+  if (!valuesChanged && DOM.statsGrid.children.length > 0) {
+    const faturadoCard = document.getElementById('stat-faturado');
+    const activeJobsCard = document.getElementById('stat-active-jobs');
+    const pendingPaymentsCard = document.getElementById('stat-pending-payments');
+
+    if (faturadoCard) {
+      const valueEl = faturadoCard.querySelector('.stat-card-value');
+      if (valueEl) valueEl.textContent = formatCurrency(currentStats.monthlyRevenue);
+    }
+    if (activeJobsCard) {
+      const valueEl = activeJobsCard.querySelector('.stat-card-value');
+      if (valueEl) valueEl.textContent = currentStats.activeProjects;
+      const ariaLabel = activeJobsCard.getAttribute('aria-label');
+      if (ariaLabel) {
+        activeJobsCard.setAttribute('aria-label', `Jobs Ativos: ${currentStats.activeProjects}. Clique para filtrar.`);
+      }
+    }
+    if (pendingPaymentsCard) {
+      const valueEl = pendingPaymentsCard.querySelector('.stat-card-value');
+      if (valueEl) valueEl.textContent = currentStats.pendingPayments;
+      const ariaLabel = pendingPaymentsCard.getAttribute('aria-label');
+      if (ariaLabel) {
+        pendingPaymentsCard.setAttribute('aria-label', `Pagamentos Pendentes: ${currentStats.pendingPayments}. Clique para filtrar.`);
+      }
+    }
+
+    lastRenderedStats = currentStats;
+    return;
+  }
+
   const stats = [
     {
       id: 'stat-faturado',
       label: 'Faturado',
-      value: formatCurrency(metrics.monthlyRevenue),
+      value: formatCurrency(currentStats.monthlyRevenue),
       icon: 'fa-euro-sign',
       iconClass: 'primary',
       clickable: false
@@ -128,7 +228,7 @@ function renderStatsCards(metrics) {
     {
       id: 'stat-active-jobs',
       label: 'Jobs Ativos',
-      value: metrics.activeProjects,
+      value: currentStats.activeProjects,
       icon: 'fa-layer-group',
       iconClass: 'success',
       clickable: true
@@ -136,46 +236,52 @@ function renderStatsCards(metrics) {
     {
       id: 'stat-pending-payments',
       label: 'Pagamentos Pendentes',
-      value: metrics.pendingPayments,
+      value: currentStats.pendingPayments,
       icon: 'fa-clock',
       iconClass: 'warning',
       clickable: true
     }
   ];
 
-  DOM.statsGrid.innerHTML = stats.map(stat => `
-    <div class="stat-card" id="${stat.id}" ${stat.clickable ? 'role="button" tabindex="0" aria-label="${stat.label}: ${stat.value}. Clique para filtrar." style="cursor: pointer;"' : 'role="region" aria-label="${stat.label}: ${stat.value}"'}>
-      <div class="stat-card-header">
-        <span class="stat-card-label">${stat.label}</span>
-        <div class="stat-card-icon ${stat.iconClass}" aria-hidden="true">
-          <i class="fa-solid ${stat.icon}"></i>
+  const fragment = document.createDocumentFragment();
+  const tempDiv = document.createElement('div');
+
+  tempDiv.innerHTML = stats.map(stat => {
+    const cardClass = `stat-card ${stat.clickable ? 'stat-card-clickable' : ''}`;
+    const cardRole = stat.clickable ? 'role="button" tabindex="0"' : 'role="region"';
+    const cardAriaLabel = stat.clickable
+      ? `aria-label="${stat.label}: ${stat.value}. Clique para filtrar."`
+      : `aria-label="${stat.label}: ${stat.value}"`;
+    const hintHtml = stat.clickable ? '<div class="stat-card-hint">Clique para filtrar</div>' : '';
+
+    return `
+      <div class="${cardClass}" id="${stat.id}" ${cardRole} ${cardAriaLabel}>
+        <div class="stat-card-header">
+          <span class="stat-card-label">${stat.label}</span>
+          <div class="stat-card-icon ${stat.iconClass}" aria-hidden="true">
+            <i class="fa-solid ${stat.icon}"></i>
+          </div>
         </div>
+        <div class="stat-card-value">${stat.value}</div>
+        ${hintHtml}
       </div>
-      <div class="stat-card-value">${stat.value}</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
-  const activeJobsCard = document.getElementById('stat-active-jobs');
-  if (activeJobsCard) {
-    activeJobsCard.addEventListener('click', filterKanbanByActiveJobs);
-    activeJobsCard.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        filterKanbanByActiveJobs();
-      }
-    });
+  while (tempDiv.firstChild) {
+    fragment.appendChild(tempDiv.firstChild);
   }
 
-  const pendingPaymentsCard = document.getElementById('stat-pending-payments');
-  if (pendingPaymentsCard) {
-    pendingPaymentsCard.addEventListener('click', filterKanbanByPendingPayments);
-    pendingPaymentsCard.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        filterKanbanByPendingPayments();
-      }
-    });
+  DOM.statsGrid.innerHTML = '';
+  DOM.statsGrid.appendChild(fragment);
+
+  if (DOM.statsGrid && !DOM.statsGrid._statCardListenersAttached) {
+    DOM.statsGrid.addEventListener('click', statCardClickHandler);
+    DOM.statsGrid.addEventListener('keydown', statCardKeydownHandler);
+    DOM.statsGrid._statCardListenersAttached = true;
   }
+
+  lastRenderedStats = currentStats;
 }
 
 function renderRevenueChart(monthlyRevenueData, view = 'history') {
@@ -183,7 +289,7 @@ function renderRevenueChart(monthlyRevenueData, view = 'history') {
 
   const hasNoData = !monthlyRevenueData || monthlyRevenueData.length === 0;
   if (hasNoData) {
-    DOM.revenueChart.innerHTML = '<div class="empty-state"><div class="empty-state-text">Sem dados</div></div>';
+    DOM.revenueChart.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-chart-line"></i></div><div class="empty-state-text">Sem dados de receita</div><div class="empty-state-subtext">Crie projetos para ver o histórico</div></div>';
     return;
   }
 
@@ -378,6 +484,7 @@ function renderUrgentProjects(urgentProjects) {
       <div class="empty-state">
         <div class="empty-state-icon"><i class="fa-solid fa-check-circle"></i></div>
         <div class="empty-state-text">Nenhum projeto urgente</div>
+        <div class="empty-state-subtext">Tudo em dia! 🎉</div>
       </div>
     `;
     return;
@@ -446,6 +553,7 @@ function renderRecentActivities(activities) {
       <div class="empty-state">
         <div class="empty-state-icon"><i class="fa-solid fa-inbox"></i></div>
         <div class="empty-state-text">Nenhuma atividade recente</div>
+        <div class="empty-state-subtext">As atividades aparecerão aqui</div>
       </div>
     `;
     return;
@@ -541,13 +649,13 @@ function exportDashboardData() {
 
   const csv = [
     'Métrica,Valor',
-    `MRR,€${metrics.mrr.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-    `Meta €10k (Gap),€${Math.max(0, TARGET_MRR_10K - metrics.mrr).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-    `Upsells Necessários,${Math.ceil(Math.max(0, TARGET_MRR_10K - metrics.mrr) / getSettings().hostingPrice)}`,
-    `Receita do Mês,€${monthlyRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-    `Ticket Médio,€${averageTicket.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-    `Total Faturado,€${totalRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-    `Projetos Urgentes,${metrics.urgentCount}`,
+    `MRR,€${(metrics.mrr || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    `Meta €10k (Gap),€${Math.max(0, TARGET_MRR_10K - (metrics.mrr || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    `Upsells Necessários,${Math.ceil(Math.max(0, TARGET_MRR_10K - (metrics.mrr || 0)) / getSettings().hostingPrice)}`,
+    `Receita do Mês,€${(monthlyRevenue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    `Ticket Médio,€${(averageTicket || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    `Total Faturado,€${(totalRevenue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    `Projetos Urgentes,${metrics.urgentCount || 0}`,
     `Descoberta,${discoveryCount}`,
     `Acordo,${agreementCount}`,
     `Build,${buildCount}`,
