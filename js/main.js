@@ -532,7 +532,6 @@ function switchToFinancial() {
     DOM.dashboardContainer.classList.add('hidden');
     DOM.financialContainer.classList.remove('hidden');
     DOM.financialContainer.classList.add('active');
-    DOM.financialContainer.style.display = 'block';
 
     fadeContainer(DOM.financialContainer, true);
     resetFinancialRenderState();
@@ -723,12 +722,10 @@ function updateViewVisibility(state) {
   if (state.isFinancial) {
     DOM.financialContainer.classList.remove('hidden');
     DOM.financialContainer.classList.add('active');
-    DOM.financialContainer.style.display = 'block';
     fadeContainer(DOM.financialContainer, true);
   } else {
     DOM.financialContainer.classList.remove('active');
     DOM.financialContainer.classList.add('hidden');
-    DOM.financialContainer.style.display = '';
   }
 
   if (state.isProjects) {

@@ -73,6 +73,7 @@ function calculateFinancialMetrics(tasks) {
 
 let financialSearchState = {
   tasks: [],
+  sortedTasks: null,
   timeout: null,
   lastRenderHash: null,
   isRendered: false,
@@ -95,6 +96,7 @@ function resetFinancialRenderState() {
   financialSearchState.lastRenderHash = null;
   financialSearchState.isRendered = false;
   financialSearchState.gridElement = null;
+  financialSearchState.sortedTasks = null;
 }
 
 function handleFinancialSearch() {
@@ -121,19 +123,21 @@ function filterAndRenderProjects(searchTerm) {
   let filteredTasks = financialSearchState.tasks;
 
   if (hasSearchTerm) {
+    const searchLower = searchTerm.toLowerCase();
     filteredTasks = financialSearchState.tasks.filter(task => {
       const client = (task.client || '').toLowerCase();
       const contact = (task.contact || '').toLowerCase();
       const type = (task.type || '').toLowerCase();
       const description = (task.description || '').toLowerCase();
 
-      return client.includes(searchTerm) ||
-        contact.includes(searchTerm) ||
-        type.includes(searchTerm) ||
-        description.includes(searchTerm);
+      return client.includes(searchLower) ||
+        contact.includes(searchLower) ||
+        type.includes(searchLower) ||
+        description.includes(searchLower);
     });
   }
 
+  financialSearchState.sortedTasks = null;
   renderProjectsTable(filteredTasks, hasSearchTerm);
 }
 
@@ -148,7 +152,6 @@ function renderFinancial() {
     }
     DOM.financialContainer.classList.remove('hidden');
     DOM.financialContainer.classList.add('active');
-    DOM.financialContainer.style.display = 'block';
     DOM.financialContainer.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">Nenhum projeto cadastrado</div>';
     financialSearchState.tasks = [];
     financialSearchState.isRendered = true;
@@ -157,16 +160,12 @@ function renderFinancial() {
     return;
   }
 
-  let taskDataHash = '';
-  for (let i = 0; i < tasks.length; i++) {
-    const t = tasks[i];
-    if (i > 0) taskDataHash += '|';
-    taskDataHash += `${t.id}:${t.price || 0}:${t.payment_status || ''}:${t.hosting || ''}:${t.col_id || ''}`;
-  }
-  const tasksHash = tasks.length + '-' + taskDataHash;
+  const tasksHash = tasks.length + '-' + tasks.map(t =>
+    `${t.id}:${t.price || 0}:${t.payment_status || ''}:${t.hosting || ''}:${t.col_id || ''}`
+  ).join('|');
 
   if (financialSearchState.isRendered && financialSearchState.lastRenderHash === tasksHash) {
-    if (!financialSearchState.gridElement) {
+    if (!financialSearchState.gridElement && DOM.financialContainer) {
       financialSearchState.gridElement = DOM.financialContainer.querySelector('.financial-grid');
     }
     if (financialSearchState.gridElement) {
@@ -176,12 +175,12 @@ function renderFinancial() {
 
   DOM.financialContainer.classList.remove('hidden');
   DOM.financialContainer.classList.add('active');
-  DOM.financialContainer.style.display = 'block';
 
   financialSearchState.lastRenderHash = tasksHash;
   financialSearchState.isRendered = true;
   financialSearchState.gridElement = null;
   financialSearchState.tasks = tasks;
+  financialSearchState.sortedTasks = null;
 
   if (financialSearchState.timeout) {
     clearTimeout(financialSearchState.timeout);
@@ -275,7 +274,9 @@ function renderFinancial() {
 
   setTimeout(() => {
     renderProjectsTable(tasks);
-    financialSearchState.gridElement = DOM.financialContainer.querySelector('.financial-grid');
+    if (DOM.financialContainer) {
+      financialSearchState.gridElement = DOM.financialContainer.querySelector('.financial-grid');
+    }
   }, FINANCIAL_RENDER_DELAY_MS);
 }
 

@@ -156,7 +156,7 @@ function renderMRRCard(metrics) {
         </div>
       </div>
       <div class="stat-card-value mrr-primary-value" style="color: var(--success);">${formatCurrency(currentMRR)}</div>
-      <div class="mrr-projection" style="margin-top: 1rem;">
+      <div class="mrr-projection" style="margin-top: 0.5rem;">
         <div class="mrr-projection-header">
           <div class="mrr-projection-label">Meta €10k</div>
           <div class="mrr-projection-gap">${formatCurrency(currentGap)}</div>
