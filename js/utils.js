@@ -193,129 +193,228 @@ function normalizeTasksData(tasks) {
 }
 
 function generateInvoice(taskData) {
-  // Verificar se jsPDF está disponível
-  if (typeof window.jspdf === 'undefined' && typeof jspdf === 'undefined') {
-    NotificationManager.error('Biblioteca jsPDF não carregada. Recarregue a página.');
-    return;
-  }
-
-  try {
-    const { jsPDF } = window.jspdf || jspdf;
-    const doc = new jsPDF();
-
-    // Configurações
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 20;
-    let yPos = margin;
-
-    // Header
-    doc.setFontSize(20);
-    doc.setFont('helvetica', 'bold');
-    doc.text('PROPOSTA COMERCIAL', pageWidth / 2, yPos, { align: 'center' });
-    yPos += 15;
-
-    // Linha separadora
-    doc.setLineWidth(0.5);
-    doc.line(margin, yPos, pageWidth - margin, yPos);
-    yPos += 10;
-
-    // Cliente
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Cliente:', margin, yPos);
-    doc.setFont('helvetica', 'normal');
-    doc.text(taskData.client || 'N/A', margin + 30, yPos);
-    yPos += 10;
-
-    // Tipo de Projeto
-    if (taskData.type) {
-      doc.setFont('helvetica', 'bold');
-      doc.text('Tipo:', margin, yPos);
-      doc.setFont('helvetica', 'normal');
-      doc.text(taskData.type, margin + 30, yPos);
-      yPos += 10;
+  return new Promise((resolve, reject) => {
+    if (typeof window.jspdf === 'undefined' && typeof jspdf === 'undefined') {
+      NotificationManager.error('Biblioteca jsPDF não carregada. Recarregue a página.');
+      reject(new Error('jsPDF not loaded'));
+      return;
     }
 
-    // Stack
-    if (taskData.stack) {
+    try {
+      const { jsPDF } = window.jspdf || jspdf;
+      const doc = new jsPDF();
+
+      // Configurações
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 20;
+      let yPos = margin;
+
+      const now = new Date();
+      const dateText = `Gerado em: ${now.toLocaleDateString('pt-BR')}`;
+      const dateStr = now.toISOString().split('T')[0];
+
+      // Header
+      doc.setFontSize(24);
       doc.setFont('helvetica', 'bold');
-      doc.text('Stack:', margin, yPos);
-      doc.setFont('helvetica', 'normal');
-      doc.text(taskData.stack, margin + 30, yPos);
-      yPos += 10;
-    }
+      doc.text('PROPOSTA COMERCIAL', pageWidth / 2, yPos, { align: 'center' });
+      yPos += 12;
 
-    // Domínio
-    if (taskData.domain) {
-      doc.setFont('helvetica', 'bold');
-      doc.text('Domínio:', margin, yPos);
-      doc.setFont('helvetica', 'normal');
-      doc.text(taskData.domain, margin + 30, yPos);
-      yPos += 10;
-    }
+      // Linha separadora
+      doc.setLineWidth(1);
+      doc.setDrawColor(100, 100, 100);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 12;
 
-    yPos += 5;
-
-    // Descrição
-    if (taskData.description) {
-      doc.setFont('helvetica', 'bold');
-      doc.text('Descrição:', margin, yPos);
-      yPos += 7;
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      const descriptionLines = doc.splitTextToSize(taskData.description, pageWidth - 2 * margin);
-      doc.text(descriptionLines, margin, yPos);
-      yPos += descriptionLines.length * 5 + 5;
-    }
-
-    yPos += 5;
-
-    // Linha separadora antes do preço
-    doc.setLineWidth(0.5);
-    doc.line(margin, yPos, pageWidth - margin, yPos);
-    yPos += 10;
-
-    // Preço
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    const priceText = `Valor: ${formatPrice(taskData.price || 0)}`;
-    doc.text(priceText, margin, yPos);
-    yPos += 10;
-
-    // Status de Pagamento
-    if (taskData.payment_status) {
+      // Seção: Informações do Cliente
       doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0, 0, 0);
+      doc.text('INFORMAÇÕES DO CLIENTE', margin, yPos);
+      yPos += 8;
+
+      // Cliente
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Cliente:', margin, yPos);
       doc.setFont('helvetica', 'normal');
-      doc.text(`Status: ${taskData.payment_status}`, margin, yPos);
-      yPos += 8;
-    }
+      doc.text(taskData.client || 'N/A', margin + 35, yPos);
+      yPos += 7;
 
-    // Hosting
-    if (taskData.hosting === HOSTING_YES) {
-      doc.setFontSize(10);
+      // Contato
+      if (taskData.contact) {
+        doc.setFont('helvetica', 'bold');
+        doc.text('Contato:', margin, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(taskData.contact, margin + 35, yPos);
+        yPos += 7;
+      }
+
+      yPos += 5;
+
+      // Seção: Detalhes do Projeto
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.text('DETALHES DO PROJETO', margin, yPos);
+      yPos += 8;
+
+      // Tipo de Projeto
+      if (taskData.type) {
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Tipo:', margin, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(taskData.type, margin + 35, yPos);
+        yPos += 7;
+      }
+
+      // Stack
+      if (taskData.stack) {
+        doc.setFont('helvetica', 'bold');
+        doc.text('Stack:', margin, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(taskData.stack, margin + 35, yPos);
+        yPos += 7;
+      }
+
+      // Domínio
+      if (taskData.domain) {
+        doc.setFont('helvetica', 'bold');
+        doc.text('Domínio:', margin, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(taskData.domain, margin + 35, yPos);
+        yPos += 7;
+      }
+
+      yPos += 5;
+
+      // Descrição
+      if (taskData.description) {
+        doc.setFont('helvetica', 'bold');
+        doc.text('Descrição:', margin, yPos);
+        yPos += 7;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        const descriptionLines = doc.splitTextToSize(taskData.description, pageWidth - 2 * margin);
+        doc.text(descriptionLines, margin, yPos);
+        yPos += descriptionLines.length * 5 + 5;
+      }
+
+      yPos += 5;
+
+      // Linha separadora antes do preço
+      yPos += 5;
+      doc.setLineWidth(1);
+      doc.setDrawColor(100, 100, 100);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 12;
+
+      // Preço - Destaque visual
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0, 0, 0);
+      const priceText = `Valor Total: ${formatPrice(taskData.price || 0)}`;
+      doc.text(priceText, margin, yPos);
+      yPos += 12;
+
+      // Status de Pagamento
+      if (taskData.payment_status) {
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Status de Pagamento: ${taskData.payment_status}`, margin, yPos);
+        yPos += 8;
+      }
+
+      // Prazo
+      if (taskData.deadline) {
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Prazo:', margin, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(taskData.deadline, margin + 30, yPos);
+        yPos += 10;
+      }
+
+      // Hosting
+      if (taskData.hosting === HOSTING_YES) {
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'italic');
+        doc.text('Inclui hospedagem: €29/mês', margin, yPos);
+        yPos += 8;
+      }
+
+      // Links de Anexos
+      if (taskData.assets_link) {
+        yPos += 5;
+        let assetsLinks = [];
+        try {
+          const parsed = JSON.parse(taskData.assets_link);
+          if (Array.isArray(parsed)) {
+            assetsLinks = parsed;
+          } else {
+            assetsLinks = [taskData.assets_link];
+          }
+        } catch (e) {
+          if (typeof taskData.assets_link === 'string') {
+            if (taskData.assets_link.includes('\n')) {
+              assetsLinks = taskData.assets_link.split('\n').filter(link => link.trim());
+            } else if (taskData.assets_link.includes(',')) {
+              assetsLinks = taskData.assets_link.split(',').map(link => link.trim()).filter(link => link);
+            } else {
+              assetsLinks = [taskData.assets_link];
+            }
+          } else {
+            assetsLinks = [String(taskData.assets_link)];
+          }
+        }
+
+        if (assetsLinks.length > 0) {
+          doc.setFontSize(10);
+          doc.setFont('helvetica', 'bold');
+          doc.text('Links de Anexos:', margin, yPos);
+          yPos += 7;
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          const pageBottomThreshold = pageHeight - 30;
+          assetsLinks.forEach((link) => {
+            if (yPos > pageBottomThreshold) {
+              doc.addPage();
+              yPos = margin;
+            }
+            const linkText = link.length > 60 ? link.substring(0, 57) + '...' : link;
+            doc.text(linkText, margin + 5, yPos);
+            yPos += 6;
+          });
+          yPos += 3;
+        }
+      }
+
+      // Data
+      yPos += 5;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(dateText, margin, yPos);
+
+      // Footer
+      const footerY = pageHeight - 15;
+      doc.setFontSize(8);
       doc.setFont('helvetica', 'italic');
-      doc.text('Inclui hospedagem: €29/mês', margin, yPos);
-      yPos += 8;
-    }
+      doc.text('VibeWeb OS - Sistema de Gestão de Projetos', pageWidth / 2, footerY, { align: 'center' });
 
-    // Data
-    yPos += 5;
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    const dateText = `Gerado em: ${new Date().toLocaleDateString('pt-BR')}`;
-    doc.text(dateText, margin, yPos);
+      // Salvar PDF
+      const clientName = (taskData.client || 'projeto')
+        .replace(/[^a-z0-9\s]/gi, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+      const filename = `proposta-${clientName}-${dateStr}.pdf`;
 
-    // Footer
-    const footerY = doc.internal.pageSize.getHeight() - 15;
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'italic');
-    doc.text('VibeWeb OS - Sistema de Gestão de Projetos', pageWidth / 2, footerY, { align: 'center' });
-
-    // Salvar PDF
-    const filename = `proposta-${(taskData.client || 'projeto').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`;
-    doc.save(filename);
+      doc.save(filename);
+      resolve();
   } catch (error) {
     console.error('[PDF Generator] Erro ao gerar PDF:', error);
-    NotificationManager.error('Erro ao gerar PDF. Tente novamente.');
+    reject(error);
   }
+  });
 }

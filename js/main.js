@@ -1124,7 +1124,7 @@ function setupEventListeners() {
   }
 
   if (DOM.btnGeneratePDF) {
-    DOM.btnGeneratePDF.addEventListener('click', (e) => {
+    DOM.btnGeneratePDF.addEventListener('click', async (e) => {
       e.preventDefault();
       e.stopPropagation();
       const currentTaskId = AppState.currentTaskId;
@@ -1132,7 +1132,19 @@ function setupEventListeners() {
         const tasks = AppState.getTasks();
         const currentTask = tasks.find(t => t.id === currentTaskId);
         if (currentTask) {
-          generateInvoice(currentTask);
+          const originalHTML = DOM.btnGeneratePDF.innerHTML;
+          DOM.btnGeneratePDF.disabled = true;
+          DOM.btnGeneratePDF.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Gerando PDF...';
+
+          try {
+            await generateInvoice(currentTask);
+            NotificationManager.success('PDF gerado com sucesso!');
+          } catch (error) {
+            NotificationManager.error('Erro ao gerar PDF. Tente novamente.');
+          } finally {
+            DOM.btnGeneratePDF.disabled = false;
+            DOM.btnGeneratePDF.innerHTML = originalHTML;
+          }
         }
       }
     });

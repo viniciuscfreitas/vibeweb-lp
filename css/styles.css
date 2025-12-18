@@ -1102,6 +1102,25 @@ body {
   background-color: var(--bg-shell);
 }
 
+.btn-generate-pdf {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn-generate-pdf:hover {
+  background-color: var(--danger);
+  color: #ffffff;
+  border-color: var(--danger);
+}
+
+.btn-generate-pdf:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-danger {
   background: none;
   border: none;
