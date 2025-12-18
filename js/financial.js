@@ -246,6 +246,9 @@ async function quickUpdatePaymentStatus(taskId, newStatus, e) {
 
     const updatedTaskFromServer = await api.updateTask(taskId, {
       client: task.client,
+      price: task.price,
+      col_id: task.col_id,
+      order_position: task.order_position || 0,
       payment_status: newStatus
     });
 
