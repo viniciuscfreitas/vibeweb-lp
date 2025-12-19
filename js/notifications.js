@@ -116,8 +116,8 @@ const NotificationManager = {
     notification.className = `notification notification-${type}`;
     notification.setAttribute('role', 'alert');
 
-    // Get user initials for fallback
-    const getInitials = (name) => {
+    // Use existing getInitials function (from auth.js or calculations.js)
+    const getInitialsFunc = typeof getInitials === 'function' ? getInitials : (name) => {
       if (!name) return '?';
       const parts = name.trim().split(/\s+/);
       if (parts.length >= 2) {
@@ -126,14 +126,14 @@ const NotificationManager = {
       return name.substring(0, 2).toUpperCase();
     };
 
-    const userInitials = userName ? getInitials(userName) : '?';
+    const userInitials = userName ? getInitialsFunc(userName) : '?';
     const escapedUserName = this.escapeHtml(userName || 'Usuário');
     const escapedMessage = this.escapeHtml(message);
     
-    // Format avatar URL if needed
+    // Format avatar URL if needed - use existing getApiBaseUrl from utils.js
     let avatarUrl = userAvatarUrl;
     if (avatarUrl && !avatarUrl.startsWith('http')) {
-      const apiBaseUrl = (() => {
+      const apiBaseUrl = typeof getApiBaseUrl === 'function' ? getApiBaseUrl() : (() => {
         const isLocalhost = window.location.hostname === 'localhost' ||
                           window.location.hostname === '127.0.0.1' ||
                           window.location.hostname === '';
@@ -142,9 +142,19 @@ const NotificationManager = {
       avatarUrl = `${apiBaseUrl}${avatarUrl}`;
     }
 
-    const userBadgeHtml = avatarUrl
-      ? `<div class="notification-user-badge" title="${escapedUserName}" style="background-image: url('${this.escapeHtml(avatarUrl)}'); background-size: cover; background-position: center; background-color: transparent; color: transparent;">${this.escapeHtml(userInitials)}</div>`
-      : `<div class="notification-user-badge" title="${escapedUserName}">${this.escapeHtml(userInitials)}</div>`;
+    // Sanitize avatar URL for CSS - escape single quotes and parentheses
+    const sanitizeCssUrl = (url) => {
+      if (!url) return '';
+      // Escape single quotes and parentheses that could break CSS
+      return url.replace(/'/g, "\\'").replace(/\)/g, '\\)');
+    };
+
+    const sanitizedAvatarUrl = avatarUrl ? sanitizeCssUrl(avatarUrl) : null;
+    const escapedInitials = this.escapeHtml(userInitials);
+
+    const userBadgeHtml = sanitizedAvatarUrl
+      ? `<div class="notification-user-badge" title="${escapedUserName}" style="background-image: url('${sanitizedAvatarUrl}'); background-size: cover; background-position: center; background-color: transparent; color: transparent;">${escapedInitials}</div>`
+      : `<div class="notification-user-badge" title="${escapedUserName}">${escapedInitials}</div>`;
 
     notification.innerHTML = `
       <div class="notification-content">

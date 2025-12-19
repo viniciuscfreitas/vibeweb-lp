@@ -424,7 +424,9 @@ function handleTaskCreated(data) {
   AppState.log('Task created via WebSocket', { taskId: data.task.id });
 
   // Show notification if from another user
-  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
+      typeof NotificationManager !== 'undefined' && 
+      typeof NotificationManager.showUserActivity === 'function') {
     NotificationManager.showUserActivity(
       `Criou projeto ${data.task.client || 'novo'}`,
       data.userName,
@@ -469,7 +471,9 @@ function handleTaskUpdated(data) {
   AppState.log('Task updated via WebSocket', { taskId: data.task.id });
 
   // Show notification if from another user
-  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
+      typeof NotificationManager !== 'undefined' && 
+      typeof NotificationManager.showUserActivity === 'function') {
     NotificationManager.showUserActivity(
       `Editou projeto ${data.task.client || 'projeto'}`,
       data.userName,
@@ -513,7 +517,9 @@ function handleTaskDeleted(data) {
   AppState.log('Task deleted via WebSocket', { taskId: data.taskId });
 
   // Show notification if from another user
-  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
+      typeof NotificationManager !== 'undefined' && 
+      typeof NotificationManager.showUserActivity === 'function') {
     NotificationManager.showUserActivity(
       'Deletou um projeto',
       data.userName,
@@ -582,7 +588,9 @@ function handleTaskMoved(data) {
   AppState.log('Task moved via WebSocket', { taskId: data.task.id });
 
   // Show notification if from another user
-  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
+      typeof NotificationManager !== 'undefined' && 
+      typeof NotificationManager.showUserActivity === 'function') {
     const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
     const fromColName = colNames[oldCol] || oldCol;
     const toColName = colNames[normalizedTask.col_id] || normalizedTask.col_id;
