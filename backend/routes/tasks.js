@@ -387,13 +387,14 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
                     task,
                     userId: req.user.id,
                     userName: userInfo?.name || null,
-                    userAvatarUrl: userInfo?.avatarUrl || null
+                    userAvatarUrl: userInfo?.avatarUrl || null,
+                    actionDescription: `Criou projeto ${clientSanitized}`
                   };
                   if (NODE_ENV === 'development') {
-                    console.log('[WebSocket] 📤 Emitting task:created', { 
-                      taskId: task.id, 
-                      client: task.client, 
-                      userId: req.user.id 
+                    console.log('[WebSocket] 📤 Emitting task:created', {
+                      taskId: task.id,
+                      client: task.client,
+                      userId: req.user.id
                     });
                   }
                   io.emit('task:created', emitData);
@@ -572,21 +573,52 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
               updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
             };
 
-            // Log activity - detect what changed
+            // Log activity - detect what changed with specific descriptions
             const changes = [];
-            if (existing.client !== clientSanitized) changes.push(`cliente: ${existing.client} → ${clientSanitized}`);
+            const newPaymentStatus = payment_status || existing.payment_status;
+
+            if (existing.client !== clientSanitized) {
+              changes.push(`alterou cliente de "${existing.client}" para "${clientSanitized}"`);
+            }
             if (existing.col_id !== colIdNum) {
               const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
-              changes.push(`status: ${colNames[existing.col_id] || existing.col_id} → ${colNames[colIdNum] || colIdNum}`);
+              changes.push(`moveu de ${colNames[existing.col_id] || existing.col_id} para ${colNames[colIdNum] || colIdNum}`);
             }
-            if (existing.price !== priceNum) changes.push(`preço: €${existing.price} → €${priceNum}`);
-            if (existing.payment_status !== (payment_status || existing.payment_status)) {
-              changes.push(`pagamento: ${existing.payment_status} → ${payment_status || existing.payment_status}`);
+            if (existing.price !== priceNum) {
+              changes.push(`alterou preço de €${existing.price} para €${priceNum}`);
+            }
+            if (existing.payment_status !== newPaymentStatus) {
+              if (newPaymentStatus === 'Pago') {
+                changes.push('marcou como pago');
+              } else if (existing.payment_status === 'Pago' && newPaymentStatus !== 'Pago') {
+                changes.push('desfez marcação de pago');
+              } else {
+                changes.push(`alterou status de pagamento de "${existing.payment_status}" para "${newPaymentStatus}"`);
+              }
+            }
+            if (existing.contact !== contactSanitized) {
+              changes.push(`alterou contato de "${existing.contact || 'sem contato'}" para "${contactSanitized || 'sem contato'}"`);
+            }
+            if (existing.domain !== domainSanitized) {
+              changes.push(`alterou domínio de "${existing.domain || 'sem domínio'}" para "${domainSanitized || 'sem domínio'}"`);
+            }
+            if (existing.deadline !== deadline) {
+              if (deadline) {
+                changes.push(`definiu prazo: ${deadline}`);
+              } else if (existing.deadline) {
+                changes.push('removeu prazo');
+              }
             }
 
-            const actionDescription = changes.length > 0
-              ? `Editou projeto ${clientSanitized}: ${changes.join(', ')}`
-              : `Editou projeto ${clientSanitized}`;
+            // Create specific action description
+            let actionDescription;
+            if (changes.length === 0) {
+              actionDescription = `Editou projeto ${clientSanitized}`;
+            } else if (changes.length === 1) {
+              actionDescription = `${changes[0]} em ${clientSanitized}`;
+            } else {
+              actionDescription = `${changes.join(', ')} em ${clientSanitized}`;
+            }
 
             setImmediate(() => {
               logActivity(
@@ -596,7 +628,7 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
                 'update',
                 actionDescription,
                 { client: existing.client, col_id: existing.col_id, price: existing.price, payment_status: existing.payment_status },
-                { client: clientSanitized, col_id: colIdNum, price: priceNum, payment_status: payment_status || existing.payment_status }
+                { client: clientSanitized, col_id: colIdNum, price: priceNum, payment_status: newPaymentStatus }
               );
 
               if (io) {
@@ -605,13 +637,14 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
                     task,
                     userId: req.user.id,
                     userName: userInfo?.name || null,
-                    userAvatarUrl: userInfo?.avatarUrl || null
+                    userAvatarUrl: userInfo?.avatarUrl || null,
+                    actionDescription: actionDescription
                   };
                   if (NODE_ENV === 'development') {
-                    console.log('[WebSocket] 📤 Emitting task:updated', { 
-                      taskId: task.id, 
-                      client: task.client, 
-                      userId: req.user.id 
+                    console.log('[WebSocket] 📤 Emitting task:updated', {
+                      taskId: task.id,
+                      client: task.client,
+                      userId: req.user.id
                     });
                   }
                   io.emit('task:updated', emitData);
@@ -684,11 +717,13 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
 
                 if (io) {
                   getUserInfoForNotification(req.user.id, (err, userInfo) => {
+                    const taskClient = taskData?.client || `ID ${taskId}`;
                     const emitData = {
                       taskId,
                       userId: req.user.id,
                       userName: userInfo?.name || null,
-                      userAvatarUrl: userInfo?.avatarUrl || null
+                      userAvatarUrl: userInfo?.avatarUrl || null,
+                      actionDescription: `Deletou projeto ${taskClient}`
                     };
                     if (NODE_ENV === 'development') {
                       console.log('[WebSocket] 📤 Emitting task:deleted', { 
@@ -799,12 +834,12 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
                     userAvatarUrl: userInfo?.avatarUrl || null
                   };
                   if (NODE_ENV === 'development') {
-                    console.log('[WebSocket] 📤 Emitting task:moved', { 
-                      taskId: updatedTask.id, 
+                    console.log('[WebSocket] 📤 Emitting task:moved', {
+                      taskId: updatedTask.id,
                       client: updatedTask.client,
                       fromCol: task.col_id,
                       toCol: colIdNum,
-                      userId: req.user.id 
+                      userId: req.user.id
                     });
                   }
                   io.emit('task:moved', emitData);

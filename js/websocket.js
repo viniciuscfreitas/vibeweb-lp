@@ -427,8 +427,9 @@ function handleTaskCreated(data) {
   if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
       typeof NotificationManager !== 'undefined' && 
       typeof NotificationManager.showUserActivity === 'function') {
+    const message = data.actionDescription || `Criou projeto ${data.task.client || 'novo'}`;
     NotificationManager.showUserActivity(
-      `Criou projeto ${data.task.client || 'novo'}`,
+      message,
       data.userName,
       data.userAvatarUrl,
       'success'
@@ -474,8 +475,9 @@ function handleTaskUpdated(data) {
   if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
       typeof NotificationManager !== 'undefined' && 
       typeof NotificationManager.showUserActivity === 'function') {
+    const message = data.actionDescription || `Editou projeto ${data.task.client || 'projeto'}`;
     NotificationManager.showUserActivity(
-      `Editou projeto ${data.task.client || 'projeto'}`,
+      message,
       data.userName,
       data.userAvatarUrl,
       'info'
@@ -520,8 +522,9 @@ function handleTaskDeleted(data) {
   if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
       typeof NotificationManager !== 'undefined' && 
       typeof NotificationManager.showUserActivity === 'function') {
+    const message = data.actionDescription || 'Deletou um projeto';
     NotificationManager.showUserActivity(
-      'Deletou um projeto',
+      message,
       data.userName,
       data.userAvatarUrl,
       'warning'
@@ -591,11 +594,14 @@ function handleTaskMoved(data) {
   if (data.userId && data.userId !== getCurrentUserId() && data.userName && 
       typeof NotificationManager !== 'undefined' && 
       typeof NotificationManager.showUserActivity === 'function') {
-    const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
-    const fromColName = colNames[oldCol] || oldCol;
-    const toColName = colNames[normalizedTask.col_id] || normalizedTask.col_id;
+    const message = data.actionDescription || (() => {
+      const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
+      const fromColName = colNames[oldCol] || oldCol;
+      const toColName = colNames[normalizedTask.col_id] || normalizedTask.col_id;
+      return `Moveu ${data.task.client || 'projeto'} de ${fromColName} para ${toColName}`;
+    })();
     NotificationManager.showUserActivity(
-      `Moveu ${data.task.client || 'projeto'} de ${fromColName} para ${toColName}`,
+      message,
       data.userName,
       data.userAvatarUrl,
       'info'
