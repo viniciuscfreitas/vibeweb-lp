@@ -574,16 +574,15 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
             };
 
             // Log activity - detect what changed with specific descriptions
+            // Note: col_id changes are handled separately via move endpoint, not included here
             const changes = [];
             const newPaymentStatus = payment_status || existing.payment_status;
-
+            
             if (existing.client !== clientSanitized) {
               changes.push(`alterou cliente de "${existing.client}" para "${clientSanitized}"`);
             }
-            if (existing.col_id !== colIdNum) {
-              const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
-              changes.push(`moveu de ${colNames[existing.col_id] || existing.col_id} para ${colNames[colIdNum] || colIdNum}`);
-            }
+            // Exclude col_id changes - these are handled by move endpoint separately
+            // if (existing.col_id !== colIdNum) { ... }
             if (existing.price !== priceNum) {
               changes.push(`alterou preço de €${existing.price} para €${priceNum}`);
             }
@@ -610,14 +609,21 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
               }
             }
 
-            // Create specific action description
+            // Create specific action description - limit to 3 most important changes
             let actionDescription;
             if (changes.length === 0) {
               actionDescription = `Editou projeto ${clientSanitized}`;
             } else if (changes.length === 1) {
               actionDescription = `${changes[0]} em ${clientSanitized}`;
             } else {
-              actionDescription = `${changes.join(', ')} em ${clientSanitized}`;
+              // Limit to first 3 changes to avoid overly long messages
+              const displayChanges = changes.slice(0, 3);
+              const remainingCount = changes.length - 3;
+              if (remainingCount > 0) {
+                actionDescription = `${displayChanges.join(', ')}, e mais ${remainingCount} alteração${remainingCount > 1 ? 'ões' : ''} em ${clientSanitized}`;
+              } else {
+                actionDescription = `${displayChanges.join(', ')} em ${clientSanitized}`;
+              }
             }
 
             setImmediate(() => {
@@ -810,7 +816,7 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
 
             setImmediate(() => {
               const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
-              
+
               if (task.col_id !== colIdNum) {
                 const fromCol = colNames[task.col_id] || task.col_id;
                 const toCol = colNames[colIdNum] || colIdNum;
