@@ -83,6 +83,22 @@ function logActivity(db, userId, taskId, actionType, actionDescription, oldData 
 function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
   const router = require('express').Router();
 
+  // Helper to get user info for WebSocket notifications
+  function getUserInfoForNotification(userId, callback) {
+    if (!userId) {
+      return callback(null, null);
+    }
+    db.get('SELECT name, avatar_url FROM users WHERE id = ?', [userId], (err, user) => {
+      if (err || !user) {
+        return callback(null, null);
+      }
+      callback(null, {
+        name: user.name || 'Usuário',
+        avatarUrl: user.avatar_url || null
+      });
+    });
+  }
+
   router.get('/activities/recent', (req, res) => {
     try {
       const limit = parseInt(req.query.limit) || 50;
@@ -366,14 +382,22 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
               );
 
               if (io) {
-                if (NODE_ENV === 'development') {
-                  console.log('[WebSocket] 📤 Emitting task:created', { 
-                    taskId: task.id, 
-                    client: task.client, 
-                    userId: req.user.id 
-                  });
-                }
-                io.emit('task:created', { task, userId: req.user.id });
+                getUserInfoForNotification(req.user.id, (err, userInfo) => {
+                  const emitData = {
+                    task,
+                    userId: req.user.id,
+                    userName: userInfo?.name || null,
+                    userAvatarUrl: userInfo?.avatarUrl || null
+                  };
+                  if (NODE_ENV === 'development') {
+                    console.log('[WebSocket] 📤 Emitting task:created', { 
+                      taskId: task.id, 
+                      client: task.client, 
+                      userId: req.user.id 
+                    });
+                  }
+                  io.emit('task:created', emitData);
+                });
               }
             });
 
@@ -576,14 +600,22 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
               );
 
               if (io) {
-                if (NODE_ENV === 'development') {
-                  console.log('[WebSocket] 📤 Emitting task:updated', { 
-                    taskId: task.id, 
-                    client: task.client, 
-                    userId: req.user.id 
-                  });
-                }
-                io.emit('task:updated', { task, userId: req.user.id });
+                getUserInfoForNotification(req.user.id, (err, userInfo) => {
+                  const emitData = {
+                    task,
+                    userId: req.user.id,
+                    userName: userInfo?.name || null,
+                    userAvatarUrl: userInfo?.avatarUrl || null
+                  };
+                  if (NODE_ENV === 'development') {
+                    console.log('[WebSocket] 📤 Emitting task:updated', { 
+                      taskId: task.id, 
+                      client: task.client, 
+                      userId: req.user.id 
+                    });
+                  }
+                  io.emit('task:updated', emitData);
+                });
               }
             });
 
@@ -651,13 +683,21 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
                 );
 
                 if (io) {
-                  if (NODE_ENV === 'development') {
-                    console.log('[WebSocket] 📤 Emitting task:deleted', { 
-                      taskId, 
-                      userId: req.user.id 
-                    });
-                  }
-                  io.emit('task:deleted', { taskId, userId: req.user.id });
+                  getUserInfoForNotification(req.user.id, (err, userInfo) => {
+                    const emitData = {
+                      taskId,
+                      userId: req.user.id,
+                      userName: userInfo?.name || null,
+                      userAvatarUrl: userInfo?.avatarUrl || null
+                    };
+                    if (NODE_ENV === 'development') {
+                      console.log('[WebSocket] 📤 Emitting task:deleted', { 
+                        taskId, 
+                        userId: req.user.id 
+                      });
+                    }
+                    io.emit('task:deleted', emitData);
+                  });
                 }
               });
 
@@ -751,16 +791,24 @@ function createTasksRoutes(db, NODE_ENV, sanitizeString, io) {
               }
 
               if (io) {
-                if (NODE_ENV === 'development') {
-                  console.log('[WebSocket] 📤 Emitting task:moved', { 
-                    taskId: updatedTask.id, 
-                    client: updatedTask.client,
-                    fromCol: task.col_id,
-                    toCol: colIdNum,
-                    userId: req.user.id 
-                  });
-                }
-                io.emit('task:moved', { task: updatedTask, userId: req.user.id });
+                getUserInfoForNotification(req.user.id, (err, userInfo) => {
+                  const emitData = {
+                    task: updatedTask,
+                    userId: req.user.id,
+                    userName: userInfo?.name || null,
+                    userAvatarUrl: userInfo?.avatarUrl || null
+                  };
+                  if (NODE_ENV === 'development') {
+                    console.log('[WebSocket] 📤 Emitting task:moved', { 
+                      taskId: updatedTask.id, 
+                      client: updatedTask.client,
+                      fromCol: task.col_id,
+                      toCol: colIdNum,
+                      userId: req.user.id 
+                    });
+                  }
+                  io.emit('task:moved', emitData);
+                });
               }
             });
 

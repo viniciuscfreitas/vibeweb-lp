@@ -422,6 +422,16 @@ function handleTaskCreated(data) {
     console.log('[WebSocket] ✅ Task created and rendered', { taskId: data.task.id, client: data.task.client });
   }
   AppState.log('Task created via WebSocket', { taskId: data.task.id });
+
+  // Show notification if from another user
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+    NotificationManager.showUserActivity(
+      `Criou projeto ${data.task.client || 'novo'}`,
+      data.userName,
+      data.userAvatarUrl,
+      'success'
+    );
+  }
 }
 
 function handleTaskUpdated(data) {
@@ -457,6 +467,16 @@ function handleTaskUpdated(data) {
     console.log('[WebSocket] ✅ Task updated and rendered', { taskId: data.task.id, client: data.task.client });
   }
   AppState.log('Task updated via WebSocket', { taskId: data.task.id });
+
+  // Show notification if from another user
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+    NotificationManager.showUserActivity(
+      `Editou projeto ${data.task.client || 'projeto'}`,
+      data.userName,
+      data.userAvatarUrl,
+      'info'
+    );
+  }
 }
 
 function handleTaskDeleted(data) {
@@ -491,6 +511,16 @@ function handleTaskDeleted(data) {
     console.log('[WebSocket] ✅ Task deleted and rendered', { taskId: data.taskId });
   }
   AppState.log('Task deleted via WebSocket', { taskId: data.taskId });
+
+  // Show notification if from another user
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+    NotificationManager.showUserActivity(
+      'Deletou um projeto',
+      data.userName,
+      data.userAvatarUrl,
+      'warning'
+    );
+  }
 }
 
 function handleTaskMoved(data) {
@@ -550,6 +580,19 @@ function handleTaskMoved(data) {
     });
   }
   AppState.log('Task moved via WebSocket', { taskId: data.task.id });
+
+  // Show notification if from another user
+  if (data.userId && data.userId !== getCurrentUserId() && data.userName && typeof NotificationManager !== 'undefined') {
+    const colNames = ['Descoberta', 'Acordo', 'Build', 'Live'];
+    const fromColName = colNames[oldCol] || oldCol;
+    const toColName = colNames[normalizedTask.col_id] || normalizedTask.col_id;
+    NotificationManager.showUserActivity(
+      `Moveu ${data.task.client || 'projeto'} de ${fromColName} para ${toColName}`,
+      data.userName,
+      data.userAvatarUrl,
+      'info'
+    );
+  }
 }
 
 function getCurrentUserId() {

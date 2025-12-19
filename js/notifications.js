@@ -106,5 +106,84 @@ const NotificationManager = {
 
   info(message, duration) {
     return this.show(message, 'info', duration);
+  },
+
+  // Show notification with user avatar and name (for WebSocket activity notifications)
+  showUserActivity(message, userName, userAvatarUrl, type = 'info', duration = 5000) {
+    this.init();
+
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.setAttribute('role', 'alert');
+
+    // Get user initials for fallback
+    const getInitials = (name) => {
+      if (!name) return '?';
+      const parts = name.trim().split(/\s+/);
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+      return name.substring(0, 2).toUpperCase();
+    };
+
+    const userInitials = userName ? getInitials(userName) : '?';
+    const escapedUserName = this.escapeHtml(userName || 'Usuário');
+    const escapedMessage = this.escapeHtml(message);
+    
+    // Format avatar URL if needed
+    let avatarUrl = userAvatarUrl;
+    if (avatarUrl && !avatarUrl.startsWith('http')) {
+      const apiBaseUrl = (() => {
+        const isLocalhost = window.location.hostname === 'localhost' ||
+                          window.location.hostname === '127.0.0.1' ||
+                          window.location.hostname === '';
+        return isLocalhost ? 'http://localhost:3000' : '';
+      })();
+      avatarUrl = `${apiBaseUrl}${avatarUrl}`;
+    }
+
+    const userBadgeHtml = avatarUrl
+      ? `<div class="notification-user-badge" title="${escapedUserName}" style="background-image: url('${this.escapeHtml(avatarUrl)}'); background-size: cover; background-position: center; background-color: transparent; color: transparent;">${this.escapeHtml(userInitials)}</div>`
+      : `<div class="notification-user-badge" title="${escapedUserName}">${this.escapeHtml(userInitials)}</div>`;
+
+    const icon = this.getIcon(type);
+    notification.innerHTML = `
+      <div class="notification-content">
+        ${userBadgeHtml}
+        <div class="notification-message-wrapper">
+          <span class="notification-message">${escapedMessage}</span>
+          <span class="notification-user-name">${escapedUserName}</span>
+        </div>
+      </div>
+      <button class="notification-close" aria-label="Fechar notificação" type="button">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    `;
+
+    const closeBtn = notification.querySelector('.notification-close');
+    const closeNotification = () => {
+      this.hide(notification);
+    };
+
+    closeBtn.addEventListener('click', closeNotification);
+    notification._closeHandler = closeNotification;
+
+    this.container.appendChild(notification);
+
+    requestAnimationFrame(() => {
+      notification.classList.add('show');
+    });
+
+    if (duration > 0) {
+      setTimeout(() => {
+        if (notification.parentNode) {
+          this.hide(notification);
+        }
+      }, duration);
+    }
+
+    return notification;
   }
 };
+
+
