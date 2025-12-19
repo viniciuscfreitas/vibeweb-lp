@@ -5,28 +5,23 @@ const isLocalhost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '' ||
                     isFileProtocol;
 
-// WebSocket URL configuration
-// Socket.io can handle http:// URLs and will upgrade to ws:// automatically
-// In production, empty string means same origin (recommended for same-domain deployments)
 function getWebSocketUrl() {
   if (isLocalhost) {
     return 'http://localhost:3000';
   }
-  // In production, empty string = same origin (socket.io will use current page protocol)
-  // For different domain, set WS_URL environment variable or construct explicitly
   return '';
 }
 
 const WS_URL = getWebSocketUrl();
-
-let socket = null;
+const SOCKET_IO_LOAD_TIMEOUT = 5000;
+const SOCKET_IO_LOAD_RETRY_DELAY = 100;
 const MAX_RECONNECT_ATTEMPTS = 5;
 const LOCAL_ACTION_TIMEOUT_MS = 1000;
-
-let cachedUserId = null;
-let cachedUserIdTimestamp = 0;
 const USER_ID_CACHE_MS = 5000;
 
+let socket = null;
+let cachedUserId = null;
+let cachedUserIdTimestamp = 0;
 let renderScheduled = false;
 let pendingRenders = {
   board: false,
@@ -36,7 +31,6 @@ let pendingRenders = {
 };
 
 const hasNormalizeTasksData = typeof normalizeTasksData === 'function';
-
 const localActions = new Set();
 const actionTimeouts = new Map();
 
@@ -59,19 +53,68 @@ function markLocalAction(taskId) {
   actionTimeouts.set(taskId, timeoutId);
 }
 
+function loadSocketIOFromCDN() {
+  return new Promise((resolve, reject) => {
+    if (typeof io !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    console.log('[WebSocket] 📦 Loading socket.io from CDN fallback...');
+    const script = document.createElement('script');
+    script.src = 'https://cdn.socket.io/4.8.1/socket.io.min.js';
+    script.crossOrigin = 'anonymous';
+    script.onload = () => {
+      if (typeof io !== 'undefined') {
+        console.log('[WebSocket] ✅ socket.io loaded from CDN');
+        resolve();
+      } else {
+        reject(new Error('socket.io not available after CDN load'));
+      }
+    };
+    script.onerror = () => {
+      reject(new Error('Failed to load socket.io from CDN'));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+function waitForSocketIO(callback, retries = 0) {
+  const maxRetries = Math.floor(SOCKET_IO_LOAD_TIMEOUT / SOCKET_IO_LOAD_RETRY_DELAY);
+  
+  if (typeof io !== 'undefined') {
+    callback();
+    return;
+  }
+
+  if (retries >= maxRetries) {
+    console.warn('[WebSocket] ⚠️  socket.io not loaded from server, trying CDN fallback...');
+    loadSocketIOFromCDN()
+      .then(() => callback())
+      .catch((error) => {
+        console.error('[WebSocket] ❌ Failed to load socket.io:', error.message);
+        console.warn('[WebSocket] 💡 WebSocket features will be disabled');
+      });
+    return;
+  }
+
+  setTimeout(() => waitForSocketIO(callback, retries + 1), SOCKET_IO_LOAD_RETRY_DELAY);
+}
+
 function connectWebSocket() {
   if (socket?.connected) {
     console.log('[WebSocket] Already connected, skipping');
     return;
   }
 
-  if (typeof io === 'undefined') {
-    console.error('[WebSocket] ❌ socket.io library not loaded');
-    return;
-  }
-
-  console.log('[WebSocket] 🔌 Initiating connection...');
-  initializeSocket();
+  waitForSocketIO(() => {
+    if (typeof io === 'undefined') {
+      console.error('[WebSocket] ❌ socket.io library not available');
+      return;
+    }
+    console.log('[WebSocket] 🔌 Initiating connection...');
+    initializeSocket();
+  });
 }
 
 function initializeSocket() {
