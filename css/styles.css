@@ -2830,7 +2830,7 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 .notification.hide {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateY(100%);
 }
 
 .notification-content {
