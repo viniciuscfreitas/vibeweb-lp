@@ -146,7 +146,6 @@ const NotificationManager = {
       ? `<div class="notification-user-badge" title="${escapedUserName}" style="background-image: url('${this.escapeHtml(avatarUrl)}'); background-size: cover; background-position: center; background-color: transparent; color: transparent;">${this.escapeHtml(userInitials)}</div>`
       : `<div class="notification-user-badge" title="${escapedUserName}">${this.escapeHtml(userInitials)}</div>`;
 
-    const icon = this.getIcon(type);
     notification.innerHTML = `
       <div class="notification-content">
         ${userBadgeHtml}
