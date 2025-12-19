@@ -4,10 +4,24 @@ const isLocalhost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '127.0.0.1' ||
                     window.location.hostname === '' ||
                     isFileProtocol;
-const WS_URL = isLocalhost ? 'http://localhost:3000' : '';
+
+// WebSocket URL configuration
+// Socket.io can handle http:// URLs and will upgrade to ws:// automatically
+// In production, empty string means same origin (recommended for same-domain deployments)
+function getWebSocketUrl() {
+  if (isLocalhost) {
+    return 'http://localhost:3000';
+  }
+  // In production, empty string = same origin (socket.io will use current page protocol)
+  // For different domain, set WS_URL environment variable or construct explicitly
+  return '';
+}
+
+const WS_URL = getWebSocketUrl();
 
 let socket = null;
 const MAX_RECONNECT_ATTEMPTS = 5;
+const LOCAL_ACTION_TIMEOUT_MS = 1000;
 
 let cachedUserId = null;
 let cachedUserIdTimestamp = 0;
@@ -35,26 +49,28 @@ function markLocalAction(taskId) {
   }
 
   localActions.add(taskId);
+  console.log('[WebSocket] 🏷️  Marked local action (will ignore WebSocket events for 1s)', { taskId });
   const timeoutId = setTimeout(() => {
     localActions.delete(taskId);
     actionTimeouts.delete(taskId);
-  }, 1000);
+    console.log('[WebSocket] 🏷️  Local action timeout cleared', { taskId });
+  }, LOCAL_ACTION_TIMEOUT_MS);
 
   actionTimeouts.set(taskId, timeoutId);
 }
 
 function connectWebSocket() {
   if (socket?.connected) {
+    console.log('[WebSocket] Already connected, skipping');
     return;
   }
 
   if (typeof io === 'undefined') {
-    if (isLocalhost) {
-      console.warn('[WebSocket] socket.io library not loaded');
-    }
+    console.error('[WebSocket] ❌ socket.io library not loaded');
     return;
   }
 
+  console.log('[WebSocket] 🔌 Initiating connection...');
   initializeSocket();
 }
 
@@ -62,9 +78,7 @@ function initializeSocket() {
   try {
     const token = localStorage.getItem('vibeTasks_token');
     if (!token) {
-      if (isLocalhost) {
-        console.warn('[WebSocket] No token available, cannot connect');
-      }
+      console.warn('[WebSocket] No token available, cannot connect');
       return;
     }
 
@@ -73,6 +87,7 @@ function initializeSocket() {
       socket.disconnect();
     }
 
+    console.log('[WebSocket] Connecting to:', WS_URL);
     socket = io(WS_URL, {
       transports: ['websocket', 'polling'],
       reconnection: true,
@@ -85,53 +100,68 @@ function initializeSocket() {
 
     socket.on('connect', () => {
       cachedUserId = null;
-      if (isLocalhost) {
-        console.log('[WebSocket] Connected');
-      }
+      const socketId = socket.id;
+      console.log('[WebSocket] ✅ Connected successfully', { socketId, url: WS_URL });
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (reason) => {
       cachedUserId = null;
       cachedUserIdTimestamp = 0;
-      if (isLocalhost) {
-        console.log('[WebSocket] Disconnected');
-      }
+      console.log('[WebSocket] ❌ Disconnected', { reason });
+    });
+
+    socket.on('reconnect', (attemptNumber) => {
+      console.log('[WebSocket] 🔄 Reconnected', { attemptNumber });
+    });
+
+    socket.on('reconnect_attempt', (attemptNumber) => {
+      console.log('[WebSocket] 🔄 Reconnection attempt', { attemptNumber, maxAttempts: MAX_RECONNECT_ATTEMPTS });
+    });
+
+    socket.on('reconnect_failed', () => {
+      console.error('[WebSocket] ❌ Reconnection failed after', MAX_RECONNECT_ATTEMPTS, 'attempts');
     });
 
     socket.on('task:created', (data) => {
+      console.log('[WebSocket] 📨 Received task:created', { taskId: data?.task?.id, userId: data?.userId });
       handleTaskCreated(data);
     });
 
     socket.on('task:updated', (data) => {
+      console.log('[WebSocket] 📨 Received task:updated', { taskId: data?.task?.id, userId: data?.userId });
       handleTaskUpdated(data);
     });
 
     socket.on('task:deleted', (data) => {
+      console.log('[WebSocket] 📨 Received task:deleted', { taskId: data?.taskId, userId: data?.userId });
       handleTaskDeleted(data);
     });
 
     socket.on('task:moved', (data) => {
+      console.log('[WebSocket] 📨 Received task:moved', { 
+        taskId: data?.task?.id, 
+        userId: data?.userId,
+        fromCol: data?.task?.col_id,
+        toPosition: data?.task?.order_position
+      });
       handleTaskMoved(data);
     });
 
     socket.on('connect_error', (error) => {
-      if (isLocalhost) {
-        console.warn('[WebSocket] Connection error:', error.message);
-      }
+      console.error('[WebSocket] ❌ Connection error:', error.message, { url: WS_URL });
       if (error.message === 'Authentication error') {
-        if (isLocalhost) {
-          console.warn('[WebSocket] Authentication failed, disconnecting');
-        }
+        console.warn('[WebSocket] 🔒 Authentication failed, disconnecting');
         socket.disconnect();
       }
     });
   } catch (error) {
-    console.error('[WebSocket] Connection error:', error);
+    console.error('[WebSocket] ❌ Fatal connection error:', error);
   }
 }
 
 function disconnectWebSocket() {
   if (socket) {
+    console.log('[WebSocket] 🔌 Disconnecting...');
     socket.removeAllListeners();
     socket.disconnect();
     socket = null;
@@ -144,6 +174,7 @@ function disconnectWebSocket() {
   }
   localActions.clear();
   actionTimeouts.clear();
+  console.log('[WebSocket] ✅ Disconnected and cleaned up');
 }
 
 function scheduleRender() {
@@ -180,8 +211,15 @@ function scheduleRender() {
 function shouldIgnoreWebSocketEvent(taskId, userId) {
   if (!taskId || userId === undefined) return false;
   const currentUserId = getCurrentUserId();
-  if (currentUserId === null || userId !== currentUserId) return false;
-  return localActions.has(taskId);
+  if (currentUserId === null || userId !== currentUserId) {
+    // Event from different user, don't ignore
+    return false;
+  }
+  const shouldIgnore = localActions.has(taskId);
+  if (shouldIgnore) {
+    console.log('[WebSocket] ⏭️  Ignoring event (local action)', { taskId, userId });
+  }
+  return shouldIgnore;
 }
 
 function normalizeTask(task) {
@@ -191,12 +229,18 @@ function normalizeTask(task) {
 }
 
 function handleTaskCreated(data) {
-  if (!data?.task || !AppState) return;
+  if (!data?.task || !AppState) {
+    console.warn('[WebSocket] Invalid task:created data', data);
+    return;
+  }
   if (shouldIgnoreWebSocketEvent(data.task.id, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const exists = tasks.some(t => t.id === data.task.id);
-  if (exists) return;
+  if (exists) {
+    console.log('[WebSocket] ⏭️  Task already exists, skipping', { taskId: data.task.id });
+    return;
+  }
 
   const normalizedTask = normalizeTask(data.task);
   const newTasks = [...tasks, normalizedTask];
@@ -206,16 +250,23 @@ function handleTaskCreated(data) {
   pendingRenders.header = true;
   scheduleRender();
 
+  console.log('[WebSocket] ✅ Task created and rendered', { taskId: data.task.id, client: data.task.client });
   AppState.log('Task created via WebSocket', { taskId: data.task.id });
 }
 
 function handleTaskUpdated(data) {
-  if (!data?.task || !AppState) return;
+  if (!data?.task || !AppState) {
+    console.warn('[WebSocket] Invalid task:updated data', data);
+    return;
+  }
   if (shouldIgnoreWebSocketEvent(data.task.id, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const taskIndex = tasks.findIndex(t => t.id === data.task.id);
-  if (taskIndex === -1) return;
+  if (taskIndex === -1) {
+    console.log('[WebSocket] ⏭️  Task not found locally, skipping update', { taskId: data.task.id });
+    return;
+  }
 
   const normalizedTask = normalizeTask(data.task);
   const updatedTasks = [...tasks];
@@ -228,16 +279,23 @@ function handleTaskUpdated(data) {
   pendingRenders.header = true;
   scheduleRender();
 
+  console.log('[WebSocket] ✅ Task updated and rendered', { taskId: data.task.id, client: data.task.client });
   AppState.log('Task updated via WebSocket', { taskId: data.task.id });
 }
 
 function handleTaskDeleted(data) {
-  if (!data?.taskId || !AppState) return;
+  if (!data?.taskId || !AppState) {
+    console.warn('[WebSocket] Invalid task:deleted data', data);
+    return;
+  }
   if (shouldIgnoreWebSocketEvent(data.taskId, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const taskExists = tasks.some(t => t.id === data.taskId);
-  if (!taskExists) return;
+  if (!taskExists) {
+    console.log('[WebSocket] ⏭️  Task not found locally, skipping delete', { taskId: data.taskId });
+    return;
+  }
 
   const updatedTasks = tasks.filter(t => t.id !== data.taskId);
 
@@ -249,24 +307,38 @@ function handleTaskDeleted(data) {
   pendingRenders.header = true;
   scheduleRender();
 
+  console.log('[WebSocket] ✅ Task deleted and rendered', { taskId: data.taskId });
   AppState.log('Task deleted via WebSocket', { taskId: data.taskId });
 }
 
 function handleTaskMoved(data) {
-  if (!data?.task || !AppState) return;
+  if (!data?.task || !AppState) {
+    console.warn('[WebSocket] Invalid task:moved data', data);
+    return;
+  }
   if (shouldIgnoreWebSocketEvent(data.task.id, data.userId)) return;
 
   const tasks = AppState.getTasks();
   const taskIndex = tasks.findIndex(t => t.id === data.task.id);
-  if (taskIndex === -1) return;
+  if (taskIndex === -1) {
+    console.log('[WebSocket] ⏭️  Task not found locally, skipping move', { taskId: data.task.id });
+    return;
+  }
 
   const task = tasks[taskIndex];
   if (task.col_id === data.task.col_id && task.order_position === data.task.order_position) {
+    console.log('[WebSocket] ⏭️  Task position unchanged, skipping', { 
+      taskId: data.task.id, 
+      col_id: data.task.col_id, 
+      order_position: data.task.order_position 
+    });
     return;
   }
 
   const normalizedTask = normalizeTask(data.task);
   const updatedTasks = [...tasks];
+  const oldCol = updatedTasks[taskIndex].col_id;
+  const oldPos = updatedTasks[taskIndex].order_position;
   updatedTasks[taskIndex] = {
     ...updatedTasks[taskIndex],
     col_id: normalizedTask.col_id,
@@ -279,6 +351,14 @@ function handleTaskMoved(data) {
   pendingRenders.header = true;
   scheduleRender();
 
+  console.log('[WebSocket] ✅ Task moved and rendered', { 
+    taskId: data.task.id, 
+    client: data.task.client,
+    fromCol: oldCol,
+    toCol: normalizedTask.col_id,
+    fromPos: oldPos,
+    toPos: normalizedTask.order_position
+  });
   AppState.log('Task moved via WebSocket', { taskId: data.task.id });
 }
 
@@ -294,9 +374,15 @@ function getCurrentUserId() {
       const user = JSON.parse(saved);
       cachedUserId = user?.id || null;
       cachedUserIdTimestamp = now;
+      if (isLocalhost && cachedUserId) {
+        console.log('[WebSocket] User ID cached', { userId: cachedUserId });
+      }
       return cachedUserId;
     }
   } catch (e) {
+    if (isLocalhost) {
+      console.warn('[WebSocket] Error parsing auth data from localStorage:', e);
+    }
   }
 
   cachedUserId = null;
