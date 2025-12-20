@@ -410,7 +410,7 @@
               </div>
               <div class="form-group">
                 <label for="formPrice">Preço (€) <span class="required-asterisk">*</span></label>
-                <input type="number" class="form-input" id="formPrice" aria-required="true" aria-invalid="false"
+                <input type="number" class="form-input" id="formPrice" inputmode="numeric" aria-required="true" aria-invalid="false"
                   aria-describedby="errorPrice" data-paste-enabled="true" data-required="true" min="0" step="0.01">
                 <div class="form-error" id="errorPrice" role="alert" aria-live="polite"></div>
               </div>
@@ -520,13 +520,13 @@
             <div class="form-grid">
               <div class="form-group">
                 <label for="settingsHostingPrice">Preço de Hospedagem (€/mês)</label>
-                <input type="number" class="form-input" id="settingsHostingPrice" placeholder="29" min="0" step="0.01"
+                <input type="number" class="form-input" id="settingsHostingPrice" inputmode="numeric" placeholder="29" min="0" step="0.01"
                   aria-label="Preço mensal de hospedagem">
                 <div class="form-hint">Valor padrão usado para cálculos de MRR</div>
               </div>
               <div class="form-group">
                 <label for="settingsDefaultTicket">Ticket Médio Padrão (€)</label>
-                <input type="number" class="form-input" id="settingsDefaultTicket" placeholder="1500" min="0" step="0.01"
+                <input type="number" class="form-input" id="settingsDefaultTicket" inputmode="numeric" placeholder="1500" min="0" step="0.01"
                   aria-label="Valor médio padrão de projetos">
                 <div class="form-hint">Usado quando não há dados suficientes</div>
               </div>
@@ -544,7 +544,7 @@
               </div>
               <div class="form-group">
                 <label for="settingsSearchDebounce">Tempo de Busca (ms)</label>
-                <input type="number" class="form-input" id="settingsSearchDebounce" placeholder="200" min="0" step="50"
+                <input type="number" class="form-input" id="settingsSearchDebounce" inputmode="numeric" placeholder="200" min="0" step="50"
                   aria-label="Tempo de espera antes de executar busca">
                 <div class="form-hint">Delay antes de executar a busca ao digitar</div>
               </div>
@@ -580,7 +580,7 @@
               </div>
               <div class="form-group">
                 <label for="settingsUrgentHours">Horas para Urgência</label>
-                <input type="number" class="form-input" id="settingsUrgentHours" placeholder="48" min="1" step="1"
+                <input type="number" class="form-input" id="settingsUrgentHours" inputmode="numeric" placeholder="48" min="1" step="1"
                   aria-label="Número de horas para considerar urgente">
                 <div class="form-hint">Projetos com menos horas serão marcados como urgentes</div>
               </div>

@@ -35,12 +35,15 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
 }
 
 *::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
+  /* Chrome/Safari */
 }
 
 .skip-link {
@@ -272,10 +275,6 @@ body {
   color: var(--text-main);
 }
 
-.search-btn:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .search-input {
   width: 100%;
@@ -371,10 +370,6 @@ body {
   color: var(--text-main);
 }
 
-.theme-toggle:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .theme-toggle-icon {
   font-size: 0.875rem;
@@ -759,11 +754,6 @@ body {
   text-decoration: underline;
 }
 
-.assets-link:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
 
 .assets-link-multiple {
   font-size: 0.75rem;
@@ -868,6 +858,7 @@ body {
     opacity: 0;
     transform: scale(0.95) translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -1017,10 +1008,6 @@ body {
   border-color: var(--border-strong);
 }
 
-.form-advanced-toggle:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .form-advanced-toggle i {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1043,11 +1030,11 @@ body {
   opacity: 1;
 }
 
-.form-advanced-content > div {
+.form-advanced-content>div {
   margin-bottom: 1.5rem;
 }
 
-.form-advanced-content > div:last-child {
+.form-advanced-content>div:last-child {
   margin-bottom: 0;
 }
 
@@ -1077,10 +1064,6 @@ body {
   color: var(--text-main);
 }
 
-.btn-text:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .btn-secondary {
   background-color: var(--bg-card);
@@ -1139,10 +1122,6 @@ body {
   opacity: 0.8;
 }
 
-.btn-danger:focus-visible {
-  outline: 3px solid var(--danger);
-  outline-offset: 2px;
-}
 
 .btn-delete-visible.hidden {
   display: none;
@@ -1294,10 +1273,6 @@ body {
   color: var(--danger);
 }
 
-.dropdown-item:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .dropdown-item i {
   width: 16px;
@@ -1549,15 +1524,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   transform: none;
 }
 
-.btn-login-primary:focus {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
-
-.btn-login-primary:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .modal-subtitle {
   font-size: 0.75rem;
@@ -1722,10 +1688,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   background-color: var(--bg-main);
 }
 
-.stat-card-clickable:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .stat-card-hint {
   font-size: 0.65rem;
@@ -1870,10 +1832,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   background-color: var(--bg-shell);
 }
 
-.expand-btn:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .expand-btn i {
   font-size: 0.75rem;
@@ -1901,6 +1859,7 @@ html[data-authenticated="true"] #appContainer.hidden {
     opacity: 0;
     transform: scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -2567,10 +2526,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   border-color: var(--primary);
 }
 
-.financial-filter-btn:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .financial-table-container {
   overflow-x: auto;
@@ -2699,10 +2654,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   transform: scale(1.05);
 }
 
-.quick-action-btn:focus-visible {
-  outline: 3px solid var(--success);
-  outline-offset: 2px;
-}
 
 .quick-action-btn:active {
   transform: scale(0.95);
@@ -2718,9 +2669,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   border-color: var(--warning);
 }
 
-.quick-action-btn-undo:focus-visible {
-  outline: 3px solid var(--warning);
-}
 
 /* Mobile Cards */
 .financial-mobile-cards {
@@ -2756,10 +2704,6 @@ html[data-authenticated="true"] #appContainer.hidden {
   border-left: 3px solid var(--warning);
 }
 
-.financial-mobile-card:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-}
 
 .financial-mobile-card-header {
   display: flex;
@@ -2957,12 +2901,12 @@ html[data-authenticated="true"] #appContainer.hidden {
    MOBILE-FIRST STYLES (max-width: 767px)
    ============================================ */
 
-  /* Bottom Navigation - Mobile Only */
-  .bottom-nav {
-    display: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
+/* Bottom Navigation - Mobile Only */
+.bottom-nav {
+  display: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
 
 .profile-modal-overlay {
   display: none;
@@ -3314,7 +3258,8 @@ html[data-authenticated="true"] #appContainer.hidden {
 
 /* Safari iOS Fixes */
 @supports (-webkit-touch-callout: none) {
-  @media (max-width: 767px), (max-device-width: 767px) {
+  @media (max-width: 767px),
+  (max-device-width: 767px) {
     .bottom-nav {
       display: flex !important;
       position: fixed !important;
