@@ -373,9 +373,16 @@ function initializeSortable() {
       dragClass: 'sortable-drag',
       chosenClass: 'sortable-chosen',
       handle: '.card',
+      filter: '.empty-state',
       forceFallback: false,
       fallbackOnBody: true,
       swapThreshold: 0.65,
+      onAdd: function(evt) {
+        const emptyState = evt.to.querySelector('.empty-state');
+        if (emptyState) {
+          emptyState.remove();
+        }
+      },
       onEnd: function(evt) {
         handleSortableEnd(evt);
       }
@@ -428,8 +435,7 @@ function handleSortableEnd(evt) {
       const currentTasks = AppState.getTasks();
       const updatedTasks = currentTasks.map(t => t.id === taskId ? normalizedTask : t);
       AppState.setTasks(updatedTasks);
-      updateHeaderStats();
-      updateDeadlineDisplays();
+      renderBoard();
 
       const colName = COLUMNS_MAP.get(targetColId)?.name || 'Coluna';
       NotificationManager.info(`Projeto ${task.client} movido para ${colName}`, 2000);
