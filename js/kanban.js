@@ -1,15 +1,8 @@
 // Kanban Board Logic
 // URL_PATTERN is defined in forms.js (loaded before this file)
 
-// Cache iOS Safari detection (doesn't change during session)
-const isIOSSafari = (function() {
-  const ua = navigator.userAgent;
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|OPiOS/.test(ua);
-  return isIOS && isSafari;
-})();
-
 const COLUMNS_MAP = new Map(COLUMNS.map(col => [col.id, col]));
+let sortableInstances = [];
 
 function updateHeaderStats() {
   if (!DOM.dashboardContainer || !DOM.financialContainer) return;
@@ -116,12 +109,6 @@ function renderBoard() {
     `;
 
     const bodyDiv = colDiv.querySelector('.col-body');
-    // Only enable drag and drop on non-iOS devices (iOS Safari doesn't support drag and drop on touch)
-    if (!isIOSSafari) {
-      bodyDiv.addEventListener('dragover', handleDragOver);
-      bodyDiv.addEventListener('drop', handleDrop);
-      bodyDiv.addEventListener('dragleave', handleDragLeave);
-    }
 
     if (colTasks.length === 0) {
       const emptyState = document.createElement('div');
@@ -161,6 +148,7 @@ function renderBoard() {
   DOM.boardGrid.appendChild(fragment);
   updateHeaderStats();
   updateDeadlineDisplays();
+  initializeSortable();
 }
 
 let currentTimestamp = Date.now();
@@ -211,10 +199,6 @@ function createCardElement(task, isExpanded = false, now = null) {
   el.setAttribute('aria-label', `Projeto ${task.client}, ${formatPrice(task.price)}${deadlineInfo}, coluna: ${colName}. Use setas esquerda e direita para mover entre colunas, Enter ou Espaço para editar`);
   if (isExpanded) {
     el.classList.add('card-expanded');
-  }
-  // Disable drag on iOS Safari (doesn't support drag and drop on touch)
-  if (!isIOSSafari) {
-    el.draggable = true;
   }
   el.dataset.id = task.id;
   el.dataset.colId = task.col_id;
@@ -335,7 +319,6 @@ function createCardElement(task, isExpanded = false, now = null) {
     `;
   }
 
-  el.addEventListener('dragstart', handleDragStart);
   el.addEventListener('click', () => openModal(task));
   el.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -371,7 +354,100 @@ function updateDeadlineDisplays() {
   });
 }
 
-// Keyboard navigation for moving cards between columns (WCAG 2.1 - Keyboard Accessible)
+function initializeSortable() {
+  if (typeof Sortable === 'undefined') {
+    console.warn('[Kanban] SortableJS not loaded');
+    return;
+  }
+
+  sortableInstances.forEach(instance => instance.destroy());
+  sortableInstances = [];
+
+  const columnBodies = document.querySelectorAll('.col-body[data-col-id]');
+  
+  columnBodies.forEach(colBody => {
+    const sortable = Sortable.create(colBody, {
+      group: 'kanban-columns',
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+      dragClass: 'sortable-drag',
+      chosenClass: 'sortable-chosen',
+      handle: '.card',
+      forceFallback: false,
+      fallbackOnBody: true,
+      swapThreshold: 0.65,
+      onEnd: function(evt) {
+        handleSortableEnd(evt);
+      }
+    });
+    sortableInstances.push(sortable);
+  });
+}
+
+function handleSortableEnd(evt) {
+  const { item, to, from, newIndex, oldIndex } = evt;
+  
+  if (!item || !to || newIndex === undefined || newIndex === null) {
+    AppState.log('Sortable: invalid event data', { item: !!item, to: !!to, newIndex });
+    return;
+  }
+
+  if (to === from && newIndex === oldIndex) {
+    return;
+  }
+
+  const taskId = parseInt(item.dataset.id);
+  if (isNaN(taskId)) {
+    AppState.log('Sortable: invalid task ID');
+    return;
+  }
+
+  const targetColId = parseInt(to.dataset.colId);
+  if (isNaN(targetColId) || targetColId < 0 || targetColId > 3) {
+    NotificationManager.error('Coluna inválida');
+    return;
+  }
+
+  const tasks = AppState.getTasks();
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) {
+    AppState.log('Sortable: task not found', { taskId });
+    return;
+  }
+
+  const previousState = [...tasks];
+  const insertIndex = newIndex;
+
+  api.moveTask(taskId, targetColId, insertIndex)
+    .then((updatedTaskFromServer) => {
+      if (typeof window.markLocalTaskAction === 'function') {
+        window.markLocalTaskAction(taskId);
+      }
+
+      const normalizedTask = normalizeTasksData([updatedTaskFromServer])[0];
+      const currentTasks = AppState.getTasks();
+      const updatedTasks = currentTasks.map(t => t.id === taskId ? normalizedTask : t);
+      AppState.setTasks(updatedTasks);
+      updateHeaderStats();
+      updateDeadlineDisplays();
+
+      const colName = COLUMNS_MAP.get(targetColId)?.name || 'Coluna';
+      NotificationManager.info(`Projeto ${task.client} movido para ${colName}`, 2000);
+      AppState.log('Task moved successfully', { taskId, targetColId, insertIndex });
+    })
+    .catch((error) => {
+      console.error('[Kanban] Failed to move task:', {
+        error: error.message,
+        taskId,
+        targetColId
+      });
+      AppState.setTasks(previousState);
+      renderBoard();
+      NotificationManager.error('Erro ao mover tarefa: ' + (error.message || 'Tente novamente'));
+      AppState.log('Task move failed, rolled back', { taskId, error: error.message });
+    });
+}
+
 function handleKeyboardMove(e, task, cardElement) {
   const currentColId = task.col_id || 0;
   let newColId = currentColId;
@@ -419,175 +495,6 @@ function handleKeyboardMove(e, task, cardElement) {
       console.error('[Keyboard Move] Error:', error);
       NotificationManager.error('Erro ao mover projeto. Tente novamente.');
     });
-}
-
-function handleDragStart(e) {
-  e.stopPropagation();
-  const taskId = parseInt(this.dataset.id);
-  AppState.draggedTaskId = taskId;
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', taskId.toString());
-  setTimeout(() => this.classList.add('card-dragging'), 0);
-  AppState.log('Drag started', { taskId });
-}
-
-function calculateInsertIndex(cards, mouseY) {
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    const rect = card.getBoundingClientRect();
-    const cardMiddleY = rect.top + rect.height / 2;
-    if (mouseY < cardMiddleY) {
-      return i;
-    }
-  }
-  return cards.length;
-}
-
-function handleDragOver(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  e.dataTransfer.dropEffect = 'move';
-
-  const colBody = e.currentTarget;
-  const cards = Array.from(colBody.querySelectorAll('.card:not(.card-dragging)'));
-  const insertIndex = calculateInsertIndex(cards, e.clientY);
-
-  cards.forEach(card => card.classList.remove('card-over'));
-  if (cards[insertIndex]) {
-    cards[insertIndex].classList.add('card-over');
-  }
-}
-
-function handleDragLeave(e) {
-  const colBody = e.currentTarget;
-  const cards = colBody.querySelectorAll('.card');
-  cards.forEach(card => card.classList.remove('card-over'));
-}
-
-// Validate drop target and extract column ID
-function validateDropTarget(colBody) {
-  if (!colBody) {
-    AppState.log('Drop failed: invalid column element');
-    return { valid: false, error: 'Coluna inválida. Tente novamente.' };
-  }
-
-  const colIdValue = colBody.dataset.colId || colBody.getAttribute('data-col-id');
-  if (!colIdValue) {
-    AppState.log('Drop failed: column ID not found', {
-      hasDataset: !!colBody.dataset.colId,
-      hasAttribute: !!colBody.getAttribute('data-col-id')
-    });
-    return { valid: false, error: 'Coluna inválida. Tente novamente.' };
-  }
-
-  const targetColId = parseInt(colIdValue);
-  if (isNaN(targetColId) || targetColId < 0 || targetColId > 3) {
-    AppState.log('Drop failed: invalid column ID', {
-      targetColId,
-      rawValue: colIdValue,
-      parsed: targetColId
-    });
-    return { valid: false, error: `Coluna inválida (${colIdValue}). Valores permitidos: 0-3.` };
-  }
-
-  return { valid: true, targetColId };
-}
-
-function calculateNewTaskPosition(tasks, taskId, targetColId, insertIndex) {
-  const tasksWithoutMoved = tasks.filter(t => t.id !== taskId);
-  const tasksInOtherCols = tasksWithoutMoved.filter(t => t.col_id !== targetColId);
-  const tasksInTargetCol = tasksWithoutMoved
-    .filter(t => t.col_id === targetColId)
-    .sort((a, b) => (a.order_position || 0) - (b.order_position || 0));
-
-  const task = tasks.find(t => t.id === taskId);
-  const updatedTask = { ...task, col_id: targetColId };
-
-  tasksInTargetCol.splice(insertIndex, 0, updatedTask);
-  tasksInTargetCol.forEach((t, idx) => {
-    t.order_position = idx;
-  });
-
-  return [...tasksInOtherCols, ...tasksInTargetCol];
-}
-
-// Update task position via API with rollback on error
-function updateTaskPosition(taskId, targetColId, insertIndex, previousState) {
-  api.moveTask(taskId, targetColId, insertIndex)
-    .then((updatedTaskFromServer) => {
-      if (typeof window.markLocalTaskAction === 'function') {
-        window.markLocalTaskAction(taskId);
-      }
-
-      // Success: Update with server response (normalize to ensure defaults)
-      const normalizedTask = normalizeTasksData([updatedTaskFromServer])[0];
-      const currentTasks = AppState.getTasks();
-      const updatedTasks = currentTasks.map(t => t.id === taskId ? normalizedTask : t);
-      AppState.setTasks(updatedTasks);
-      renderBoard();
-      AppState.log('Task moved successfully', { taskId, targetColId, insertIndex });
-    })
-    .catch((error) => {
-      // Error: Rollback to previous state
-      console.error('[Kanban] Failed to move task:', {
-        error: error.message,
-        stack: error.stack,
-        taskId,
-        targetColId
-      });
-      AppState.setTasks(previousState);
-      renderBoard();
-      AppState.log('Task move failed, rolled back', { taskId, error: error.message });
-      NotificationManager.error('Erro ao mover tarefa: ' + (error.message || 'Tente novamente'));
-    });
-}
-
-function handleDrop(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
-
-  const colBody = e.currentTarget;
-  const validation = validateDropTarget(colBody);
-  if (!validation.valid) {
-    NotificationManager.error(validation.error);
-    return false;
-  }
-
-  const targetColId = validation.targetColId;
-  const taskId = parseInt(e.dataTransfer.getData('text/plain'));
-  if (isNaN(taskId)) {
-    AppState.log('Drop failed: invalid task ID');
-    return false;
-  }
-
-  const tasks = AppState.getTasks();
-  const task = tasks.find(t => t.id === taskId);
-  if (!task) {
-    AppState.log('Drop failed: task not found', { taskId });
-    return false;
-  }
-
-  const cards = Array.from(colBody.querySelectorAll('.card:not(.card-dragging)'));
-  const insertIndex = calculateInsertIndex(cards, e.clientY);
-
-  if (insertIndex < 0) {
-    NotificationManager.error('Erro: Posição inválida.');
-    return false;
-  }
-
-  // Backup state for rollback
-  const previousState = [...tasks];
-
-  const finalTasks = calculateNewTaskPosition(tasks, taskId, targetColId, insertIndex);
-  AppState.setTasks(finalTasks);
-  cards.forEach(card => card.classList.remove('card-over'));
-  renderBoard();
-
-  // Update server state in background
-  updateTaskPosition(taskId, targetColId, insertIndex, previousState);
-
-  return false;
 }
 
 function renderProjectsHeader() {
