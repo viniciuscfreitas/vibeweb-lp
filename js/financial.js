@@ -742,7 +742,7 @@ function renderProjectsTable(tasks, showNoResults = false) {
     row.style.cursor = 'pointer';
     row.setAttribute('role', 'button');
     row.setAttribute('tabindex', '0');
-    row.setAttribute('aria-label', `Projeto ${task.client}, ${formattedPrice}, ${task.payment_status}`);
+    row.setAttribute('aria-label', `Projeto ${escapeHtml(task.client)}, ${formattedPrice}, ${escapeHtml(task.payment_status || '')}`);
 
     const rowClickHandler = (e) => {
       if (!e.target.closest('.quick-action-btn')) {
@@ -799,7 +799,7 @@ function renderProjectsTable(tasks, showNoResults = false) {
       }
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
-      card.setAttribute('aria-label', `Projeto ${task.client}, ${formattedPrice}, ${task.payment_status}`);
+      card.setAttribute('aria-label', `Projeto ${escapeHtml(task.client)}, ${formattedPrice}, ${escapeHtml(task.payment_status || '')}`);
 
       const cardClickHandler = (e) => {
         if (!e.target.closest('.quick-action-btn')) {

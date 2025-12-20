@@ -7,8 +7,15 @@ function calculateMRR(tasks) {
 function calculateMRRGaps(mrr, hostingPrice) {
   const gap10k = Math.max(0, TARGET_MRR_10K - mrr);
   const gap20k = Math.max(0, TARGET_MRR_20K - mrr);
-  if (hostingPrice <= 0) {
-    return { gap10k, gap20k, upsellsNeeded10k: 0, upsellsNeeded20k: 0 };
+  // If hosting price is not configured or invalid, return gaps without upsells calculation
+  // This prevents division by zero and provides clearer feedback that hosting price needs to be set
+  if (!hostingPrice || hostingPrice <= 0 || !isFinite(hostingPrice)) {
+    return { 
+      gap10k, 
+      gap20k, 
+      upsellsNeeded10k: null, // null indicates hosting price not configured
+      upsellsNeeded20k: null 
+    };
   }
   const upsellsNeeded10k = Math.ceil(gap10k / hostingPrice);
   const upsellsNeeded20k = Math.ceil(gap20k / hostingPrice);
@@ -79,42 +86,72 @@ function isTaskUrgent(task, now, urgentHours = null) {
   return isWithinUrgentHours || isOverdue;
 }
 
+// Centralized function to calculate urgent project time display
+// Used in dashboard and kanban views to ensure consistent behavior
+function calculateUrgentProjectTimeDisplay(project, currentTimestamp) {
+  const hasDeadlineTimestamp = project.deadline_timestamp !== null && project.deadline_timestamp !== undefined;
+  const deadlineHours = parseDeadlineHours(project.deadline);
+  const isInBuildWithoutDeadline = project.col_id === 2 && (!project.deadline || project.deadline === DEADLINE_UNDEFINED);
+  const isUrgentKeyword = URGENT_DEADLINES.includes(project.deadline);
+
+  if (isInBuildWithoutDeadline) {
+    return { display: 'Em desenvolvimento', isOverdue: false };
+  }
+
+  if (isUrgentKeyword && !hasDeadlineTimestamp) {
+    return { display: project.deadline, isOverdue: false };
+  }
+
+  if (!hasDeadlineTimestamp || !deadlineHours) {
+    return { display: project.deadline || 'Sem prazo', isOverdue: false };
+  }
+
+  const deadlineTimestamp = project.deadline_timestamp + (deadlineHours * MS_PER_HOUR);
+  const timeRemaining = deadlineTimestamp - currentTimestamp;
+
+  if (timeRemaining <= 0) {
+    const hoursOverdue = Math.abs(Math.floor(timeRemaining / MS_PER_HOUR));
+    const minutesOverdue = Math.abs(Math.floor((timeRemaining % MS_PER_HOUR) / MS_PER_MINUTE));
+    const display = hoursOverdue > 0 ? `Vencido há ${hoursOverdue}h` : `Vencido há ${minutesOverdue}m`;
+    return { display, isOverdue: true };
+  }
+
+  const remainingHours = Math.floor(timeRemaining / MS_PER_HOUR);
+  const remainingMinutes = Math.floor((timeRemaining % MS_PER_HOUR) / MS_PER_MINUTE);
+  const display = remainingHours > 0 ? `${remainingHours}h` : `${remainingMinutes}m`;
+  return { display, isOverdue: false };
+}
+
 function compareUrgentProjects(projectA, projectB, now) {
-  let projectAIsOverdue = false;
-  if (projectA.deadline_timestamp) {
-    const projectADeadlineHours = parseDeadlineHours(projectA.deadline);
-    if (projectADeadlineHours) {
-      const projectADeadlineTimestamp = projectA.deadline_timestamp + (projectADeadlineHours * MS_PER_HOUR);
-      projectAIsOverdue = projectADeadlineTimestamp <= now;
-    }
-  }
+  // Calculate deadline hours once per project to avoid duplicate parsing
+  const projectADeadlineHours = parseDeadlineHours(projectA.deadline);
+  const projectBDeadlineHours = parseDeadlineHours(projectB.deadline);
 
-  let projectBIsOverdue = false;
-  if (projectB.deadline_timestamp) {
-    const projectBDeadlineHours = parseDeadlineHours(projectB.deadline);
-    if (projectBDeadlineHours) {
-      const projectBDeadlineTimestamp = projectB.deadline_timestamp + (projectBDeadlineHours * MS_PER_HOUR);
-      projectBIsOverdue = projectBDeadlineTimestamp <= now;
-    }
-  }
-
-  if (projectAIsOverdue && !projectBIsOverdue) return -1;
-  if (!projectAIsOverdue && projectBIsOverdue) return 1;
-
-  const projectADeadlineHours = parseDeadlineHours(projectA.deadline) || 999;
-  const projectBDeadlineHours = parseDeadlineHours(projectB.deadline) || 999;
-
+  // Calculate deadline timestamps
   let projectADeadlineTimestamp = Infinity;
-  if (projectA.deadline_timestamp) {
+  let projectBDeadlineTimestamp = Infinity;
+  
+  if (projectA.deadline_timestamp && projectADeadlineHours) {
     projectADeadlineTimestamp = projectA.deadline_timestamp + (projectADeadlineHours * MS_PER_HOUR);
   }
-
-  let projectBDeadlineTimestamp = Infinity;
-  if (projectB.deadline_timestamp) {
+  
+  if (projectB.deadline_timestamp && projectBDeadlineHours) {
     projectBDeadlineTimestamp = projectB.deadline_timestamp + (projectBDeadlineHours * MS_PER_HOUR);
   }
 
-  return projectADeadlineTimestamp - projectBDeadlineTimestamp;
+  // Check if overdue (using calculated timestamps)
+  const projectAIsOverdue = projectADeadlineTimestamp !== Infinity && projectADeadlineTimestamp <= now;
+  const projectBIsOverdue = projectBDeadlineTimestamp !== Infinity && projectBDeadlineTimestamp <= now;
+
+  // Sort overdue items first
+  if (projectAIsOverdue && !projectBIsOverdue) return -1;
+  if (!projectAIsOverdue && projectBIsOverdue) return 1;
+
+  // For items with no valid deadline, use fallback value
+  const projectAFinalTimestamp = projectADeadlineTimestamp === Infinity ? (projectADeadlineHours || 999) * MS_PER_HOUR : projectADeadlineTimestamp;
+  const projectBFinalTimestamp = projectBDeadlineTimestamp === Infinity ? (projectBDeadlineHours || 999) * MS_PER_HOUR : projectBDeadlineTimestamp;
+
+  return projectAFinalTimestamp - projectBFinalTimestamp;
 }
 
 function calculateUrgentProjects(tasks) {

@@ -129,10 +129,10 @@ async function apiRequest(method, endpoint, data = null, requiresAuth = true) {
 // API methods
 const api = {
   async login(emailOrUsername, password) {
-    const isEmail = emailOrUsername.includes('@') && EMAIL_REGEX.test(emailOrUsername);
-    const payload = isEmail
-      ? { email: emailOrUsername, password }
-      : { username: emailOrUsername, password };
+    // Backend accepts both email and username, so send identifier as email field
+    // Backend will detect if it's email or username and handle accordingly
+    // This avoids frontend misclassification issues
+    const payload = { email: emailOrUsername, password };
 
     const result = await apiRequest('POST', '/api/auth/login', payload, false);
 

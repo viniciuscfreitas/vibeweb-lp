@@ -108,10 +108,10 @@ function renderBoard() {
     }
     colDiv.innerHTML = `
       <div class="col-header">
-        <h2 class="col-title">${col.name}</h2>
+        <h2 class="col-title">${escapeHtml(col.name)}</h2>
         <span class="col-count ${colTasks.length > 0 ? 'col-count-active' : ''}" aria-label="${colTasks.length} ${colTasks.length === 1 ? 'projeto' : 'projetos'}">${colTasks.length}</span>
       </div>
-      <div class="col-body" data-col-id="${col.id}" role="group" aria-label="Projetos em ${col.name}">
+      <div class="col-body" data-col-id="${col.id}" role="group" aria-label="Projetos em ${escapeHtml(col.name)}">
       </div>
     `;
 

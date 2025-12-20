@@ -357,21 +357,29 @@ function initDatabase() {
 function checkDomainWithTimeout(domain, timeoutMs) {
   return new Promise((resolve) => {
     let timeoutCleared = false;
+    let requestAborted = false;
+    let req = null;
+    
     const timeout = setTimeout(() => {
       if (!timeoutCleared) {
         timeoutCleared = true;
+        requestAborted = true;
+        // Forcefully destroy the request to prevent hanging connections
+        if (req && !req.destroyed) {
+          req.destroy();
+        }
         resolve('down');
       }
     }, timeoutMs);
 
     const protocol = https;
-    const req = protocol.request({
+    req = protocol.request({
       hostname: domain,
       method: 'HEAD',
       timeout: timeoutMs,
       rejectUnauthorized: false
     }, (res) => {
-      if (!timeoutCleared) {
+      if (!timeoutCleared && !requestAborted) {
         timeoutCleared = true;
         clearTimeout(timeout);
         resolve(res.statusCode >= 200 && res.statusCode < 400 ? 'up' : 'down');
@@ -379,7 +387,7 @@ function checkDomainWithTimeout(domain, timeoutMs) {
     });
 
     req.on('error', () => {
-      if (!timeoutCleared) {
+      if (!timeoutCleared && !requestAborted) {
         timeoutCleared = true;
         clearTimeout(timeout);
         resolve('down');
@@ -387,11 +395,14 @@ function checkDomainWithTimeout(domain, timeoutMs) {
     });
 
     req.on('timeout', () => {
-      req.destroy();
-      if (!timeoutCleared) {
-        timeoutCleared = true;
-        clearTimeout(timeout);
-        resolve('down');
+      if (!requestAborted) {
+        requestAborted = true;
+        req.destroy();
+        if (!timeoutCleared) {
+          timeoutCleared = true;
+          clearTimeout(timeout);
+          resolve('down');
+        }
       }
     });
 
@@ -424,7 +435,7 @@ function startUptimeMonitor(db, NODE_ENV) {
             return;
           }
 
-          // Process in batches of 20
+          // Process in batches of 20 sequentially to avoid race conditions
           const batchSize = 20;
           for (let i = 0; i < tasks.length; i += batchSize) {
             const batch = tasks.slice(i, i + batchSize);
@@ -439,16 +450,22 @@ function startUptimeMonitor(db, NODE_ENV) {
             try {
               const results = await Promise.all(checks);
 
+              // Prepare statement once per batch to avoid race conditions
               const stmt = db.prepare('UPDATE tasks SET uptime_status = ? WHERE id = ?');
-              results.forEach(({ taskId, status }) => {
-                stmt.run([status, taskId], (err) => {
-                  if (err) {
-                    console.error(`[UptimeMonitor] Error updating task ${taskId}:`, err);
-                  }
+              try {
+                results.forEach(({ taskId, status }) => {
+                  stmt.run([status, taskId], (err) => {
+                    if (err) {
+                      console.error(`[UptimeMonitor] Error updating task ${taskId}:`, err);
+                    }
+                  });
                 });
-              });
-              stmt.finalize();
+              } finally {
+                // Always finalize the statement, even if errors occur
+                stmt.finalize();
+              }
 
+              // Small delay between batches to avoid overwhelming the database
               if (i + batchSize < tasks.length) {
                 await new Promise(resolve => setTimeout(resolve, 100));
               }

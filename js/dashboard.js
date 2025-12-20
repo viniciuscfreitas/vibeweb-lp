@@ -34,14 +34,21 @@ function renderDashboardHeader(metrics) {
 
   const gap = Math.max(0, TARGET_MRR_10K - (metrics.mrr || 0));
   const settings = getSettings();
-  const upsellsNeeded = Math.ceil(gap / settings.hostingPrice);
+  const hostingPrice = settings.hostingPrice || 0;
+  const upsellsNeeded = (hostingPrice > 0 && isFinite(hostingPrice)) 
+    ? Math.ceil(gap / hostingPrice) 
+    : null;
+  const upsellsText = upsellsNeeded !== null ? `${upsellsNeeded} upsells` : 'configurar preço de hospedagem';
+  const titleText = upsellsNeeded !== null 
+    ? `Precisa de ${upsellsNeeded} upsells para atingir €10k`
+    : 'Configure o preço de hospedagem nas configurações para calcular upsells necessários';
 
   DOM.headerInfo.innerHTML = `
     <div class="header-stat">
       <span class="header-stat-label">MRR</span>
       <span class="header-stat-value" style="color: var(--success);">${formatCurrency(metrics.mrr || 0)}</span>
     </div>
-    <div class="header-stat" id="mrrProjection" title="Precisa de ${upsellsNeeded} upsells para atingir €10k">
+    <div class="header-stat" id="mrrProjection" title="${escapeHtml(titleText)}">
       <span class="header-stat-label">Meta €10k</span>
       <span class="header-stat-value" id="gapValue" style="color: ${gap > 0 ? 'var(--danger)' : 'var(--success)'};">€${(gap || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
     </div>
@@ -429,39 +436,7 @@ function renderPieChart(distribution) {
   }
 }
 
-function calculateUrgentProjectTimeDisplay(project, currentTimestamp) {
-  const hasDeadlineTimestamp = project.deadline_timestamp !== null && project.deadline_timestamp !== undefined;
-  const deadlineHours = parseDeadlineHours(project.deadline);
-  const isInBuildWithoutDeadline = project.col_id === 2 && (!project.deadline || project.deadline === DEADLINE_UNDEFINED);
-  const isUrgentKeyword = URGENT_DEADLINES.includes(project.deadline);
-
-  if (isInBuildWithoutDeadline) {
-    return { display: 'Em desenvolvimento', isOverdue: false };
-  }
-
-  if (isUrgentKeyword && !hasDeadlineTimestamp) {
-    return { display: project.deadline, isOverdue: false };
-  }
-
-  if (!hasDeadlineTimestamp || !deadlineHours) {
-    return { display: project.deadline || 'Sem prazo', isOverdue: false };
-  }
-
-  const deadlineTimestamp = project.deadline_timestamp + (deadlineHours * MS_PER_HOUR);
-  const timeRemaining = deadlineTimestamp - currentTimestamp;
-
-  if (timeRemaining <= 0) {
-    const hoursOverdue = Math.abs(Math.floor(timeRemaining / MS_PER_HOUR));
-    const minutesOverdue = Math.abs(Math.floor((timeRemaining % MS_PER_HOUR) / MS_PER_MINUTE));
-    const display = hoursOverdue > 0 ? `Vencido há ${hoursOverdue}h` : `Vencido há ${minutesOverdue}m`;
-    return { display, isOverdue: true };
-  }
-
-  const remainingHours = Math.floor(timeRemaining / MS_PER_HOUR);
-  const remainingMinutes = Math.floor((timeRemaining % MS_PER_HOUR) / MS_PER_MINUTE);
-  const display = remainingHours > 0 ? `${remainingHours}h` : `${remainingMinutes}m`;
-  return { display, isOverdue: false };
-}
+// calculateUrgentProjectTimeDisplay moved to calculations.js for centralized logic
 
 function buildWhatsAppUrl(contact) {
   if (!contact) return null;

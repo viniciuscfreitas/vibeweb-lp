@@ -14,8 +14,11 @@ const AppState = {
 
   setTasks(newTasks) {
     this.tasks = newTasks;
+    // Create hash that includes task IDs and last update timestamps to detect content changes
+    // This ensures cache is invalidated when task data changes even if IDs remain the same
     const taskIds = newTasks.map(t => t.id).join(',');
-    const newHash = newTasks.length + '-' + (taskIds.length > 0 ? taskIds : 'empty');
+    const taskTimestamps = newTasks.map(t => t.updated_at || t.created_at || '').join(',');
+    const newHash = newTasks.length + '-' + (taskIds.length > 0 ? taskIds : 'empty') + '-' + (taskTimestamps.length > 0 ? taskTimestamps : 'empty');
     if (this._tasksHash !== newHash) {
       this._metricsCache = null;
       this._tasksHash = newHash;
