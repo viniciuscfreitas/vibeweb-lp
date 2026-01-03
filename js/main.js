@@ -142,8 +142,6 @@ function getDefaultSettings() {
     hostingPrice: HOSTING_PRICE_EUR,
     defaultTicket: DEFAULT_AVERAGE_TICKET,
     autoUpdate: true,
-    searchDebounce: SEARCH_DEBOUNCE_MS,
-    enableCache: true,
     showUrgent: true,
     urgentHours: URGENT_HOURS_48
   };
@@ -197,8 +195,6 @@ async function loadSettingsIntoForm() {
   if (DOM.settingsHostingPrice) DOM.settingsHostingPrice.value = settings.hostingPrice || '';
   if (DOM.settingsDefaultTicket) DOM.settingsDefaultTicket.value = settings.defaultTicket || '';
   if (DOM.settingsAutoUpdate) DOM.settingsAutoUpdate.checked = settings.autoUpdate !== false;
-  if (DOM.settingsSearchDebounce) DOM.settingsSearchDebounce.value = settings.searchDebounce || SEARCH_DEBOUNCE_MS;
-  if (DOM.settingsEnableCache) DOM.settingsEnableCache.checked = settings.enableCache !== false;
   if (DOM.settingsShowUrgent) DOM.settingsShowUrgent.checked = settings.showUrgent !== false;
   if (DOM.settingsUrgentHours) DOM.settingsUrgentHours.value = settings.urgentHours || URGENT_HOURS_48;
 
@@ -238,15 +234,12 @@ async function loadSettingsIntoForm() {
 function getSettingsFromForm() {
   const hostingPriceRaw = DOM.settingsHostingPrice ? parseFloat(DOM.settingsHostingPrice.value) : NaN;
   const defaultTicketRaw = DOM.settingsDefaultTicket ? parseFloat(DOM.settingsDefaultTicket.value) : NaN;
-  const searchDebounceRaw = DOM.settingsSearchDebounce ? parseInt(DOM.settingsSearchDebounce.value, 10) : NaN;
   const urgentHoursRaw = DOM.settingsUrgentHours ? parseInt(DOM.settingsUrgentHours.value, 10) : NaN;
 
   return {
     hostingPrice: !isNaN(hostingPriceRaw) && hostingPriceRaw >= 0 ? hostingPriceRaw : HOSTING_PRICE_EUR,
     defaultTicket: !isNaN(defaultTicketRaw) && defaultTicketRaw >= 0 ? defaultTicketRaw : DEFAULT_AVERAGE_TICKET,
     autoUpdate: DOM.settingsAutoUpdate ? DOM.settingsAutoUpdate.checked : true,
-    searchDebounce: !isNaN(searchDebounceRaw) && searchDebounceRaw >= 0 ? searchDebounceRaw : SEARCH_DEBOUNCE_MS,
-    enableCache: DOM.settingsEnableCache ? DOM.settingsEnableCache.checked : true,
     showUrgent: DOM.settingsShowUrgent ? DOM.settingsShowUrgent.checked : true,
     urgentHours: !isNaN(urgentHoursRaw) && urgentHoursRaw >= 1 ? urgentHoursRaw : URGENT_HOURS_48
   };
@@ -307,11 +300,6 @@ async function saveSettingsFromForm() {
 
   if (settings.urgentHours < 1 || settings.urgentHours > 720) {
     NotificationManager.error('Horas de urgência devem estar entre 1 e 720');
-    return;
-  }
-
-  if (settings.searchDebounce < 0 || settings.searchDebounce > 5000) {
-    NotificationManager.error('Tempo de busca deve estar entre 0 e 5000ms');
     return;
   }
 
@@ -427,12 +415,6 @@ async function saveSettingsFromForm() {
   }
 }
 
-function clearCache() {
-  AppState.clearMetricsCache();
-  AppState.clearActivitiesCache();
-  NotificationManager.success('Cache limpo com sucesso');
-  AppState.log('Cache cleared');
-}
 
 function expandSearch() {
   if (!DOM.searchContainer || !DOM.searchInput) return;
@@ -460,7 +442,6 @@ function handleSearch() {
   }
 
   // Default Kanban search
-  const settings = getSettings();
   if (AppState.searchTimeout) {
     clearTimeout(AppState.searchTimeout);
   }
@@ -468,7 +449,7 @@ function handleSearch() {
     renderBoard();
     updateHeaderStats();
     AppState.log('Search executed');
-  }, settings.searchDebounce);
+  }, SEARCH_DEBOUNCE_MS);
 }
 
 function fadeContainer(container, isFadeIn) {
@@ -1305,13 +1286,6 @@ function setupEventListeners() {
     });
   }
 
-  if (DOM.btnClearCache) {
-    DOM.btnClearCache.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      clearCache();
-    });
-  }
 
   if (DOM.settingsModalOverlay) {
     DOM.settingsModalOverlay.addEventListener('click', (e) => {

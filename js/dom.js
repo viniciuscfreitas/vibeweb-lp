@@ -48,11 +48,8 @@ const DOM = {
   settingsHostingPrice: null,
   settingsDefaultTicket: null,
   settingsAutoUpdate: null,
-  settingsSearchDebounce: null,
-  settingsEnableCache: null,
   settingsShowUrgent: null,
   settingsUrgentHours: null,
-  btnClearCache: null,
   profileAvatar: null,
   profileAvatarPreview: null,
   profileName: null,
@@ -138,11 +135,8 @@ const DOM = {
     this.settingsHostingPrice = document.getElementById('settingsHostingPrice');
     this.settingsDefaultTicket = document.getElementById('settingsDefaultTicket');
     this.settingsAutoUpdate = document.getElementById('settingsAutoUpdate');
-    this.settingsSearchDebounce = document.getElementById('settingsSearchDebounce');
-    this.settingsEnableCache = document.getElementById('settingsEnableCache');
     this.settingsShowUrgent = document.getElementById('settingsShowUrgent');
     this.settingsUrgentHours = document.getElementById('settingsUrgentHours');
-    this.btnClearCache = document.getElementById('btnClearCache');
     this.profileAvatar = document.getElementById('profileAvatar');
     this.profileAvatarPreview = document.getElementById('profileAvatarPreview');
     this.profileName = document.getElementById('profileName');
