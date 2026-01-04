@@ -453,17 +453,10 @@ async function saveSettingsFromForm() {
 
 
 let searchBlurTimeout = null;
-let searchClickTarget = null;
 
-function expandSearch(e) {
+function expandSearch() {
   if (!DOM.searchContainer || !DOM.searchInput) return;
-
-  if (e) {
-    searchClickTarget = e.target;
-  }
-
   DOM.searchContainer.classList.add('expanded');
-
   requestAnimationFrame(() => {
     if (DOM.searchInput && document.activeElement !== DOM.searchInput) {
       DOM.searchInput.focus();
@@ -473,9 +466,7 @@ function expandSearch(e) {
 
 function collapseSearch(force = false) {
   if (!DOM.searchInput || !DOM.searchContainer) return;
-
   const hasValue = DOM.searchInput.value.trim().length > 0;
-
   if (force || !hasValue) {
     DOM.searchContainer.classList.remove('expanded');
     if (DOM.searchInput === document.activeElement) {
@@ -491,17 +482,12 @@ function handleSearchBlur(e) {
 
   searchBlurTimeout = setTimeout(() => {
     const relatedTarget = e.relatedTarget;
-    const clickTarget = searchClickTarget;
-    searchClickTarget = null;
-
-    if (relatedTarget === DOM.searchBtn || clickTarget === DOM.searchBtn) {
+    if (relatedTarget === DOM.searchBtn) {
       return;
     }
-
     if (relatedTarget && DOM.searchContainer && DOM.searchContainer.contains(relatedTarget)) {
       return;
     }
-
     collapseSearch();
   }, 150);
 }
@@ -514,10 +500,10 @@ function handleSearchContainerClick(e) {
     if (isExpanded && !DOM.searchInput.value.trim()) {
       collapseSearch(true);
     } else {
-      expandSearch(e);
+      expandSearch();
     }
   } else if (!DOM.searchContainer.classList.contains('expanded')) {
-    expandSearch(e);
+    expandSearch();
   }
 }
 
@@ -1206,7 +1192,7 @@ function setupEventListeners() {
       const isInSearch = e.target === DOM.searchInput || (DOM.searchContainer && DOM.searchContainer.contains(e.target));
       if (!isInSearch) {
         e.preventDefault();
-        expandSearch(e);
+        expandSearch();
       }
     }
 
@@ -1686,36 +1672,6 @@ async function initApp() {
   DOM.init();
   updateAriaHiddenForViews();
 
-  function updateSearchContainerState() {
-    if (!DOM.searchContainer) return;
-
-    const isDesktop = window.innerWidth > 767;
-    const isExpanded = DOM.searchContainer.classList.contains('expanded');
-
-    if (isDesktop && !isExpanded) {
-      DOM.searchContainer.classList.add('expanded');
-      requestAnimationFrame(() => {
-        if (DOM.searchInput && document.activeElement !== DOM.searchInput) {
-          DOM.searchInput.focus();
-        }
-      });
-    } else if (!isDesktop && isExpanded) {
-      const hasValue = DOM.searchInput && DOM.searchInput.value.trim().length > 0;
-      if (!hasValue) {
-        DOM.searchContainer.classList.remove('expanded');
-      }
-    }
-  }
-
-  updateSearchContainerState();
-
-  let resizeTimeout = null;
-  window.addEventListener('resize', () => {
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout);
-    }
-    resizeTimeout = setTimeout(updateSearchContainerState, 150);
-  });
 
   // Show loading state (only in boardGrid, not entire container)
   if (DOM.boardGrid) {
