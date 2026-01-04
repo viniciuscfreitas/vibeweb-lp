@@ -482,27 +482,21 @@ function handleSearchBlur(e) {
 
   searchBlurTimeout = setTimeout(() => {
     const relatedTarget = e.relatedTarget;
-    if (relatedTarget === DOM.searchBtn) {
-      return;
-    }
-    if (relatedTarget && DOM.searchContainer && DOM.searchContainer.contains(relatedTarget)) {
+    if (relatedTarget === DOM.searchBtn || (relatedTarget && DOM.searchContainer && DOM.searchContainer.contains(relatedTarget))) {
       return;
     }
     collapseSearch();
   }, 150);
 }
 
-function handleSearchContainerClick(e) {
+function handleSearchBtnClick(e) {
   if (!DOM.searchContainer || !DOM.searchInput) return;
+  e.stopPropagation();
 
-  if (e.target === DOM.searchBtn || DOM.searchBtn.contains(e.target)) {
-    const isExpanded = DOM.searchContainer.classList.contains('expanded');
-    if (isExpanded && !DOM.searchInput.value.trim()) {
-      collapseSearch(true);
-    } else {
-      expandSearch();
-    }
-  } else if (!DOM.searchContainer.classList.contains('expanded')) {
+  const isExpanded = DOM.searchContainer.classList.contains('expanded');
+  if (isExpanded && !DOM.searchInput.value.trim()) {
+    collapseSearch(true);
+  } else {
     expandSearch();
   }
 }
@@ -1292,13 +1286,18 @@ function setupEventListeners() {
     });
   }
 
-  if (DOM.searchContainer) {
-    DOM.searchContainer.addEventListener('click', handleSearchContainerClick);
+  if (DOM.searchBtn) {
+    DOM.searchBtn.addEventListener('click', handleSearchBtnClick);
   }
 
   if (DOM.searchInput) {
     DOM.searchInput.addEventListener('input', handleSearch);
     DOM.searchInput.addEventListener('blur', handleSearchBlur);
+    DOM.searchInput.addEventListener('focus', () => {
+      if (!DOM.searchContainer.classList.contains('expanded')) {
+        expandSearch();
+      }
+    });
     DOM.searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && DOM.searchContainer) {
         if (DOM.searchInput.value.trim()) {
