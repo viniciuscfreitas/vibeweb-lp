@@ -277,6 +277,8 @@ body {
   flex: 0 1 auto;
   flex-shrink: 0;
   transition: flex 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
 }
 
 .search-container.expanded {
@@ -371,13 +373,14 @@ body {
   color: var(--text-muted);
   font-size: 0.875rem;
   pointer-events: none;
-  z-index: 1;
-  opacity: 1;
+  z-index: 3;
+  opacity: 0;
   transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.search-container:not(.expanded) .search-icon {
-  opacity: 0;
+.search-container.expanded .search-icon {
+  opacity: 1;
+  z-index: 3;
 }
 
 .search-btn-icon {
