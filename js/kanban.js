@@ -26,7 +26,9 @@ function renderBoard() {
 
   currentTimestamp = Date.now();
 
-  const searchTerm = DOM.searchInput.value.toLowerCase();
+  // Cache search term lowercase once
+  const searchInputValue = DOM.searchInput.value;
+  const searchTerm = searchInputValue ? searchInputValue.toLowerCase() : '';
   const fragment = document.createDocumentFragment();
   const tasks = AppState.getTasks();
   const hasColumnFilter = AppState.filterByColumnId !== undefined && AppState.filterByColumnId !== null;
@@ -44,6 +46,7 @@ function renderBoard() {
     tasksByColumn.set(col.id, []);
   });
 
+  // Pre-compute lowercase task properties once to avoid repeated toLowerCase() calls
   tasks.forEach(task => {
     const colId = task.col_id || 0;
 
@@ -61,8 +64,11 @@ function renderBoard() {
     }
 
     if (searchTerm) {
-      const clientMatches = task.client && task.client.toLowerCase().includes(searchTerm);
-      const domainMatches = task.domain && task.domain.toLowerCase().includes(searchTerm);
+      // Cache lowercase values once per task
+      const clientLower = task.client ? task.client.toLowerCase() : '';
+      const domainLower = task.domain ? task.domain.toLowerCase() : '';
+      const clientMatches = clientLower.includes(searchTerm);
+      const domainMatches = domainLower.includes(searchTerm);
       if (!clientMatches && !domainMatches) {
         return;
       }
@@ -113,21 +119,28 @@ function renderBoard() {
     if (colTasks.length === 0) {
       const emptyState = document.createElement('div');
       emptyState.className = 'empty-state';
+      
+      // Always show CTA button in column 0, even on mobile
+      const showCreateBtn = col.id === 0;
+      const emptyStateText = hasAnyFilter 
+        ? 'Nenhum projeto encontrado com este filtro' 
+        : 'Nenhum projeto aqui';
+      
       emptyState.innerHTML = `
         <div class="empty-state-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div>
-        <div class="empty-state-text">Nenhum projeto aqui</div>
-        ${col.id === 0 ? '<button class="btn-text empty-state-action" id="emptyStateCreateBtn">Criar primeiro projeto</button>' : ''}
+        <div class="empty-state-text">${emptyStateText}</div>
+        ${showCreateBtn ? '<button class="btn-text empty-state-action" id="emptyStateCreateBtn" aria-label="Criar primeiro projeto">Criar primeiro projeto</button>' : ''}
       `;
       bodyDiv.appendChild(emptyState);
 
-      if (col.id === 0) {
+      if (showCreateBtn) {
         const createBtn = emptyState.querySelector('#emptyStateCreateBtn');
         if (createBtn) {
           createBtn.addEventListener('click', () => {
-            if (DOM.btnNewProject && DOM.btnNewProject.offsetParent !== null) {
-              DOM.btnNewProject.click();
-            } else if (typeof openModal === 'function') {
+            if (typeof openModal === 'function') {
               openModal();
+            } else if (DOM.btnNewProject) {
+              DOM.btnNewProject.click();
             }
           });
         }
@@ -144,6 +157,10 @@ function renderBoard() {
     fragment.appendChild(colDiv);
   });
 
+  // Cleanup event listeners from old cards before destroying DOM
+  const oldCards = DOM.boardGrid.querySelectorAll('.card');
+  oldCards.forEach(card => cleanupCardEventListeners(card));
+  
   DOM.boardGrid.innerHTML = '';
   DOM.boardGrid.appendChild(fragment);
   updateHeaderStats();
@@ -171,9 +188,8 @@ function buildActionButtonsHtml(task) {
     }
   }
 
-  // Validar e extrair email usando EMAIL_PATTERN de forms.js
-  const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (EMAIL_PATTERN.test(contact)) {
+  // Validar e extrair email usando EMAIL_PATTERN de forms.js (já definido globalmente)
+  if (typeof EMAIL_PATTERN !== 'undefined' && EMAIL_PATTERN.test(contact)) {
     const emailUrl = `mailto:${contact}?subject=${encodeURIComponent(`Status do Projeto ${task.client}`)}`;
     emailHtml = `<a href="${emailUrl}" class="action-btn email" aria-label="Enviar email" onclick="event.stopPropagation();">Email</a>`;
   }
@@ -182,6 +198,9 @@ function buildActionButtonsHtml(task) {
 
   return `<div class="card-actions">${whatsappHtml}${emailHtml}</div>`;
 }
+
+// Store event handlers to allow cleanup (prevent memory leaks)
+const cardEventHandlers = new WeakMap();
 
 function createCardElement(task, isExpanded = false, now = null) {
   if (!task) return null;
@@ -319,8 +338,9 @@ function createCardElement(task, isExpanded = false, now = null) {
     `;
   }
 
-  el.addEventListener('click', () => openModal(task));
-  el.addEventListener('keydown', (e) => {
+  // Create event handlers and store references for cleanup
+  const clickHandler = () => openModal(task);
+  const keydownHandler = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       openModal(task);
@@ -329,9 +349,26 @@ function createCardElement(task, isExpanded = false, now = null) {
       e.preventDefault();
       handleKeyboardMove(e, task, el);
     }
-  });
+  };
+  
+  el.addEventListener('click', clickHandler);
+  el.addEventListener('keydown', keydownHandler);
+  
+  // Store handlers for cleanup (WeakMap allows garbage collection when element is removed)
+  cardEventHandlers.set(el, { click: clickHandler, keydown: keydownHandler });
 
   return el;
+}
+
+// Cleanup function to remove event listeners before destroying cards
+function cleanupCardEventListeners(cardElement) {
+  if (!cardElement) return;
+  const handlers = cardEventHandlers.get(cardElement);
+  if (handlers) {
+    cardElement.removeEventListener('click', handlers.click);
+    cardElement.removeEventListener('keydown', handlers.keydown);
+    cardEventHandlers.delete(cardElement);
+  }
 }
 
 function updateDeadlineDisplays() {
@@ -425,6 +462,12 @@ function handleSortableEnd(evt) {
   const previousState = [...tasks];
   const insertIndex = newIndex;
 
+  // Immediate visual feedback - show success state
+  item.classList.add('card-move-success');
+  setTimeout(() => {
+    item.classList.remove('card-move-success');
+  }, 500);
+
   api.moveTask(taskId, targetColId, insertIndex)
     .then((updatedTaskFromServer) => {
       if (typeof window.markLocalTaskAction === 'function') {
@@ -435,10 +478,20 @@ function handleSortableEnd(evt) {
       const currentTasks = AppState.getTasks();
       const updatedTasks = currentTasks.map(t => t.id === taskId ? normalizedTask : t);
       AppState.setTasks(updatedTasks);
-      renderBoard();
+      
+      // Incremental update: only update the moved card and column counts
+      updateCardInPlace(item, normalizedTask);
+      updateColumnCounts();
 
       const colName = COLUMNS_MAP.get(targetColId)?.name || 'Coluna';
       NotificationManager.info(`Projeto ${task.client} movido para ${colName}`, 2000);
+      
+      // Announce to screen readers
+      const ariaLiveRegion = document.getElementById('ariaLiveRegion');
+      if (ariaLiveRegion) {
+        ariaLiveRegion.textContent = `Projeto ${task.client} movido para ${colName}`;
+      }
+      
       AppState.log('Task moved successfully', { taskId, targetColId, insertIndex });
     })
     .catch((error) => {
@@ -447,6 +500,13 @@ function handleSortableEnd(evt) {
         taskId,
         targetColId
       });
+      
+      // Visual feedback for error
+      item.classList.add('card-move-error');
+      setTimeout(() => {
+        item.classList.remove('card-move-error');
+      }, 1000);
+      
       AppState.setTasks(previousState);
       renderBoard();
       NotificationManager.error('Erro ao mover tarefa: ' + (error.message || 'Tente novamente'));
@@ -473,6 +533,12 @@ function handleKeyboardMove(e, task, cardElement) {
 
   const newOrderPosition = tasksInTargetCol.length;
 
+  // Immediate visual feedback
+  cardElement.classList.add('card-move-success');
+  setTimeout(() => {
+    cardElement.classList.remove('card-move-success');
+  }, 500);
+
   // Update task position
   api.moveTask(task.id, newColId, newOrderPosition)
     .then((updatedTask) => {
@@ -483,10 +549,17 @@ function handleKeyboardMove(e, task, cardElement) {
       const normalizedTask = normalizeTasksData([updatedTask])[0];
       const updatedTasks = tasks.map(t => t.id === task.id ? normalizedTask : t);
       AppState.setTasks(updatedTasks);
-      renderBoard();
+      
+      // Incremental update: only update the moved card and column counts
+      updateCardInPlace(cardElement, normalizedTask);
+      updateColumnCounts();
 
       // Announce move to screen readers
       const colName = COLUMNS_MAP.get(newColId)?.name || 'Coluna';
+      const ariaLiveRegion = document.getElementById('ariaLiveRegion');
+      if (ariaLiveRegion) {
+        ariaLiveRegion.textContent = `Projeto ${task.client} movido para ${colName}`;
+      }
       NotificationManager.info(`Projeto ${task.client} movido para ${colName}`, 2000);
 
       // Focus the moved card
@@ -499,6 +572,10 @@ function handleKeyboardMove(e, task, cardElement) {
     })
     .catch((error) => {
       console.error('[Keyboard Move] Error:', error);
+      cardElement.classList.add('card-move-error');
+      setTimeout(() => {
+        cardElement.classList.remove('card-move-error');
+      }, 1000);
       NotificationManager.error('Erro ao mover projeto. Tente novamente.');
     });
 }
@@ -509,13 +586,17 @@ function renderProjectsHeader() {
   const tasks = AppState.getTasks();
   if (!Array.isArray(tasks)) return;
 
-  const searchTerm = DOM.searchInput ? DOM.searchInput.value.toLowerCase() : '';
+  // Cache search term once
+  const searchInputValue = DOM.searchInput ? DOM.searchInput.value : '';
+  const searchTerm = searchInputValue ? searchInputValue.toLowerCase() : '';
   const filteredTasks = tasks.filter(t => {
     if (!searchTerm) return true;
     if (!t || !t.client) return false;
-    const clientMatches = t.client.toLowerCase().includes(searchTerm);
-    const hasDomain = !!t.domain;
-    const domainMatches = hasDomain && t.domain.toLowerCase().includes(searchTerm);
+    // Cache lowercase values once per task
+    const clientLower = t.client.toLowerCase();
+    const domainLower = t.domain ? t.domain.toLowerCase() : '';
+    const clientMatches = clientLower.includes(searchTerm);
+    const domainMatches = domainLower.includes(searchTerm);
     return clientMatches || domainMatches;
   });
   const totalValue = filteredTasks.reduce((sum, t) => sum + (parseFloat(t.price) || 0), 0);
@@ -576,6 +657,13 @@ function clearKanbanFilter() {
   AppState.filterByCustomType = null;
   renderBoard();
   hideFilterIndicator();
+  
+  // Announce filter removal to screen readers
+  const ariaLiveRegion = document.getElementById('ariaLiveRegion');
+  if (ariaLiveRegion) {
+    ariaLiveRegion.textContent = 'Filtro removido. Mostrando todos os projetos.';
+  }
+  
   AppState.log('Cleared kanban filter');
 }
 
@@ -590,7 +678,7 @@ function showFilterIndicator(columnId) {
     filterIndicator.className = 'filter-indicator';
     filterIndicator.innerHTML = `
       <span>Filtrado: ${column.name}</span>
-      <button class="btn-text" onclick="clearKanbanFilter()" style="margin-left: 0.5rem;">
+      <button class="btn-text" onclick="clearKanbanFilter()" style="margin-left: 0.5rem;" aria-label="Remover filtro">
         <i class="fa-solid fa-xmark"></i>
       </button>
     `;
@@ -602,6 +690,12 @@ function showFilterIndicator(columnId) {
     filterIndicator.querySelector('span').textContent = `Filtrado: ${column.name}`;
   }
   filterIndicator.style.display = 'flex';
+
+  // Announce filter change to screen readers
+  const ariaLiveRegion = document.getElementById('ariaLiveRegion');
+  if (ariaLiveRegion) {
+    ariaLiveRegion.textContent = `Visualização filtrada: ${column.name}`;
+  }
 }
 
 function showFilterIndicatorCustom(filterName) {
@@ -612,7 +706,7 @@ function showFilterIndicatorCustom(filterName) {
     filterIndicator.className = 'filter-indicator';
     filterIndicator.innerHTML = `
       <span>Filtrado: ${filterName}</span>
-      <button class="btn-text" onclick="clearKanbanFilter()" style="margin-left: 0.5rem;">
+      <button class="btn-text" onclick="clearKanbanFilter()" style="margin-left: 0.5rem;" aria-label="Remover filtro">
         <i class="fa-solid fa-xmark"></i>
       </button>
     `;
@@ -624,6 +718,12 @@ function showFilterIndicatorCustom(filterName) {
     filterIndicator.querySelector('span').textContent = `Filtrado: ${filterName}`;
   }
   filterIndicator.style.display = 'flex';
+
+  // Announce filter change to screen readers
+  const ariaLiveRegion = document.getElementById('ariaLiveRegion');
+  if (ariaLiveRegion) {
+    ariaLiveRegion.textContent = `Visualização filtrada: ${filterName}`;
+  }
 }
 
 function hideFilterIndicator() {
@@ -631,6 +731,157 @@ function hideFilterIndicator() {
   if (filterIndicator) {
     filterIndicator.style.display = 'none';
   }
+}
+
+function updateCardInPlace(cardElement, updatedTask) {
+  if (!cardElement || !updatedTask || !cardElement.parentNode) return;
+  
+  const oldColId = parseInt(cardElement.dataset.colId) || 0;
+  const newColId = updatedTask.col_id || 0;
+  
+  // If card moved to different column, need full re-render
+  if (oldColId !== newColId) {
+    // Card will be moved by SortableJS, so we need to re-render
+    // But we can still update the card element if it's still in DOM
+    const tasks = AppState.getTasks();
+    const updatedTasks = tasks.map(t => t.id === updatedTask.id ? updatedTask : t);
+    AppState.setTasks(updatedTasks);
+    renderBoard();
+    return;
+  }
+  
+  // Update card data attributes
+  cardElement.dataset.colId = newColId;
+  if (updatedTask.deadline_timestamp) {
+    cardElement.dataset.deadlineTimestamp = updatedTask.deadline_timestamp;
+  }
+  if (updatedTask.uptime_status) {
+    cardElement.dataset.uptimeStatus = updatedTask.uptime_status;
+  } else {
+    delete cardElement.dataset.uptimeStatus;
+  }
+  
+  // Update urgent status
+  const now = Date.now();
+  if (isTaskUrgent(updatedTask, now)) {
+    cardElement.dataset.urgent = 'true';
+  } else {
+    delete cardElement.dataset.urgent;
+  }
+  
+  // Update aria-label
+  const deadlineInfo = updatedTask.deadline ? `, prazo: ${updatedTask.deadline}` : '';
+  const colName = COLUMNS_MAP.get(newColId)?.name || '';
+  cardElement.setAttribute('aria-label', `Projeto ${updatedTask.client}, ${formatPrice(updatedTask.price)}${deadlineInfo}, coluna: ${colName}. Use setas esquerda e direita para mover entre colunas, Enter ou Espaço para editar`);
+  
+  // Update price if visible
+  const priceEl = cardElement.querySelector('.price');
+  if (priceEl) {
+    priceEl.textContent = formatPrice(updatedTask.price);
+  }
+  
+  // Update deadline if visible
+  const deadlineEl = cardElement.querySelector('.deadline');
+  if (deadlineEl && updatedTask.deadline_timestamp) {
+    const display = formatDeadlineDisplay(updatedTask.deadline, updatedTask.deadline_timestamp);
+    if (display) {
+      deadlineEl.textContent = display;
+      deadlineEl.dataset.deadline = updatedTask.deadline || '';
+      deadlineEl.dataset.timestamp = updatedTask.deadline_timestamp || '';
+      
+      if (display === DEADLINE_OVERDUE) {
+        deadlineEl.classList.add('overdue');
+      } else {
+        deadlineEl.classList.remove('overdue');
+      }
+    }
+  }
+}
+
+function updateColumnCounts() {
+  const tasks = AppState.getTasks();
+  const tasksByColumn = new Map();
+  COLUMNS.forEach(col => {
+    tasksByColumn.set(col.id, []);
+  });
+  
+  // Cache search term and filters once
+  const searchInputValue = DOM.searchInput ? DOM.searchInput.value : '';
+  const searchTerm = searchInputValue ? searchInputValue.toLowerCase() : '';
+  const hasColumnFilter = AppState.filterByColumnId !== undefined && AppState.filterByColumnId !== null;
+  const hasCustomFilter = AppState.filterByCustomType !== undefined && AppState.filterByCustomType !== null;
+  
+  tasks.forEach(task => {
+    const colId = task.col_id || 0;
+    
+    // Apply same filters as renderBoard
+    if (hasColumnFilter && colId !== AppState.filterByColumnId) {
+      return;
+    }
+    
+    if (hasCustomFilter) {
+      if (AppState.filterByCustomType === 'activeJobs' && colId !== 1 && colId !== 2) {
+        return;
+      }
+      if (AppState.filterByCustomType === 'pendingPayments' && task.payment_status !== PAYMENT_STATUS_PENDING) {
+        return;
+      }
+    }
+    
+    if (searchTerm) {
+      // Cache lowercase values once per task
+      const clientLower = task.client ? task.client.toLowerCase() : '';
+      const domainLower = task.domain ? task.domain.toLowerCase() : '';
+      const clientMatches = clientLower.includes(searchTerm);
+      const domainMatches = domainLower.includes(searchTerm);
+      if (!clientMatches && !domainMatches) {
+        return;
+      }
+    }
+    
+    if (tasksByColumn.has(colId)) {
+      tasksByColumn.get(colId).push(task);
+    }
+  });
+  
+  // Cache DOM queries - query all column bodies once instead of per column
+  const allColumnBodies = document.querySelectorAll('.col-body[data-col-id]');
+  const columnBodyMap = new Map();
+  allColumnBodies.forEach(colBody => {
+    const colId = parseInt(colBody.dataset.colId);
+    if (!isNaN(colId)) {
+      columnBodyMap.set(colId, colBody);
+    }
+  });
+  
+  COLUMNS.forEach(col => {
+    const colBody = columnBodyMap.get(col.id);
+    if (!colBody) return;
+    
+    const colDiv = colBody.closest('.column');
+    if (!colDiv) return;
+    
+    const colHeader = colDiv.querySelector('.col-header');
+    if (colHeader) {
+      const count = tasksByColumn.get(col.id).length;
+      const countEl = colHeader.querySelector('.col-count');
+      if (countEl) {
+        countEl.textContent = count;
+        countEl.setAttribute('aria-label', `${count} ${count === 1 ? 'projeto' : 'projetos'}`);
+        if (count > 0) {
+          countEl.classList.add('col-count-active');
+        } else {
+          countEl.classList.remove('col-count-active');
+        }
+      }
+      
+      // Update column aria-label
+      colDiv.setAttribute('aria-label', `Coluna ${col.name} com ${count} ${count === 1 ? 'projeto' : 'projetos'}`);
+    }
+  });
+  
+  // Update header stats
+  updateHeaderStats();
 }
 
 function exportKanbanData() {

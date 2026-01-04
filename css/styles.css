@@ -60,8 +60,7 @@
 
 .skip-link:focus {
   top: 0;
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
+  outline: none;
 }
 
 :root {
@@ -689,6 +688,41 @@ body {
   border-left: 3px solid var(--warning);
 }
 
+/* Visual feedback for card moves */
+.card-move-success {
+  animation: cardMoveSuccess 0.5s ease;
+}
+
+.card-move-error {
+  animation: cardMoveError 0.5s ease;
+}
+
+@keyframes cardMoveSuccess {
+  0% {
+    background-color: var(--bg-card);
+  }
+  50% {
+    background-color: rgba(34, 163, 154, 0.1);
+    border-color: var(--success);
+  }
+  100% {
+    background-color: var(--bg-card);
+  }
+}
+
+@keyframes cardMoveError {
+  0% {
+    background-color: var(--bg-card);
+  }
+  50% {
+    background-color: rgba(220, 38, 38, 0.1);
+    border-color: var(--danger);
+  }
+  100% {
+    background-color: var(--bg-card);
+  }
+}
+
 /* Expanded View (when filtered) */
 .board-grid.filtered-view {
   min-width: 600px;
@@ -795,6 +829,15 @@ body {
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 767px) {
+  .action-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
 }
 
 .action-btn.whatsapp {

@@ -21,7 +21,7 @@ const NotificationManager = {
 
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
-    notification.setAttribute('role', 'alert');
+    // Removed role="alert" - container already has aria-live="polite"
 
     const icon = this.getIcon(type);
     notification.innerHTML = `
@@ -114,7 +114,7 @@ const NotificationManager = {
 
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
-    notification.setAttribute('role', 'alert');
+    // Removed role="alert" - container already has aria-live="polite"
 
     // Use existing getInitials function (from auth.js or calculations.js)
     const getInitialsFunc = typeof getInitials === 'function' ? getInitials : (name) => {
