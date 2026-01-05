@@ -320,6 +320,7 @@ body {
 .search-container.expanded .search-btn {
   position: absolute;
   right: 0;
+  top: 0;
   z-index: 2;
   opacity: 0.8;
   pointer-events: auto;
@@ -344,22 +345,23 @@ body {
   border-radius: 6px;
   font-size: 0.875rem;
   outline: none;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   pointer-events: none;
   position: absolute;
   top: 0;
-  right: 0;
-  width: 40px;
+  left: 0;
+  width: 100%;
   padding: 0 2.5rem 0 2.25rem;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .search-container.expanded .search-input {
   opacity: 1;
   pointer-events: auto;
-  width: calc(100% - 40px);
   padding-right: 2.5rem;
+  padding-left: 2.25rem;
 }
 
 .search-input:focus {
@@ -785,10 +787,12 @@ body {
   0% {
     background-color: var(--bg-card);
   }
+
   50% {
     background-color: rgba(34, 163, 154, 0.1);
     border-color: var(--success);
   }
+
   100% {
     background-color: var(--bg-card);
   }
@@ -798,10 +802,12 @@ body {
   0% {
     background-color: var(--bg-card);
   }
+
   50% {
     background-color: rgba(220, 38, 38, 0.1);
     border-color: var(--danger);
   }
+
   100% {
     background-color: var(--bg-card);
   }
@@ -2028,8 +2034,8 @@ html[data-authenticated="true"] #appContainer.hidden {
   position: sticky;
   top: 0;
   background-color: var(--bg-card);
-  padding: 1rem 1.5rem;
-  margin: 0 -1.5rem 1rem -1.5rem;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
   z-index: 10;
   border-bottom: 1px solid var(--border-subtle);
 }
@@ -3218,7 +3224,7 @@ html[data-authenticated="true"] #appContainer.hidden {
   }
 
   .search-container.expanded .search-input {
-    width: calc(100% - 44px);
+    width: 100%;
   }
 
   .search-btn {
@@ -3554,7 +3560,7 @@ html[data-authenticated="true"] #appContainer.hidden {
     }
 
     .search-container.expanded .search-input {
-      width: calc(100% - 44px) !important;
+      width: 100% !important;
     }
 
     .search-btn {

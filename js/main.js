@@ -1298,7 +1298,7 @@ function setupEventListeners() {
     DOM.searchInput.addEventListener('input', handleSearch);
     DOM.searchInput.addEventListener('blur', handleSearchBlur);
     DOM.searchInput.addEventListener('focus', () => {
-      if (!DOM.searchContainer.classList.contains('expanded')) {
+      if (DOM.searchContainer && !DOM.searchContainer.classList.contains('expanded')) {
         expandSearch();
       }
     });
