@@ -1084,17 +1084,17 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <a href="https://dluxbarbearia.com.br/" target="_blank" rel="noopener noreferrer"
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <a href="https://dluxbarbearia.shop/#home" target="_blank" rel="noopener noreferrer"
                     class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block">
-                    <div class="aspect-[4/3] w-full overflow-hidden bg-neutral-800 relative">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
                         <svg class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
-                            viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
-                            height="300" aria-hidden="true" role="img" aria-label="Dlux Barbearia platform preview">
-                            <rect width="400" height="300" fill="#111" />
-                            <rect x="50" y="50" width="300" height="200" rx="10" fill="#1a1a1a" />
-                            <path d="M150 120 L250 120 M150 150 L250 150 M150 180 L200 180" stroke="#04D361" stroke-width="4" />
-                            <circle cx="300" cy="100" r="20" fill="#04D361" fill-opacity="0.2" />
+                            viewBox="0 0 400 225" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
+                            height="225" aria-hidden="true" role="img" aria-label="Dlux Barbearia platform preview">
+                            <rect width="400" height="225" fill="#111" />
+                            <rect x="50" y="40" width="300" height="145" rx="8" fill="#1a1a1a" />
+                            <path d="M150 100 L250 100 M150 120 L250 120 M150 140 L200 140" stroke="#04D361" stroke-width="3" />
+                            <circle cx="300" cy="80" r="15" fill="#04D361" fill-opacity="0.2" />
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
@@ -1108,42 +1108,19 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                     </div>
                 </a>
 
-                <a href="https://jcuts.io/" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.postaeweb.com/" target="_blank" rel="noopener noreferrer"
                     class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block">
-                    <div class="aspect-[4/3] w-full overflow-hidden bg-neutral-800 relative">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
                         <svg class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
-                            viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
-                            height="300" aria-hidden="true" role="img" aria-label="JCuts video editing website preview">
-                            <rect width="400" height="300" fill="#171717" />
-                            <rect x="40" y="40" width="200" height="24" fill="#333" />
-                            <rect x="40" y="80" width="320" height="120" fill="#262626" />
-                            <rect x="40" y="220" width="100" height="30" fill="#04D361" />
-                        </svg>
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-                            aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
-                                Demo →</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-1">JCuts</h3>
-                        <p class="text-neutral-400 text-sm">Video Editor Portfolio • High Performance</p>
-                    </div>
-                </a>
-
-                <a href="https://kaiopietro.info/" target="_blank" rel="noopener noreferrer"
-                    class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block">
-                    <div class="aspect-[4/3] w-full overflow-hidden bg-neutral-800 relative">
-                        <svg class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
-                            viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
-                            height="300" aria-hidden="true" role="img"
+                            viewBox="0 0 400 225" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
+                            height="225" aria-hidden="true" role="img"
                             aria-label="Postaê Web automation preview">
-                            <rect width="400" height="300" fill="#050505" />
-                            <rect x="20" y="20" width="360" height="260" rx="4" fill="#111" />
-                            <circle cx="60" cy="80" r="30" fill="#04D361" fill-opacity="0.1" />
-                            <rect x="110" y="65" width="200" height="10" fill="#333" />
-                            <rect x="110" y="85" width="150" height="10" fill="#222" />
-                            <path d="M60 150 L340 150 M60 180 L340 180 M60 210 L200 210" stroke="#333" stroke-width="2" />
+                            <rect width="400" height="225" fill="#050505" />
+                            <rect x="20" y="20" width="360" height="185" rx="4" fill="#111" />
+                            <circle cx="60" cy="60" r="25" fill="#04D361" fill-opacity="0.1" />
+                            <rect x="110" y="50" width="200" height="8" fill="#333" />
+                            <rect x="110" y="65" width="150" height="8" fill="#222" />
+                            <path d="M60 110 L340 110 M60 135 L340 135 M60 160 L200 160" stroke="#333" stroke-width="2" />
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
@@ -1153,7 +1130,56 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">Postaê Web</h3>
-                        <p class="text-neutral-400 text-sm">News Automation • AI & Python Systems</p>
+                        <p class="text-neutral-400 text-sm">News Automation • AI & WordPress Integration</p>
+                    </div>
+                </a>
+
+                <a href="https://marcelobraz.vinicius.xyz/" target="_blank" rel="noopener noreferrer"
+                    class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
+                        <svg class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
+                            viewBox="0 0 400 225" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
+                            height="225" aria-hidden="true" role="img"
+                            aria-label="Marcelo Braz real estate preview">
+                            <rect width="400" height="225" fill="#111" />
+                            <rect x="20" y="20" width="60" height="185" fill="#222" />
+                            <rect x="100" y="30" width="280" height="80" fill="#04D361" fill-opacity="0.1" />
+                            <rect x="100" y="125" width="130" height="80" fill="#222" />
+                            <rect x="250" y="125" width="130" height="80" fill="#222" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
+                            aria-hidden="true">
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                                Demo →</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-1">Marcelo Braz</h3>
+                        <p class="text-neutral-400 text-sm">Real Estate Portfolio • Private Broker</p>
+                    </div>
+                </a>
+
+                <a href="https://primeleague.com.br/" target="_blank" rel="noopener noreferrer"
+                    class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-400 block">
+                    <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
+                        <svg class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
+                            viewBox="0 0 400 225" fill="none" xmlns="http://www.w3.org/2000/svg" width="400"
+                            height="225" aria-hidden="true" role="img"
+                            aria-label="Prime League Minecraft preview">
+                            <rect width="400" height="225" fill="#1a1a1a" />
+                            <path d="M150 50 L250 50 L280 150 L120 150 Z" fill="#04D361" fill-opacity="0.2" stroke="#04D361" stroke-width="2" />
+                            <rect x="140" y="160" width="120" height="30" rx="4" fill="#333" />
+                            <text x="200" y="180" font-family="monospace" font-size="12" fill="#04D361" text-anchor="middle">IP: PLAY.PRIME...</text>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
+                            aria-hidden="true">
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                                Demo →</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-1">Prime League</h3>
+                        <p class="text-neutral-400 text-sm">Gaming Community • Minecraft Server</p>
                     </div>
                 </a>
             </div>
