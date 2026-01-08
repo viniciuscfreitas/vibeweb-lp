@@ -1327,7 +1327,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             </div>
 
             <div class="text-center space-y-8 reveal-on-scroll delay-400">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 max-w-4xl mx-auto border-y border-neutral-800 py-12">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 max-w-4xl mx-auto py-12">
                     <div class="flex flex-col items-center">
                         <span class="text-3xl md:text-4xl font-black text-brand">50+</span>
                         <span class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2" data-i18n="stats_delivered">Sites Delivered</span>
