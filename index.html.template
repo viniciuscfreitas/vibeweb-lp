@@ -12,9 +12,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeWeb – High-End Sites in 48h for the European Market</title>
+    <title data-i18n="title">VibeWeb – High-End Sites in 48h for the European Market</title>
     <meta name="description"
-        content="Professional sites in 48h. High-end Brazilian development for European businesses. 10x cheaper than local agencies with 100/100 performance.">
+        content="Professional sites in 48h. High-end Brazilian development for European businesses. 10x cheaper than local agencies with 100/100 performance." data-i18n-meta="meta_description">
     <meta name="theme-color" content="#000000">
     <link rel="canonical" href="https://${DOMAIN}/">
     <meta name="robots" content="index, follow">
@@ -991,7 +991,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             console.warn('VibeWeb: PIXEL_ID not configured for production');
         }
     </script>
-    <script src="js/i18n.js"></script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1" /></noscript>
+    <script src="js/i18n.js" defer></script>
 </head>
 
 <body class="antialiased">
@@ -1000,7 +1002,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         aria-label="Main navigation" role="navigation">
         <div class="text-2xl font-bold tracking-tighter flex items-center gap-2">
             VibeWeb <span class="text-xs bg-neutral-800 text-white px-2 py-0.5 rounded-sm"
-                data-i18n="nav-brazilian" aria-label="Brazilian development for the European market">🇧🇷 ➔ 🇪🇺</span>
+                aria-label="Brazilian development for the European market">🇧🇷 ➔ 🇪🇺</span>
         </div>
     </nav>
 
@@ -1009,13 +1011,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pt-12 pb-24 md:pt-24 md:pb-32">
                 <div class="flex flex-col items-start gap-8">
                     <h1
-                        data-i18n="hero-title" class="reveal-on-scroll delay-100 text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-white">
+                        class="reveal-on-scroll delay-100 text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-white" data-i18n="hero_title">
                         Professional sites<br>
                         in 48h
                     </h1>
 
                     <p
-                        data-i18n="hero-subtitle" class="reveal-on-scroll delay-200 text-xl md:text-3xl text-white max-w-3xl leading-snug font-medium">
+                        class="reveal-on-scroll delay-200 text-xl md:text-3xl text-white max-w-3xl leading-snug font-medium" data-i18n="hero_subtitle">
                         Faster and 5–10× cheaper than any local agency in Europe. High-end Brazilian engineering for European companies.
                     </p>
 
@@ -1023,18 +1025,18 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         <a href="https://wa.me/${WHATSAPP_NUMBER}" rel="noopener noreferrer"
                             aria-label="Start conversation on WhatsApp (opens in new window)"
                             title="Start conversation on WhatsApp" onclick="trackContact()"
-                            data-i18n="book-call" class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white focus:outline-none">
+                            class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white focus:outline-none" data-i18n="hero_cta">
                             Book free call (15 min)
                         </a>
                         <p class="text-sm text-white opacity-90 mt-4 flex items-center gap-2">
                             <span class="w-2 h-2 bg-brand rounded-full animate-pulse"></span>
-                            <span data-i18n="spots-left">Only 2 spots left for this week to maintain 48h delivery</span>
+                            <span data-i18n="hero_spots">Only 2 spots left for this week to maintain 48h delivery</span>
                         </p>
                         <div class="flex items-center gap-2 mt-4 opacity-60">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-brand"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                            <span data-i18n="secure-payment" class="text-[10px] uppercase tracking-widest font-bold text-neutral-400">Secure Payment via Wise</span>
+                            <span class="text-[10px] uppercase tracking-widest font-bold text-neutral-400" data-i18n="hero_wise">Secure Payment via Wise</span>
                         </div>
-                        <p data-i18n="refund-policy" class="text-xs text-neutral-400 mt-4">50% only after approval · Full refund if you don't love it</p>
+                        <p class="text-xs text-neutral-400 mt-4" data-i18n="hero_refund">50% only after approval · Full refund if you don't love it</p>
                     </div>
                 </div>
             </div>
@@ -1046,31 +1048,31 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-neutral-800">
                 <div
                     class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-100">
-                    <span data-i18n="step1-title"
-                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest">01.
+                    <span
+                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest" data-i18n="how_it_works_1_label">01.
                         Discovery</span>
-                    <h3 data-i18n="step1-desc" class="text-2xl font-bold">We understand your business and goals</h3>
+                    <h3 class="text-2xl font-bold" data-i18n="how_it_works_1_title">We understand your business and goals</h3>
                 </div>
                 <div
                     class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-200">
-                    <span data-i18n="step2-title"
-                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest">02.
+                    <span
+                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest" data-i18n="how_it_works_2_label">02.
                         Agreement</span>
-                    <h3 data-i18n="step2-desc" class="text-2xl font-bold">Quick call to align expectations + secure start</h3>
+                    <h3 class="text-2xl font-bold" data-i18n="how_it_works_2_title">Quick call to align expectations + secure start</h3>
                 </div>
                 <div
                     class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-300">
-                    <span data-i18n="step3-title"
-                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest">03.
+                    <span
+                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest" data-i18n="how_it_works_3_label">03.
                         Build & Deliver</span>
-                    <h3 data-i18n="step3-desc" class="text-2xl font-bold">Your site ready in 48h–5 days with unlimited revisions</h3>
+                    <h3 class="text-2xl font-bold" data-i18n="how_it_works_3_title">Your site ready in 48h–5 days with unlimited revisions</h3>
                 </div>
                 <div
                     class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-400">
-                    <span data-i18n="step4-title"
-                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest">04.
+                    <span
+                        class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest" data-i18n="how_it_works_4_label">04.
                         Support</span>
-                    <h3 data-i18n="step4-desc" class="text-2xl font-bold">Ongoing support and updates available</h3>
+                    <h3 class="text-2xl font-bold" data-i18n="how_it_works_4_title">Ongoing support and updates available</h3>
                 </div>
             </div>
         </section>
@@ -1078,8 +1080,8 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto border-b border-neutral-800"
             aria-labelledby="portfolio-heading">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-on-scroll">
-                <h2 data-i18n="recent-work" id="portfolio-heading" class="text-4xl md:text-6xl font-black tracking-tighter">Recent Work.</h2>
-                <p data-i18n="real-speed" class="text-neutral-400 font-mono text-sm uppercase tracking-widest mb-2">Real speed. Real results.
+                <h2 id="portfolio-heading" class="text-4xl md:text-6xl font-black tracking-tighter" data-i18n="portfolio_title">Recent Work.</h2>
+                <p class="text-neutral-400 font-mono text-sm uppercase tracking-widest mb-2" data-i18n="portfolio_subtitle">Real speed. Real results.
                 </p>
             </div>
 
@@ -1097,13 +1099,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm" data-i18n="portfolio_demo">Live
                                 Demo →</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">Dlux Barbearia</h3>
-                        <p class="text-neutral-400 text-sm">Management Platform • SaaS & Bookings</p>
+                        <p class="text-neutral-400 text-sm" data-i18n="portfolio_1_type">Management Platform • SaaS & Bookings</p>
                     </div>
                 </a>
 
@@ -1122,13 +1124,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm" data-i18n="portfolio_demo">Live
                                 Demo →</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">Postaê Web</h3>
-                        <p class="text-neutral-400 text-sm">News Automation • AI & WordPress Integration</p>
+                        <p class="text-neutral-400 text-sm" data-i18n="portfolio_2_type">News Automation • AI & WordPress Integration</p>
                     </div>
                 </a>
 
@@ -1146,13 +1148,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm" data-i18n="portfolio_demo">Live
                                 Demo →</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">Marcelo Braz</h3>
-                        <p class="text-neutral-400 text-sm">Real Estate Portfolio • Private Broker</p>
+                        <p class="text-neutral-400 text-sm" data-i18n="portfolio_3_type">Real Estate Portfolio • Private Broker</p>
                     </div>
                 </a>
 
@@ -1169,13 +1171,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm" data-i18n="portfolio_demo">Live
                                 Demo →</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">Prime League</h3>
-                        <p class="text-neutral-400 text-sm">Gaming Community • Minecraft Server</p>
+                        <p class="text-neutral-400 text-sm" data-i18n="portfolio_4_type">Gaming Community • Minecraft Server</p>
                     </div>
                 </a>
 
@@ -1192,13 +1194,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm" data-i18n="portfolio_demo">Live
                                 Demo →</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">Gui Magellane</h3>
-                        <p class="text-neutral-400 text-sm">Creative Director • Branding & Visuals</p>
+                        <p class="text-neutral-400 text-sm" data-i18n="portfolio_5_type">Creative Director • Branding & Visuals</p>
                     </div>
                 </a>
 
@@ -1215,22 +1217,22 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
                             aria-hidden="true">
-                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm">Live
+                            <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm" data-i18n="portfolio_demo">Live
                                 Demo →</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-1">JCuts</h3>
-                        <p class="text-neutral-400 text-sm">Video Editor Portfolio • High Performance</p>
+                        <p class="text-neutral-400 text-sm" data-i18n="portfolio_6_type">Video Editor Portfolio • High Performance</p>
                     </div>
                 </a>
             </div>
         </section>
 
         <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto" aria-labelledby="services-heading">
-            <h2 data-i18n="what-we-build" id="services-heading" class="text-4xl md:text-6xl font-black tracking-tighter mb-4 reveal-on-scroll">
+            <h2 id="services-heading" class="text-4xl md:text-6xl font-black tracking-tighter mb-4 reveal-on-scroll" data-i18n="services_title">
                 What We Build.</h2>
-            <p data-i18n="budget-text" class="text-xl text-neutral-400 mb-16 reveal-on-scroll max-w-2xl">
+            <p class="text-xl text-neutral-400 mb-16 reveal-on-scroll max-w-2xl" data-i18n="services_subtitle">
                 We don't use rigid price lists. Every project is unique. <br>
                 <span class="text-brand font-bold">Tell us your budget</span>, and we will tell you exactly what we can
                 do for
@@ -1241,23 +1243,25 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 <div
                     class="border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-100 bg-neutral-950">
                     <div>
-                        <span class="text-neutral-400 text-sm font-mono uppercase tracking-widest mb-4 block">Option
+                        <span class="text-neutral-400 text-sm font-mono uppercase tracking-widest mb-4 block" data-i18n="service_1_label">Option
                             01</span>
-                        <h3 data-i18n="option1-title" class="text-3xl font-bold mb-4 text-white">Essential Landing</h3>
+                        <h3 class="text-3xl font-bold mb-4 text-white" data-i18n="service_1_name">Essential Landing</h3>
                         <ul class="space-y-3 text-neutral-400 mb-8">
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option1-feature1">One Page conversion focused</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option1-feature2">48h Delivery</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option1-feature3">Fully Responsive (Mobile)</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option1-feature4">SEO Basic Setup</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_1_feat_1">One Page conversion
+                                focused</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_1_feat_2">48h Delivery</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_1_feat_3">Fully Responsive
+                                (Mobile)</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_1_feat_4">SEO Basic Setup</span></li>
                         </ul>
                     </div>
                     <div>
-                        <div data-i18n="perfect-for-startups" class="text-lg font-medium text-neutral-300 mb-4">Perfect for: <span
+                        <div class="text-lg font-medium text-neutral-300 mb-4" data-i18n="service_1_perfect">Perfect for: <span
                                 class="text-white">Startups &
                                 MVPs</span></div>
                         <a href="https://wa.me/${WHATSAPP_NUMBER}" rel="noopener noreferrer"
                             aria-label="Start conversation on WhatsApp" onclick="trackContact()"
-                            data-i18n="get-started" class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors">
+                            class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors" data-i18n="service_1_cta">
                             Get Started
                         </a>
                     </div>
@@ -1266,24 +1270,27 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 <div
                     class="border-2 border-brand bg-neutral-900 p-8 flex flex-col justify-between min-h-[400px] relative shadow-[0_0_20px_rgba(4,211,97,0.1)] reveal-on-scroll delay-200">
                     <div class="absolute top-0 right-0 bg-accent text-black font-bold text-xs px-3 py-1 uppercase"
-                        aria-label="Best seller plan">Most Popular</div>
+                        aria-label="Best seller plan" data-i18n="service_2_popular">Most Popular</div>
                     <div>
-                        <span class="text-brand text-sm font-mono uppercase tracking-widest mb-4 block">Option 02</span>
-                        <h3 data-i18n="option2-title" class="text-3xl font-bold mb-4 text-white">Brand Authority</h3>
+                        <span class="text-brand text-sm font-mono uppercase tracking-widest mb-4 block" data-i18n="service_2_label">Option 02</span>
+                        <h3 class="text-3xl font-bold mb-4 text-white" data-i18n="service_2_name">Brand Authority</h3>
                         <ul class="space-y-3 text-neutral-300 mb-8">
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option2-feature1">Multi-page Website</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option2-feature2">Premium Animations</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option2-feature3">CMS Content Management</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option2-feature4">3-5 Days Delivery</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_2_feat_1">Multi-page Website</span>
+                            </li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_2_feat_2">Premium Animations</span>
+                            </li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_2_feat_3">CMS Content Management</span>
+                            </li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_2_feat_4">3-5 Days Delivery</span></li>
                         </ul>
                     </div>
                     <div>
-                        <div data-i18n="perfect-for-scaling" class="text-lg font-medium text-neutral-300 mb-4">Perfect for: <span
+                        <div class="text-lg font-medium text-neutral-300 mb-4" data-i18n="service_2_perfect">Perfect for: <span
                                 class="text-white">Businesses
                                 Scaling Up</span></div>
                         <a href="https://wa.me/${WHATSAPP_NUMBER}" rel="noopener noreferrer"
                             aria-label="Start conversation on WhatsApp" onclick="trackContact()"
-                            data-i18n="claim-spot" class="w-full block text-center bg-brand text-black font-bold py-3 hover:bg-green-400 transition-colors border border-transparent">
+                            class="w-full block text-center bg-brand text-black font-bold py-3 hover:bg-green-400 transition-colors border border-transparent" data-i18n="service_2_cta">
                             Claim My Spot
                         </a>
                     </div>
@@ -1292,23 +1299,26 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 <div
                     class="border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-300 bg-neutral-950">
                     <div>
-                        <span class="text-neutral-400 text-sm font-mono uppercase tracking-widest mb-4 block">Option
+                        <span class="text-neutral-400 text-sm font-mono uppercase tracking-widest mb-4 block" data-i18n="service_3_label">Option
                             03</span>
-                        <h3 data-i18n="option3-title" class="text-3xl font-bold mb-4 text-white">Web Application</h3>
+                        <h3 class="text-3xl font-bold mb-4 text-white" data-i18n="service_3_name">Web Application</h3>
                         <ul class="space-y-3 text-neutral-400 mb-8">
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option3-feature1">Custom Functionality</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option3-feature2">Dashboards & Login Areas</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option3-feature3">Database Integration</span></li>
-                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="option3-feature4">Complex Logic</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_3_feat_1">Custom Functionality</span>
+                            </li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_3_feat_2">Dashboards & Login
+                                Areas</span></li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_3_feat_3">Database Integration</span>
+                            </li>
+                            <li class="flex items-center gap-2"><span class="text-brand">✓</span> <span data-i18n="service_3_feat_4">Complex Logic</span></li>
                         </ul>
                     </div>
                     <div>
-                        <div data-i18n="perfect-for-saas" class="text-lg font-medium text-neutral-300 mb-4">Perfect for: <span
+                        <div class="text-lg font-medium text-neutral-300 mb-4" data-i18n="service_3_perfect">Perfect for: <span
                                 class="text-white">SaaS &
                                 Tools</span></div>
                         <a href="https://wa.me/${WHATSAPP_NUMBER}" rel="noopener noreferrer"
                             aria-label="Start conversation on WhatsApp" onclick="trackContact()"
-                            data-i18n="build-app" class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors">
+                            class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors" data-i18n="service_3_cta">
                             Build My App
                         </a>
                     </div>
@@ -1316,36 +1326,36 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             </div>
 
             <div class="text-center space-y-8 reveal-on-scroll delay-400">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 max-w-4xl mx-auto py-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 max-w-4xl mx-auto border-y border-neutral-800 py-12">
                     <div class="flex flex-col items-center">
                         <span class="text-3xl md:text-4xl font-black text-brand">50+</span>
-                        <span data-i18n="stats-delivered" class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2">Sites Delivered</span>
+                        <span class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2" data-i18n="stats_delivered">Sites Delivered</span>
                     </div>
                     <div class="flex flex-col items-center">
                         <span class="text-3xl md:text-4xl font-black text-brand">100%</span>
-                        <span data-i18n="stats-satisfaction" class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2">Satisfaction</span>
+                        <span class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2" data-i18n="stats_satisfaction">Satisfaction</span>
                     </div>
                     <div class="flex flex-col items-center">
                         <span class="text-3xl md:text-4xl font-black text-brand">24/7</span>
-                        <span data-i18n="stats-support" class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2">Support</span>
+                        <span class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2" data-i18n="stats_support">Support</span>
                     </div>
                     <div class="flex flex-col items-center">
                         <span class="text-3xl md:text-4xl font-black text-brand">48h</span>
-                        <span data-i18n="stats-delivery" class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2">Avg. Delivery</span>
+                        <span class="text-xs uppercase tracking-widest text-neutral-500 font-bold mt-2" data-i18n="stats_delivery">Avg. Delivery</span>
                     </div>
                 </div>
 
                 <div class="bg-green-950/20 border border-green-900/50 p-8 inline-block rounded-sm max-w-4xl w-full">
-                    <p data-i18n="flexible-pricing" class="text-brand font-bold text-xl md:text-3xl leading-tight mb-4">
+                    <p class="text-brand font-bold text-xl md:text-3xl leading-tight mb-4" data-i18n="pricing_quote">
                         "Flexible pricing for smart clients."
                     </p>
-                    <p data-i18n="budget-tailor" class="text-neutral-400 md:text-lg">
+                    <p class="text-neutral-400 md:text-lg" data-i18n="pricing_desc">
                         Have a specific budget in mind? Tell us.<br>
                         We will tailor the scope to fit your wallet without compromising quality.
                     </p>
                     <a href="https://wa.me/${WHATSAPP_NUMBER}" rel="noopener noreferrer"
                         aria-label="Start conversation on WhatsApp" onclick="trackContact()"
-                        data-i18n="talk-values" class="inline-block mt-6 text-white border-b border-brand pb-0.5 hover:text-brand transition-colors">
+                        class="inline-block mt-6 text-white border-b border-brand pb-0.5 hover:text-brand transition-colors" data-i18n="pricing_cta">
                         Let's talk about values →
                     </a>
                 </div>
@@ -1363,7 +1373,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                     </div>
                     <div>
                         <h3 class="text-2xl font-bold mb-2">Kaio</h3>
-                        <p data-i18n="kaio-desc" class="text-neutral-400 leading-relaxed">
+                        <p class="text-neutral-400 leading-relaxed" data-i18n="about_kaio_desc">
                             Head of Growth. Strategist focused on delivering high-converting digital solutions for the European market.
                         </p>
                     </div>
@@ -1377,7 +1387,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                     </div>
                     <div>
                         <h3 class="text-2xl font-bold mb-2">Vinícius</h3>
-                        <p data-i18n="vinicius-desc" class="text-neutral-400 leading-relaxed">
+                        <p class="text-neutral-400 leading-relaxed" data-i18n="about_vinicius_desc">
                             Lead Developer. Technical engine ensuring 100/100 performance for European businesses.
                         </p>
                     </div>
@@ -1386,51 +1396,51 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         </section>
 
         <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto" aria-labelledby="testimonials-heading">
-            <h2 data-i18n="aha-moment" id="testimonials-heading"
-                class="text-3xl font-bold mb-12 text-center text-neutral-500 reveal-on-scroll">The "Aha" Moment: Real Results</h2>
+            <h2 id="testimonials-heading"
+                class="text-3xl font-bold mb-12 text-center text-neutral-500 reveal-on-scroll" data-i18n="testimonials_title">The "Aha" Moment: Real Results</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-neutral-900/50 p-8 border border-neutral-800 hover:border-brand transition-colors reveal-on-scroll delay-100">
                     <div class="text-brand font-black text-4xl mb-2">36h</div>
-                    <p class="text-lg italic mb-4 text-white">"Kaio delivered a modern barbershop platform with integrated bookings and finances. Simple for staff and clients."</p>
-                    <cite class="text-neutral-500 not-italic font-bold block">— Alafy Lima, Founder of Dlux Barbearia</cite>
+                    <p class="text-lg italic mb-4 text-white" data-i18n="test_1_text">"Kaio delivered a modern barbershop platform with integrated bookings and finances. Simple for staff and clients."</p>
+                    <cite class="text-neutral-500 not-italic font-bold block" data-i18n="test_1_author">— Alafy Lima, Founder of Dlux Barbearia</cite>
                 </div>
 
                 <div class="bg-neutral-900/50 p-8 border border-neutral-800 hover:border-brand transition-colors reveal-on-scroll delay-200">
                     <div class="text-brand font-black text-4xl mb-2">100/100</div>
-                    <p class="text-lg italic mb-4 text-white">"Fast, well-structured, and presents my work professionally. Communication was clear and on point."</p>
-                    <cite class="text-neutral-500 not-italic font-bold block">— Justin Rudi, Video Editor @ JCuts</cite>
+                    <p class="text-lg italic mb-4 text-white" data-i18n="test_2_text">"Fast, well-structured, and presents my work professionally. Communication was clear and on point."</p>
+                    <cite class="text-neutral-500 not-italic font-bold block" data-i18n="test_2_author">— Justin Rudi, Video Editor @ JCuts</cite>
                 </div>
 
                 <div class="bg-neutral-900/50 p-8 border-2 border-brand reveal-on-scroll delay-300 shadow-[0_0_20px_rgba(4,211,97,0.1)]">
-                    <div class="text-accent font-black text-4xl mb-2">Efficiency</div>
-                    <p class="text-lg font-black text-white mb-4">"We launch portfolios in minutes with great performance and polished UX. Consistent delivery and attention to detail."</p>
-                    <cite class="text-neutral-500 not-italic font-bold block">— Mara Collins, Product Lead @ Magic Portfolio</cite>
+                    <div class="text-accent font-black text-4xl mb-2" data-i18n="test_3_label">Efficiency</div>
+                    <p class="text-lg font-black text-white mb-4" data-i18n="test_3_text">"We launch portfolios in minutes with great performance and polished UX. Consistent delivery and attention to detail."</p>
+                    <cite class="text-neutral-500 not-italic font-bold block" data-i18n="test_3_author">— Mara Collins, Product Lead @ Magic Portfolio</cite>
                 </div>
             </div>
         </section>
 
         <section class="border-t border-neutral-800 px-6 md:px-12 py-24 max-w-7xl mx-auto"
             aria-labelledby="faq-heading">
-            <h2 data-i18n="faq-title" id="faq-heading" class="text-3xl font-bold mb-16 text-center text-neutral-500 reveal-on-scroll">
+            <h2 id="faq-heading" class="text-3xl font-bold mb-16 text-center text-neutral-500 reveal-on-scroll" data-i18n="faq_title">
                 Frequently Asked Questions</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div class="reveal-on-scroll delay-100">
-                    <h3 data-i18n="faq1-q" class="text-xl font-bold text-white mb-4">Do I own the domain and code?</h3>
-                    <p data-i18n="faq1-a" class="text-neutral-400 leading-relaxed">Yes. You own 100% of the assets. We transfer everything
+                    <h3 class="text-xl font-bold text-white mb-4" data-i18n="faq_1_q">Do I own the domain and code?</h3>
+                    <p class="text-neutral-400 leading-relaxed" data-i18n="faq_1_a">Yes. You own 100% of the assets. We transfer everything
                         to you upon completion.</p>
                 </div>
 
                 <div class="reveal-on-scroll delay-200">
-                    <h3 data-i18n="faq2-q" class="text-xl font-bold text-white mb-4">What if I don't like the design?</h3>
-                    <p data-i18n="faq2-a" class="text-neutral-400 leading-relaxed">You don't pay the final 50%. We revise it until you love
+                    <h3 class="text-xl font-bold text-white mb-4" data-i18n="faq_2_q">What if I don't like the design?</h3>
+                    <p class="text-neutral-400 leading-relaxed" data-i18n="faq_2_a">You don't pay the final 50%. We revise it until you love
                         it, or we refund your deposit. No hard feelings.</p>
                 </div>
 
                 <div class="reveal-on-scroll delay-300">
-                    <h3 data-i18n="faq3-q" class="text-xl font-bold text-white mb-4">Are there monthly fees?</h3>
-                    <p data-i18n="faq3-a" class="text-neutral-400 leading-relaxed">No mandatory fees. The site is yours. We offer an
+                    <h3 class="text-xl font-bold text-white mb-4" data-i18n="faq_3_q">Are there monthly fees?</h3>
+                    <p class="text-neutral-400 leading-relaxed" data-i18n="faq_3_a">No mandatory fees. The site is yours. We offer an
                         optional maintenance plan if you want total peace of mind.</p>
                 </div>
             </div>
@@ -1438,27 +1448,28 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <footer class="border-t border-neutral-800 py-16 px-6 text-center bg-neutral-950">
             <div class="max-w-4xl mx-auto flex flex-col items-center gap-8 reveal-on-scroll">
-                <h2 data-i18n="ready-scale" class="text-4xl md:text-5xl font-black tracking-tighter">Ready to scale?</h2>
+                <h2 class="text-4xl md:text-5xl font-black tracking-tighter" data-i18n="footer_ready">Ready to scale?</h2>
 
                 <a href="https://wa.me/${WHATSAPP_NUMBER}" rel="noopener noreferrer"
                     aria-label="Start conversation on WhatsApp (opens in new window)"
                     title="Start conversation on WhatsApp" onclick="trackContact()"
-                    data-i18n="book-call" class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] focus:outline-none">
+                    class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] focus:outline-none" data-i18n="footer_cta">
                     Book free call (15 min)
                 </a>
                 
                 <div class="flex items-center gap-2 text-neutral-500 text-xs mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-brand"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                    <span data-i18n="secure-connection">Secure connection · Direct to developer</span>
+                    <span data-i18n="footer_secure">Secure connection · Direct to developer</span>
                 </div>
 
-                <p data-i18n="refund-policy" class="text-sm text-neutral-400 mt-4">50% only after approval · Full refund if you don't love it</p>
+                <p class="text-sm text-neutral-400 mt-4" data-i18n="footer_refund">50% only after approval · Full refund if you don't love it</p>
 
                 <div class="text-neutral-500 text-xs mt-12 flex flex-col items-center gap-2">
-                    <p>São Paulo, Brazil · Lisbon, Portugal</p>
+                    <p>CNPJ: 51.583.473/0001-90 · VibeWeb Partners LTDA</p>
+                    <p data-i18n="footer_locations">São Paulo, Brazil · Lisbon, Portugal</p>
                 </div>
 
-                <p data-i18n="made-with" class="text-neutral-500 text-sm mt-8">
+                <p class="text-neutral-500 text-sm mt-8" data-i18n="footer_copyright">
                     Copyright © 2026 VibeWeb Partners · Made with <span class="text-brand">code</span> & 🇧🇷 in Brazil.
                 </p>
             </div>
