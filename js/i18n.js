@@ -132,6 +132,11 @@ const translations = {
     privacy_section_5_desc:
       "If you have any questions about this policy, contact us directly via WhatsApp.",
     back_home: "Back to Home",
+    error_404_heading: "404",
+    error_404_title: "Lost in the Vibe?",
+    error_404_subtitle:
+      "The page you're looking for doesn't exist or has been moved.",
+    error_404_cta: "Talk to us on WhatsApp",
   },
   es: {
     title: "VibeWeb – Sitios de Alta Gama en 48h para el Mercado Europeo",
@@ -273,6 +278,10 @@ const translations = {
     privacy_section_5_desc:
       "Si tiene alguna pregunta sobre esta política, contáctenos directamente a través de WhatsApp.",
     back_home: "Volver al Inicio",
+    error_404_heading: "404",
+    error_404_title: "¿Perdido en el Vibe?",
+    error_404_subtitle: "La página que buscas no existe o ha sido movida.",
+    error_404_cta: "Hablemos por WhatsApp",
   },
   fr: {
     title: "VibeWeb – Sites Haut de Gamme en 48h pour le Marché Européen",
@@ -415,6 +424,11 @@ const translations = {
     privacy_section_5_desc:
       "Si vous avez des questions sur cette politique, contactez-nous directement via WhatsApp.",
     back_home: "Retour à l'Accueil",
+    error_404_heading: "404",
+    error_404_title: "Perdu dans le Vibe ?",
+    error_404_subtitle:
+      "La page que vous recherchez n'existe pas ou a été déplacée.",
+    error_404_cta: "Contactez-nous sur WhatsApp",
   },
   de: {
     title:
@@ -557,6 +571,11 @@ const translations = {
     privacy_section_5_desc:
       "Wenn Sie Fragen zu dieser Richtlinie haben, kontaktieren Sie uns direkt über WhatsApp.",
     back_home: "Zurück zur Startseite",
+    error_404_heading: "404",
+    error_404_title: "Im Vibe verloren?",
+    error_404_subtitle:
+      "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    error_404_cta: "Kontaktieren Sie uns per WhatsApp",
   },
 };
 function getLang() {
