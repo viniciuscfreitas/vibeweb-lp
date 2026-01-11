@@ -52,11 +52,35 @@ svg {
   background: var(--brand);
 }
 *:focus-visible {
-  outline: none;
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
 }
 a:focus-visible,
 button:focus-visible {
-  outline: none;
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+.reveal-on-scroll:focus-within {
+  opacity: 1 !important;
+  transform: none !important;
 }
 .reveal-on-scroll {
   opacity: 0;
