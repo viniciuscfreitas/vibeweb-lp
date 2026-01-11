@@ -96,6 +96,37 @@ const translations = {
     footer_locations: "São Paulo, Brazil · Lisbon, Portugal",
     footer_copyright:
       'Copyright © 2026 VibeWeb Partners · Made with <span class="text-brand">code</span> & 🇧🇷 in Brazil.',
+    footer_privacy: "Privacy Policy",
+    privacy_title: "Privacy Policy – VibeWeb",
+    privacy_h1: "Privacy Policy.",
+    privacy_intro:
+      "At VibeWeb, we value your privacy. This policy outlines how we handle your data when you visit our website and use our services.",
+    privacy_section_1_title: "1. Data Collection",
+    privacy_section_1_desc:
+      "We collect minimal information necessary to provide our services, including:",
+    privacy_section_1_item_1:
+      "Contact information (Name, WhatsApp number, Email) when you reach out to us.",
+    privacy_section_1_item_2:
+      "Usage data via Google Tag Manager and Meta Pixel to improve our advertising.",
+    privacy_section_2_title: "2. How We Use Your Data",
+    privacy_section_2_desc: "Your data is used exclusively for:",
+    privacy_section_2_item_1: "Responding to your service inquiries.",
+    privacy_section_2_item_2: "Processing project payments via Wise.",
+    privacy_section_2_item_3:
+      "Optimizing our website performance and marketing campaigns.",
+    privacy_section_3_title: "3. GDPR Compliance",
+    privacy_section_3_desc:
+      "For our European clients, we comply with GDPR regulations. You have the right to:",
+    privacy_section_3_item_1: "Access the personal data we hold about you.",
+    privacy_section_3_item_2: "Request correction or deletion of your data.",
+    privacy_section_3_item_3: "Withdraw consent for tracking at any time.",
+    privacy_section_4_title: "4. Third Parties",
+    privacy_section_4_desc:
+      "We do not sell your data. We use trusted third-party services like Wise (for payments) and Meta/Google (for analytics), which have their own privacy policies.",
+    privacy_section_5_title: "5. Contact",
+    privacy_section_5_desc:
+      "If you have any questions about this policy, contact us directly via WhatsApp.",
+    back_home: "Back to Home",
   },
   es: {
     title: "VibeWeb – Sitios de Alta Gama en 48h para el Mercado Europeo",
@@ -198,6 +229,40 @@ const translations = {
     footer_locations: "São Paulo, Brasil · Lisboa, Portugal",
     footer_copyright:
       'Copyright © 2026 VibeWeb Partners · Hecho con <span class="text-brand">código</span> y 🇧🇷 en Brasil.',
+    footer_privacy: "Política de Privacidad",
+    privacy_title: "Política de Privacidad – VibeWeb",
+    privacy_h1: "Política de Privacidad.",
+    privacy_intro:
+      "En VibeWeb, valoramos su privacidad. Esta política describe cómo manejamos sus datos cuando visita nuestro sitio web y utiliza nuestros servicios.",
+    privacy_section_1_title: "1. Recopilación de Datos",
+    privacy_section_1_desc:
+      "Recopilamos la información mínima necesaria para proporcionar nuestros servicios, incluyendo:",
+    privacy_section_1_item_1:
+      "Información de contacto (Nombre, número de WhatsApp, Correo electrónico) cuando se comunica com nosotros.",
+    privacy_section_1_item_2:
+      "Datos de uso a través de Google Tag Manager y Meta Pixel para mejorar nuestra publicidad.",
+    privacy_section_2_title: "2. Cómo Utilizamos sus Datos",
+    privacy_section_2_desc: "Sus datos se utilizan exclusivamente para:",
+    privacy_section_2_item_1: "Responder a sus consultas de servicio.",
+    privacy_section_2_item_2: "Procesar pagos de proyectos a través de Wise.",
+    privacy_section_2_item_3:
+      "Optimizar el rendimiento de nuestro sitio web y campañas de marketing.",
+    privacy_section_3_title: "3. Cumplimiento de GDPR",
+    privacy_section_3_desc:
+      "Para nuestros clientes europeos, cumplimos con las regulaciones de GDPR. Usted tiene derecho a:",
+    privacy_section_3_item_1:
+      "Acceder a los datos personales que tenemos sobre usted.",
+    privacy_section_3_item_2:
+      "Solicitar la corrección o eliminación de sus datos.",
+    privacy_section_3_item_3:
+      "Retirar el consentimiento para el seguimiento en cualquier momento.",
+    privacy_section_4_title: "4. Terceros",
+    privacy_section_4_desc:
+      "No vendemos sus datos. Utilizamos servicios de terceros de confianza como Wise (para pagos) y Meta/Google (para análisis), que tienen sus propias políticas de privacidad.",
+    privacy_section_5_title: "5. Contacto",
+    privacy_section_5_desc:
+      "Si tiene alguna pregunta sobre esta política, contáctenos directamente a través de WhatsApp.",
+    back_home: "Volver al Inicio",
   },
   fr: {
     title: "VibeWeb – Sites Haut de Gamme en 48h pour le Marché Européen",
@@ -301,6 +366,40 @@ const translations = {
     footer_locations: "São Paulo, Brésil · Lisbonne, Portugal",
     footer_copyright:
       'Copyright © 2026 VibeWeb Partners · Fait avec <span class="text-brand">code</span> et 🇧🇷 au Brésil.',
+    footer_privacy: "Politique de Confidentialité",
+    privacy_title: "Politique de Confidentialité – VibeWeb",
+    privacy_h1: "Politique de Confidentialité.",
+    privacy_intro:
+      "Chez VibeWeb, nous accordons une grande importance à votre vie privée. Cette politique décrit la manière dont nous traitons vos données lorsque vous visitez notre site web et utilisez nos services.",
+    privacy_section_1_title: "1. Collecte des Données",
+    privacy_section_1_desc:
+      "Nous collectons le minimum d'informations nécessaires pour fournir nos services, notamment :",
+    privacy_section_1_item_1:
+      "Informations de contact (Nom, numéro WhatsApp, E-mail) lorsque vous nous contactez.",
+    privacy_section_1_item_2:
+      "Données d'utilisation via Google Tag Manager et Meta Pixel pour améliorer notre publicité.",
+    privacy_section_2_title: "2. Utilisation de vos Données",
+    privacy_section_2_desc: "Vos données sont utilisées exclusivement pour :",
+    privacy_section_2_item_1: "Répondre à vos demandes de services.",
+    privacy_section_2_item_2: "Traiter les paiements des projets via Wise.",
+    privacy_section_2_item_3:
+      "Optimiser les performances de notre site web et nos campagnes marketing.",
+    privacy_section_3_title: "3. Conformité au RGPD",
+    privacy_section_3_desc:
+      "Pour nos clients européens, nous respectons le RGPD. Vous avez le droit de :",
+    privacy_section_3_item_1:
+      "Accéder aux données personnelles que nous détenons à votre sujet.",
+    privacy_section_3_item_2:
+      "Demander la correction ou la suppression de vos données.",
+    privacy_section_3_item_3:
+      "Retirer votre consentement au suivi à tout moment.",
+    privacy_section_4_title: "4. Tierces Parties",
+    privacy_section_4_desc:
+      "Nous ne vendons pas vos données. Nous utilisons des services tiers de confiance tels que Wise (pour les paiements) et Meta/Google (pour les analyses), qui ont leurs propres politiques de confidentialité.",
+    privacy_section_5_title: "5. Contact",
+    privacy_section_5_desc:
+      "Si vous avez des questions sur cette politique, contactez-nous directement via WhatsApp.",
+    back_home: "Retour à l'Accueil",
   },
   de: {
     title:
@@ -404,6 +503,40 @@ const translations = {
     footer_locations: "São Paulo, Brasilien · Lissabon, Portugal",
     footer_copyright:
       'Copyright © 2026 VibeWeb Partners · Erstellt mit <span class="text-brand">Code</span> & 🇧🇷 in Brasilien.',
+    footer_privacy: "Datenschutzerklärung",
+    privacy_title: "Datenschutzerklärung – VibeWeb",
+    privacy_h1: "Datenschutzerklärung.",
+    privacy_intro:
+      "Bei VibeWeb schätzen wir Ihre Privatsphäre. Diese Richtlinie beschreibt, wie wir mit Ihren Daten umgehen, wenn Sie unsere Website besuchen und unsere Dienste nutzen.",
+    privacy_section_1_title: "1. Datenerhebung",
+    privacy_section_1_desc:
+      "Wir erheben nur die minimal notwendigen Informationen, um unsere Dienste bereitzustellen, einschließlich:",
+    privacy_section_1_item_1:
+      "Kontaktinformationen (Name, WhatsApp-Nummer, E-Mail), wenn Sie uns kontaktieren.",
+    privacy_section_1_item_2:
+      "Nutzungsdaten über Google Tag Manager und Meta Pixel zur Verbesserung unserer Werbung.",
+    privacy_section_2_title: "2. Verwendung Ihrer Daten",
+    privacy_section_2_desc: "Ihre Daten werden ausschließlich verwendet für:",
+    privacy_section_2_item_1: "Beantwortung Ihrer Serviceanfragen.",
+    privacy_section_2_item_2: "Abwicklung von Projektzahlungen über Wise.",
+    privacy_section_2_item_3:
+      "Optimierung unserer Website-Performance und Marketingkampagnen.",
+    privacy_section_3_title: "3. DSGVO-Konformität",
+    privacy_section_3_desc:
+      "Für unsere europäischen Kunden halten wir uns an die DSGVO-Vorschriften. Sie haben das Recht:",
+    privacy_section_3_item_1:
+      "Auskunft über die von uns über Sie gespeicherten personenbezogenen Daten zu erhalten.",
+    privacy_section_3_item_2:
+      "Die Berichtigung oder Löschung Ihrer Daten zu verlangen.",
+    privacy_section_3_item_3:
+      "Die Einwilligung zum Tracking jederzeit zu widerrufen.",
+    privacy_section_4_title: "4. Dritte",
+    privacy_section_4_desc:
+      "Wir verkaufen Ihre Daten nicht. Wir nutzen vertrauenswürdige Drittanbieter wie Wise (für Zahlungen) und Meta/Google (für Analysen), die ihre eigenen Datenschutzrichtlinien haben.",
+    privacy_section_5_title: "5. Kontakt",
+    privacy_section_5_desc:
+      "Wenn Sie Fragen zu dieser Richtlinie haben, kontaktieren Sie uns direkt über WhatsApp.",
+    back_home: "Zurück zur Startseite",
   },
 };
 function getLang() {

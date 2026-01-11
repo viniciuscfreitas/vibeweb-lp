@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="privacy_title">Privacy Policy – VibeWeb</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/i18n.js" defer></script>
+    <style>
+      .policy-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: var(--brand);
+      }
+      .policy-content p {
+        color: var(--neutral-400);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+      .policy-content ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        color: var(--neutral-400);
+        margin-bottom: 1rem;
+      }
+      .policy-content li {
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="antialiased bg-black text-white">
+    <nav class="w-full py-6 px-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto z-40 relative">
+      <a href="index.html" class="text-2xl font-bold tracking-tighter flex items-center gap-2">
+        VibeWeb
+      </a>
+      <a href="index.html" class="text-sm font-bold border-b border-brand pb-0.5 hover:text-brand transition-colors" data-i18n="back_home">
+        Back to Home
+      </a>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-24">
+      <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-12" data-i18n="privacy_h1">
+        Privacy Policy.
+      </h1>
+
+      <div class="policy-content reveal-on-scroll is-visible">
+        <p data-i18n="privacy_intro">
+          At VibeWeb, we value your privacy. This policy outlines how we handle your data when you visit our website and use our services.
+        </p>
+
+        <h2 data-i18n="privacy_section_1_title">1. Data Collection</h2>
+        <p data-i18n="privacy_section_1_desc">
+          We collect minimal information necessary to provide our services, including:
+        </p>
+        <ul>
+          <li data-i18n="privacy_section_1_item_1">Contact information (Name, WhatsApp number, Email) when you reach out to us.</li>
+          <li data-i18n="privacy_section_1_item_2">Usage data via Google Tag Manager and Meta Pixel to improve our advertising.</li>
+        </ul>
+
+        <h2 data-i18n="privacy_section_2_title">2. How We Use Your Data</h2>
+        <p data-i18n="privacy_section_2_desc">
+          Your data is used exclusively for:
+        </p>
+        <ul>
+          <li data-i18n="privacy_section_2_item_1">Responding to your service inquiries.</li>
+          <li data-i18n="privacy_section_2_item_2">Processing project payments via Wise.</li>
+          <li data-i18n="privacy_section_2_item_3">Optimizing our website performance and marketing campaigns.</li>
+        </ul>
+
+        <h2 data-i18n="privacy_section_3_title">3. GDPR Compliance</h2>
+        <p data-i18n="privacy_section_3_desc">
+          For our European clients, we comply with GDPR regulations. You have the right to:
+        </p>
+        <ul>
+          <li data-i18n="privacy_section_3_item_1">Access the personal data we hold about you.</li>
+          <li data-i18n="privacy_section_3_item_2">Request correction or deletion of your data.</li>
+          <li data-i18n="privacy_section_3_item_3">Withdraw consent for tracking at any time.</li>
+        </ul>
+
+        <h2 data-i18n="privacy_section_4_title">4. Third Parties</h2>
+        <p data-i18n="privacy_section_4_desc">
+          We do not sell your data. We use trusted third-party services like Wise (for payments) and Meta/Google (for analytics), which have their own privacy policies.
+        </p>
+
+        <h2 data-i18n="privacy_section_5_title">5. Contact</h2>
+        <p data-i18n="privacy_section_5_desc">
+          If you have any questions about this policy, contact us directly via WhatsApp.
+        </p>
+      </div>
+    </main>
+
+    <footer class="border-t border-neutral-800 py-12 px-6 text-center">
+      <p class="text-neutral-500 text-sm">
+        Copyright © 2026 VibeWeb Partners · <a href="index.html" class="hover:text-brand transition-colors" data-i18n="back_home">Back to Home</a>
+      </p>
+    </footer>
+
+    <script>
+      (function () {
+        const elements = document.querySelectorAll(".reveal-on-scroll");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        elements.forEach((el) => observer.observe(el));
+      })();
+    </script>
+  </body>
+</html>
