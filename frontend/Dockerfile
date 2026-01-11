@@ -6,6 +6,7 @@ WORKDIR /usr/share/nginx/html
 
 COPY index.html .
 COPY privacy.html .
+COPY 404.html .
 COPY css/ ./css/
 COPY js/ ./js/
 COPY fotos/ ./fotos/
