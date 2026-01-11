@@ -407,27 +407,49 @@ const translations = {
   },
 };
 function getLang() {
-  const e = new URLSearchParams(window.location.search).get("lang");
-  if (e && translations[e]) return e;
-  const t = (navigator.language || navigator.userLanguage || "en").split(
-    "-"
-  )[0];
-  return translations[t] ? t : "en";
+  const params = new URLSearchParams(window.location.search);
+  const langParam = params.get("lang");
+
+  if (langParam && translations[langParam]) {
+    return langParam;
+  }
+
+  const browserLang = (
+    navigator.language ||
+    navigator.userLanguage ||
+    "en"
+  ).split("-")[0];
+
+  return translations[browserLang] ? browserLang : "en";
 }
+
 function initI18n() {
-  const e = getLang(),
-    t = translations[e];
-  document.querySelectorAll("[data-i18n]").forEach((e) => {
-    const n = e.getAttribute("data-i18n");
-    t[n] && (e.innerHTML = t[n]);
-  }),
-    document.querySelectorAll("[data-i18n-meta]").forEach((e) => {
-      const n = e.getAttribute("data-i18n-meta");
-      t[n] && e.setAttribute("content", t[n]);
-    }),
-    t.title && (document.title = t.title),
-    (document.documentElement.lang = e);
+  const lang = getLang();
+  const dict = translations[lang];
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key]) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-meta]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-meta");
+    if (dict[key]) {
+      el.setAttribute("content", dict[key]);
+    }
+  });
+
+  if (dict.title) {
+    document.title = dict.title;
+  }
+
+  document.documentElement.lang = lang;
 }
-"loading" === document.readyState
-  ? document.addEventListener("DOMContentLoaded", initI18n)
-  : initI18n();
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initI18n);
+} else {
+  initI18n();
+}
