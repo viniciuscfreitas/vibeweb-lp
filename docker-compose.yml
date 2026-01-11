@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
-    container_name: vibe-web-frontend
+    container_name: vibe-web-lp
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT:-80}:80"
