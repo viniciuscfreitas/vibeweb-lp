@@ -615,19 +615,16 @@ function initCookieBanner() {
 
   if (!consent) {
     setTimeout(() => {
-      console.log("[Cookie] Showing banner - no consent found");
       banner.classList.add("is-visible");
       if (backdrop) backdrop.classList.add("is-visible");
       // Accessibility: move focus to banner for screen readers
       banner.setAttribute("aria-hidden", "false");
     }, 1000);
   } else {
-    console.log("[Cookie] Consent already present:", consent);
     banner.setAttribute("aria-hidden", "true");
   }
 
   acceptBtn.addEventListener("click", () => {
-    console.log("[Cookie] Consent ACCEPTED");
     localStorage.setItem("vibe-cookie-consent", "accepted");
     banner.classList.remove("is-visible");
     if (backdrop) backdrop.classList.remove("is-visible");
@@ -636,7 +633,6 @@ function initCookieBanner() {
   });
 
   declineBtn.addEventListener("click", () => {
-    console.log("[Cookie] Consent DECLINED");
     localStorage.setItem("vibe-cookie-consent", "declined");
     banner.classList.remove("is-visible");
     if (backdrop) backdrop.classList.remove("is-visible");
