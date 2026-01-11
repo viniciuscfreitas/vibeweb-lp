@@ -98,6 +98,10 @@ const translations = {
     footer_made_with:
       'Made with <span class="text-brand">code</span> & 🇧🇷 in Brazil.',
     footer_privacy: "Privacy Policy",
+    cookie_text:
+      "We use cookies to improve your experience and analyze our traffic. By clicking 'Accept', you consent to our use of cookies.",
+    cookie_accept: "Accept",
+    cookie_decline: "Decline",
     privacy_title: "Privacy Policy – VibeWeb",
     privacy_h1: "Privacy Policy.",
     privacy_intro:
@@ -232,6 +236,10 @@ const translations = {
     footer_made_with:
       'Hecho con <span class="text-brand">código</span> y 🇧🇷 en Brasil.',
     footer_privacy: "Política de Privacidad",
+    cookie_text:
+      "Utilizamos cookies para mejorar su experiencia y analizar nuestro tráfico. Al hacer clic en 'Aceptar', usted acepta nosso uso de cookies.",
+    cookie_accept: "Aceptar",
+    cookie_decline: "Rechazar",
     privacy_title: "Política de Privacidad – VibeWeb",
     privacy_h1: "Política de Privacidad.",
     privacy_intro:
@@ -370,6 +378,10 @@ const translations = {
     footer_made_with:
       'Fait avec <span class="text-brand">code</span> et 🇧🇷 au Brésil.',
     footer_privacy: "Politique de Confidentialité",
+    cookie_text:
+      "Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. En cliquant sur 'Accepter', vous consentez à notre utilisation des cookies.",
+    cookie_accept: "Accepter",
+    cookie_decline: "Refuser",
     privacy_title: "Politique de Confidentialité – VibeWeb",
     privacy_h1: "Politique de Confidentialité.",
     privacy_intro:
@@ -508,6 +520,10 @@ const translations = {
     footer_made_with:
       'Erstellt mit <span class="text-brand">Code</span> & 🇧🇷 in Brasilien.',
     footer_privacy: "Datenschutzerklärung",
+    cookie_text:
+      "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern und unseren Datenverkehr zu analysieren. Durch Klicken auf 'Akzeptieren' stimmen Sie der Verwendung von Cookies zu.",
+    cookie_accept: "Akzeptieren",
+    cookie_decline: "Ablehnen",
     privacy_title: "Datenschutzerklärung – VibeWeb",
     privacy_h1: "Datenschutzerklärung.",
     privacy_intro:
@@ -583,6 +599,45 @@ function initI18n() {
   }
 
   document.documentElement.lang = lang;
+
+  // Initialize Cookie Banner Logic after translations are applied
+  initCookieBanner();
+}
+
+function initCookieBanner() {
+  const banner = document.getElementById("cookie-banner");
+  if (!banner) return;
+
+  const acceptBtn = document.getElementById("cookie-accept");
+  const declineBtn = document.getElementById("cookie-decline");
+  const consent = localStorage.getItem("vibe-cookie-consent");
+
+  if (!consent) {
+    setTimeout(() => {
+      console.log("[Cookie] Showing banner - no consent found");
+      banner.classList.add("is-visible");
+      // Accessibility: move focus to banner for screen readers
+      banner.setAttribute("aria-hidden", "false");
+    }, 1000);
+  } else {
+    console.log("[Cookie] Consent already present:", consent);
+    banner.setAttribute("aria-hidden", "true");
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    console.log("[Cookie] Consent ACCEPTED");
+    localStorage.setItem("vibe-cookie-consent", "accepted");
+    banner.classList.remove("is-visible");
+    banner.setAttribute("aria-hidden", "true");
+    if (window.loadGTM) window.loadGTM();
+  });
+
+  declineBtn.addEventListener("click", () => {
+    console.log("[Cookie] Consent DECLINED");
+    localStorage.setItem("vibe-cookie-consent", "declined");
+    banner.classList.remove("is-visible");
+    banner.setAttribute("aria-hidden", "true");
+  });
 }
 
 if (document.readyState === "loading") {

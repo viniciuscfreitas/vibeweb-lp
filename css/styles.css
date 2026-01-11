@@ -83,6 +83,11 @@ button:focus-visible {
   opacity: 1 !important;
   transform: none !important;
 }
+/* Cookie Banner */
+#cookie-banner.is-visible {
+  transform: translateY(0);
+}
+
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(30px);

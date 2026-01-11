@@ -21,16 +21,28 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     </title>
     <!-- Google Tag Manager -->
     <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-T66KGKHZ");
+      window.loadGTM = function () {
+        if (window.gtmLoaded) return;
+        window.gtmLoaded = true;
+        console.log("[Tracking] Loading GTM script...");
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", "GTM-T66KGKHZ");
+      };
+
+      (function () {
+        const consent = localStorage.getItem("vibe-cookie-consent");
+        if (consent === "accepted") {
+          window.loadGTM();
+        }
+      })();
     </script>
     <!-- End Google Tag Manager -->
     <meta
@@ -41,6 +53,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     <meta name="theme-color" content="#000000" />
     <link rel="canonical" href="https://vibe-web.com/" />
     <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="fotos/favicon.png" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vibe-web.com/" />
@@ -52,6 +65,10 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       property="og:description"
       content="Professional sites in 48h. High-end Brazilian development for European companies. 10x cheaper than local agencies with 100/100 performance."
     />
+    <meta
+      property="og:image"
+      content="https://vibe-web.com/fotos/og-image.webp"
+    />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
@@ -61,6 +78,10 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     <meta
       name="twitter:description"
       content="Professional sites in 48h. High-end Brazilian development for European companies. 10x cheaper than local agencies."
+    />
+    <meta
+      name="twitter:image"
+      content="https://vibe-web.com/fotos/og-image.webp"
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1191,6 +1212,45 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         </div>
       </footer>
     </main>
+
+    <div
+      id="cookie-banner"
+      role="region"
+      aria-labelledby="cookie-heading"
+      aria-hidden="true"
+      class="fixed bottom-0 left-0 w-full bg-neutral-900 border-t border-neutral-800 p-6 z-[100] transform translate-y-full transition-transform duration-500"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
+      >
+        <div class="space-y-1">
+          <h2 id="cookie-heading" class="sr-only">Cookie Consent</h2>
+          <p
+            class="text-neutral-300 text-sm md:text-base"
+            data-i18n="cookie_text"
+          >
+            We use cookies to improve your experience and analyze our traffic. By
+            clicking 'Accept', you consent to our use of cookies.
+          </p>
+        </div>
+        <div class="flex items-center gap-6">
+          <button
+            id="cookie-decline"
+            class="text-neutral-500 hover:text-white text-sm font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-white p-2"
+            data-i18n="cookie_decline"
+          >
+            Decline
+          </button>
+          <button
+            id="cookie-accept"
+            class="bg-brand text-black px-8 py-3 font-bold hover:bg-green-400 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-white"
+            data-i18n="cookie_accept"
+          >
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script>
       // Scroll Reveal
