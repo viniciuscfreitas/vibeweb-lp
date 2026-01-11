@@ -308,6 +308,15 @@ button:focus-visible {
 .bg-neutral-950\/50 {
   background-color: rgba(10, 10, 10, 0.5);
 }
+.from-neutral-950\/80 {
+  --tw-gradient-from: rgba(10, 10, 10, 0.8);
+  --tw-gradient-stops: var(--tw-gradient-from),
+    var(--tw-gradient-to, rgba(10, 10, 10, 0));
+}
+.via-neutral-950\/50 {
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(10, 10, 10, 0.5),
+    var(--tw-gradient-to, rgba(10, 10, 10, 0));
+}
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
