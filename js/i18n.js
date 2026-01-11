@@ -606,6 +606,7 @@ function initI18n() {
 
 function initCookieBanner() {
   const banner = document.getElementById("cookie-banner");
+  const backdrop = document.getElementById("cookie-backdrop");
   if (!banner) return;
 
   const acceptBtn = document.getElementById("cookie-accept");
@@ -616,6 +617,7 @@ function initCookieBanner() {
     setTimeout(() => {
       console.log("[Cookie] Showing banner - no consent found");
       banner.classList.add("is-visible");
+      if (backdrop) backdrop.classList.add("is-visible");
       // Accessibility: move focus to banner for screen readers
       banner.setAttribute("aria-hidden", "false");
     }, 1000);
@@ -628,6 +630,7 @@ function initCookieBanner() {
     console.log("[Cookie] Consent ACCEPTED");
     localStorage.setItem("vibe-cookie-consent", "accepted");
     banner.classList.remove("is-visible");
+    if (backdrop) backdrop.classList.remove("is-visible");
     banner.setAttribute("aria-hidden", "true");
     if (window.loadGTM) window.loadGTM();
   });
@@ -636,6 +639,7 @@ function initCookieBanner() {
     console.log("[Cookie] Consent DECLINED");
     localStorage.setItem("vibe-cookie-consent", "declined");
     banner.classList.remove("is-visible");
+    if (backdrop) backdrop.classList.remove("is-visible");
     banner.setAttribute("aria-hidden", "true");
   });
 }
