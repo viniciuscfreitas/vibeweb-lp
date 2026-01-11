@@ -2,7 +2,7 @@
 <!--
 DEPLOY CHECKLIST (before Meta Ads campaign):
 1. Replace vibe-web.com with actual domain in .env
-2. Replace YOUR_PIXEL_ID with Meta Pixel ID in .env (code is at line ~972)
+2. Ensure Meta Pixel is configured via GTM (GTM-T66KGKHZ) instead of hardcoded ID.
 3. Ensure WHATSAPP_NUMBER in .env is only numbers (ex: 5562994584520)
 4. Test all WhatsApp links work
 5. Verify photos load (fotos/kaio.webp, fotos/vinicius.webp)
@@ -126,53 +126,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         ]
       }
     </script>
-    <script>
-      // Meta Pixel Initialization
-      (function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
-      );
-
-      const PIXEL_ID = "YOUR_PIXEL_ID";
-      const hasPixelId = PIXEL_ID && PIXEL_ID !== "YOUR_PIXEL_ID";
-
-      if (hasPixelId) {
-        fbq("init", PIXEL_ID);
-        fbq("track", "PageView");
-      } else if (
-        window.location.hostname !== "localhost" &&
-        window.location.hostname !== "127.0.0.1"
-      ) {
-        console.warn("VibeWeb: PIXEL_ID not configured");
-      }
-    </script>
-    <noscript
-      ><img
-        height="1"
-        width="1"
-        style="display: none"
-        src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
-      />
-    </noscript>
   </head>
 
   <body class="antialiased">
@@ -237,7 +190,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 rel="noopener noreferrer"
                 aria-label="Start conversation on WhatsApp (opens in new window)"
                 title="Start conversation on WhatsApp"
-                onclick="trackContact()"
                 class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
                 data-i18n="hero_cta"
               >
@@ -785,7 +737,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 href="https://wa.me/5562994584520"
                 rel="noopener noreferrer"
                 aria-label="Start conversation on WhatsApp"
-                onclick="trackContact()"
                 class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
                 data-i18n="service_1_cta"
               >
@@ -849,7 +800,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 href="https://wa.me/5562994584520"
                 rel="noopener noreferrer"
                 aria-label="Start conversation on WhatsApp"
-                onclick="trackContact()"
                 class="w-full block text-center bg-brand text-black font-bold py-3 hover:bg-green-400 transition-colors border border-transparent"
                 data-i18n="service_2_cta"
               >
@@ -905,7 +855,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 href="https://wa.me/5562994584520"
                 rel="noopener noreferrer"
                 aria-label="Start conversation on WhatsApp"
-                onclick="trackContact()"
                 class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
                 data-i18n="service_3_cta"
               >
@@ -979,7 +928,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
               href="https://wa.me/5562994584520"
               rel="noopener noreferrer"
               aria-label="Start conversation on WhatsApp"
-              onclick="trackContact()"
               class="inline-block mt-6 text-white border-b border-brand pb-0.5 hover:text-brand transition-colors"
               data-i18n="pricing_cta"
             >
@@ -1182,7 +1130,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             rel="noopener noreferrer"
             aria-label="Start conversation on WhatsApp (opens in new window)"
             title="Start conversation on WhatsApp"
-            onclick="trackContact()"
             class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
             data-i18n="footer_cta"
           >
@@ -1265,12 +1212,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         elements.forEach((el) => observer.observe(el));
       })();
-
-      function trackContact() {
-        if (typeof fbq === "function") {
-          fbq("track", "Contact");
-        }
-      }
     </script>
   </body>
 </html>
