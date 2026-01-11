@@ -8,9 +8,6 @@ COPY index.html .
 COPY css/ ./css/
 COPY js/ ./js/
 COPY fotos/ ./fotos/
-COPY hero.png .
-COPY kaio.jpeg .
-COPY vinicius.jpeg .
 
 EXPOSE 80
 
