@@ -94,8 +94,9 @@ const translations = {
     footer_secure: "Secure connection · Direct to developer",
     footer_refund: "50% only after approval · Full refund if you don't love it",
     footer_locations: "São Paulo, Brazil · Lisbon, Portugal",
-    footer_copyright:
-      'Copyright © 2026 VibeWeb Partners · Made with <span class="text-brand">code</span> & 🇧🇷 in Brazil.',
+    footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
+    footer_made_with:
+      'Made with <span class="text-brand">code</span> & 🇧🇷 in Brazil.',
     footer_privacy: "Privacy Policy",
     privacy_title: "Privacy Policy – VibeWeb",
     privacy_h1: "Privacy Policy.",
@@ -227,8 +228,9 @@ const translations = {
     footer_refund:
       "50% solo después de la aprobación · Reembolso total si no te encanta",
     footer_locations: "São Paulo, Brasil · Lisboa, Portugal",
-    footer_copyright:
-      'Copyright © 2026 VibeWeb Partners · Hecho con <span class="text-brand">código</span> y 🇧🇷 en Brasil.',
+    footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
+    footer_made_with:
+      'Hecho con <span class="text-brand">código</span> y 🇧🇷 en Brasil.',
     footer_privacy: "Política de Privacidad",
     privacy_title: "Política de Privacidad – VibeWeb",
     privacy_h1: "Política de Privacidad.",
@@ -364,8 +366,9 @@ const translations = {
     footer_refund:
       "50% seulement après approbation · Remboursement intégral si vous n'aimez pas",
     footer_locations: "São Paulo, Brésil · Lisbonne, Portugal",
-    footer_copyright:
-      'Copyright © 2026 VibeWeb Partners · Fait avec <span class="text-brand">code</span> et 🇧🇷 au Brésil.',
+    footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
+    footer_made_with:
+      'Fait avec <span class="text-brand">code</span> et 🇧🇷 au Brésil.',
     footer_privacy: "Politique de Confidentialité",
     privacy_title: "Politique de Confidentialité – VibeWeb",
     privacy_h1: "Politique de Confidentialité.",
@@ -501,8 +504,9 @@ const translations = {
     footer_refund:
       "50% erst nach Freigabe · Volle Rückerstattung, wenn es Ihnen nicht gefällt",
     footer_locations: "São Paulo, Brasilien · Lissabon, Portugal",
-    footer_copyright:
-      'Copyright © 2026 VibeWeb Partners · Erstellt mit <span class="text-brand">Code</span> & 🇧🇷 in Brasilien.',
+    footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
+    footer_made_with:
+      'Erstellt mit <span class="text-brand">Code</span> & 🇧🇷 in Brasilien.',
     footer_privacy: "Datenschutzerklärung",
     privacy_title: "Datenschutzerklärung – VibeWeb",
     privacy_h1: "Datenschutzerklärung.",
