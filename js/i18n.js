@@ -5,7 +5,7 @@ const translations = {
       "Professional sites in 48&nbsp;h. High-end development for European businesses. 10&times;&nbsp;cheaper than local agencies with 100/100 performance.",
     hero_title: "Professional sites<br>in 48&nbsp;h",
     hero_subtitle:
-      "Faster and 5–10&times; cheaper than any local agency in Europe. High-end Brazilian engineering for European companies.",
+      "Faster and 5–10&times; cheaper than any local agency in Europe. High-end engineering for European companies.",
     hero_cta: "Chat with an expert",
     hero_spots: "Only 2 spots left for this week to maintain 48&nbsp;h delivery",
     hero_wise: "Secure Payment via Wise",
