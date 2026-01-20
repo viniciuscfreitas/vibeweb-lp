@@ -793,3 +793,33 @@ button:focus-visible {
     line-height: 1;
   }
 }
+
+/* Missing Utilities for Modal */
+.fixed {
+  position: fixed;
+}
+.z-\[9999\] {
+  z-index: 9999;
+}
+.bg-black\/90 {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.pointer-events-auto {
+  pointer-events: auto;
+}
+.scale-90 {
+  transform: scale(0.9);
+}
+.scale-100 {
+  transform: scale(1);
+}
+.opacity-100 {
+  opacity: 1;
+}
