@@ -2,7 +2,7 @@ const translations = {
   en: {
     title: "VibeWeb – High-End Sites in 48&nbsp;h for the European Market",
     meta_description:
-      "Professional sites in 48&nbsp;h. High-end Brazilian development for European businesses. 10&times;&nbsp;cheaper than local agencies with 100/100 performance.",
+      "Professional sites in 48&nbsp;h. High-end development for European businesses. 10&times;&nbsp;cheaper than local agencies with 100/100 performance.",
     hero_title: "Professional sites<br>in 48&nbsp;h",
     hero_subtitle:
       "Faster and 5–10&times; cheaper than any local agency in Europe. High-end Brazilian engineering for European companies.",
@@ -476,7 +476,7 @@ const translations = {
       "Professionelle Websites in 48 Stunden. Hochwertige brasilianische Entwicklung für europäische Unternehmen. 10&times;&nbsp;günstiger als lokale Agenturen.",
     hero_title: "Professionelle Websites<br>in 48&nbsp;h",
     hero_subtitle:
-      "Schneller und 5–10 Mal günstiger als jede lokale Agentur in Europa. Brasilianisches High-End-Engineering für europäische Unternehmen.",
+      "Schneller und 5–10 Mal günstiger als jede lokale Agentur in Europa. High-End-Engineering für europäische Unternehmen.",
     hero_cta: "Kostenlosen Anruf buchen (15 Min.)",
     hero_spots:
       "Nur noch 2 Plätze diese Woche, um die 48&nbsp;h-Lieferung zu garantieren",
