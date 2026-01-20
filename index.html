@@ -1314,6 +1314,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         const btnText = document.getElementById("btn-text");
 
         let lastFocusedElement;
+        let lastTriggerSource = "Unknown"; // Store which button opened the modal
 
         if (!modal || !form || !modalContent) return;
 
@@ -1340,7 +1341,15 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         }
 
         function openModal(e) {
-          if (e) e.preventDefault();
+          if (e) {
+             e.preventDefault();
+             const btn = e.currentTarget;
+             if (btn) {
+                if (btn.closest("header")) lastTriggerSource = "Hero";
+                else if (btn.closest("footer")) lastTriggerSource = "Footer";
+                else if (btn.closest("section")) lastTriggerSource = "Section";
+             }
+          }
           lastFocusedElement = document.activeElement;
 
           // Show modal
@@ -1471,8 +1480,8 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 body: JSON.stringify({
                   client: name,
                   contact: whatsapp,
-                  description: `Interesse em: ${projectType}`,
-                  source: 'VibeWeb LP'
+                  description: `Interesse em: ${projectType} (via ${lastTriggerSource})`,
+                  source: `LP Form (${lastTriggerSource})`
                 }),
               });
               console.log('[Lead] API submission successful');
@@ -1524,7 +1533,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
               fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ source: 'WhatsApp' }),
+                body: JSON.stringify({ source: `WhatsApp Direct (${lastTriggerSource})` }),
               });
             } catch (err) {
               // Ignore errors for direct clicks
