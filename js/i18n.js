@@ -64,7 +64,7 @@ const translations = {
     pricing_desc:
       "Have a specific budget in mind? Tell us.<br>We will tailor the scope to fit your wallet without compromising quality.",
     pricing_cta: "Let's talk about values →",
-    about_jotinha_desc:
+    about_joao_victor_desc:
       "Growth Partner & Head of Traffic. Expert in paid media and ROI-focused strategies for scaling businesses in Europe.",
     about_vinicius_desc:
       "Lead Developer. Technical engine ensuring 100/100 performance for European businesses.",
@@ -219,7 +219,7 @@ const translations = {
     pricing_desc:
       "¿Tienes un presupuesto específico? Cuéntanos.<br>Adaptaremos el alcance a tu bolsillo sin comprometer la calidad.",
     pricing_cta: "Hablemos de valores →",
-    about_jotinha_desc:
+    about_joao_victor_desc:
       "Socio de Crecimiento y Head of Traffic. Experto en medios pagados y estrategias enfocadas en el ROI para escalar negocios en Europa.",
     about_vinicius_desc:
       "Lead Developer. Motor técnico que garantiza un rendimiento 100/100 para empresas europeas.",
@@ -378,7 +378,7 @@ const translations = {
     pricing_desc:
       "Vous avez un budget spécifique ? Dites-le nous.<br>Nous adapterons la portée à votre portefeuille sans compromis sur la qualité.",
     pricing_cta: "Parlons de valeurs →",
-    about_jotinha_desc:
+    about_joao_victor_desc:
       "Partenaire de Croissance & Head of Traffic. Expert en médias payants et stratégies axées sur le ROI pour faire évoluer les entreprises en Europe.",
     about_vinicius_desc:
       "Lead Developer. Moteur technique garantissant une performance 100/100 pour les entreprises européennes.",
@@ -538,7 +538,7 @@ const translations = {
     pricing_desc:
       "Haben Sie ein bestimmtes Budget im Kopf? Sagen Sie es uns.<br>Wir passen den Umfang an Ihren Geldbeutel an, ohne die Qualität zu beeinträchtigen.",
     pricing_cta: "Reden wir über Werte →",
-    about_jotinha_desc:
+    about_joao_victor_desc:
       "Growth Partner & Head of Traffic. Experte für bezahlte Medien und ROI-orientierte Strategien zur Skalierung von Unternehmen in Europa.",
     about_vinicius_desc:
       "Lead Developer. Technischer Motor, der 100/100 Leistung für europäische Unternehmen garantiert.",
