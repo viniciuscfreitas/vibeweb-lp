@@ -52,14 +52,67 @@ svg {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--brand);
 }
+/* Global Focus Management */
+*:focus,
 *:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 4px;
+  outline: none;
 }
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 4px;
+
+/* Accessible Focus Indicators (No Rings) */
+a:focus-visible {
+  color: var(--brand);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  border-color: var(--brand) !important;
+}
+
+/* Form Styles */
+.form-input {
+  width: 100%;
+  background-color: var(--neutral-950);
+  border: 1px solid var(--neutral-800);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.form-input:focus {
+  border-color: var(--brand);
+  background-color: #000;
+}
+
+.form-input::placeholder {
+  color: var(--neutral-600);
+}
+
+/* Custom Select Arrow */
+.select-wrapper {
+  position: relative;
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--neutral-400);
 }
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -83,6 +136,35 @@ button:focus-visible {
   opacity: 1 !important;
   transform: none !important;
 }
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  height: auto;
+  clip: auto;
+  z-index: 100;
+  padding: 1rem 1.5rem;
+  background-color: var(--brand);
+  color: black;
+  font-weight: bold;
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
 /* Cookie Banner */
 #cookie-banner {
   position: fixed;
@@ -137,10 +219,12 @@ button:focus-visible {
   transition: all 0.3s ease;
 }
 
-#cookie-accept:hover {
+#cookie-accept:hover,
+#cookie-accept:focus-visible {
   background: #4ade80;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(4, 211, 97, 0.3);
+  outline: none; /* Ensure no ring */
 }
 
 #cookie-decline {
@@ -153,8 +237,10 @@ button:focus-visible {
   transition: color 0.3s ease;
 }
 
-#cookie-decline:hover {
+#cookie-decline:hover,
+#cookie-decline:focus-visible {
   color: #fff;
+  outline: none;
 }
 
 .reveal-on-scroll {
