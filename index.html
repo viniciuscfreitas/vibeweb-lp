@@ -1307,39 +1307,36 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       // Modal Logic
       (function () {
         const modal = document.getElementById("lead-modal");
+        const modalContent = document.getElementById("lead-modal-content");
         const closeModalBtn = document.getElementById("close-modal");
         const form = document.getElementById("lead-form");
         const openBtns = document.querySelectorAll(".js-open-modal");
         const directWaBtn = document.getElementById("modal-direct-wa");
 
-        if (!modal || !form) return;
+        if (!modal || !form || !modalContent) return;
 
         function openModal(e) {
           if (e) e.preventDefault();
           modal.classList.remove("hidden");
-          // Small delay to allow display:block to apply before opacity transition
+          modal.classList.add("flex");
+          
+          // Small delay to allow display:flex to apply before opacity transition
           setTimeout(() => {
             modal.classList.remove("opacity-0");
-            modal
-              .querySelector("div[id='lead-modal-content']")
-              .classList.remove("scale-95");
-            modal
-              .querySelector("div[id='lead-modal-content']")
-              .classList.add("scale-100");
+            modalContent.classList.remove("scale-95");
+            modalContent.classList.add("scale-100");
           }, 10);
           document.body.style.overflow = "hidden"; // Prevent background scrolling
         }
 
         function closeModal() {
           modal.classList.add("opacity-0");
-          modal
-            .querySelector("div[id='lead-modal-content']")
-            .classList.add("scale-95");
-          modal
-            .querySelector("div[id='lead-modal-content']")
-            .classList.remove("scale-100");
+          modalContent.classList.add("scale-95");
+          modalContent.classList.remove("scale-100");
+          
           setTimeout(() => {
             modal.classList.add("hidden");
+            modal.classList.remove("flex");
             document.body.style.overflow = "";
           }, 300);
         }
