@@ -6,7 +6,7 @@ const translations = {
     hero_title: "Professional sites<br>in 48&nbsp;h",
     hero_subtitle:
       "Faster and 5–10&times; cheaper than any local agency in Europe. High-end Brazilian engineering for European companies.",
-    hero_cta: "Book free call (15&nbsp;min)",
+    hero_cta: "Chat with an expert",
     hero_spots: "Only 2 spots left for this week to maintain 48&nbsp;h delivery",
     hero_wise: "Secure Payment via Wise",
     hero_refund: "50% only after approval · Full refund if you don't love it",
@@ -90,13 +90,13 @@ const translations = {
     faq_3_a:
       "No mandatory fees. The site is yours. We offer an optional maintenance plan if you want total peace of mind.",
     footer_ready: "Ready to scale?",
-    footer_cta: "Book free call (15&nbsp;min)",
+    footer_cta: "Chat with an expert",
     footer_secure: "Secure connection · Direct to developer",
     footer_refund: "50% only after approval · Full refund if you don't love it",
-    footer_locations: "São Paulo, Brazil · Lisbon, Portugal",
+    footer_locations: "Based in Lisbon, Portugal · Global Delivery",
     footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
     footer_made_with:
-      'Made with <span class="text-brand">code</span> & 🇧🇷 in Brazil.',
+      'Made with <span class="text-brand">code</span> for high-performance.',
     footer_privacy: "Privacy Policy",
     cookie_text:
       "We use cookies to improve your experience and analyze our traffic. By clicking 'Accept', you consent to our use of cookies.",
@@ -158,7 +158,7 @@ const translations = {
     hero_title: "Sitios profesionales<br>en 48&nbsp;h",
     hero_subtitle:
       "Más rápido y de 5 a 10 veces más barato que cualquier agencia local en Europa. Ingeniería brasileña de alta gama para empresas europeas.",
-    hero_cta: "Reserva llamada gratis (15&nbsp;min)",
+    hero_cta: "Hablar con un experto",
     hero_spots:
       "Solo quedan 2 cupos esta semana para mantener la entrega en 48&nbsp;h",
     hero_wise: "Pago Seguro vía Wise",
@@ -245,14 +245,14 @@ const translations = {
     faq_3_a:
       "No hay cuotas obligatorias. El sitio es tuyo. Ofrecemos un plan de mantenimiento opcional si deseas total tranquilidad.",
     footer_ready: "¿Listo para escalar?",
-    footer_cta: "Reserva llamada gratis (15&nbsp;min)",
+    footer_cta: "Hablar con un experto",
     footer_secure: "Conexión segura · Directo al desarrollador",
     footer_refund:
       "50% solo después de la aprobación · Reembolso total si no te encanta",
-    footer_locations: "São Paulo, Brasil · Lisboa, Portugal",
+    footer_locations: "Basado en Lisboa, Portugal · Entrega Global",
     footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
     footer_made_with:
-      'Hecho con <span class="text-brand">código</span> y 🇧🇷 en Brasil.',
+      'Hecho con <span class="text-brand">código</span> para alto rendimiento.',
     footer_privacy: "Política de Privacidad",
     cookie_text:
       "Utilizamos cookies para mejorar su experiencia y analizar nuestro tráfico. Al hacer clic en 'Aceptar', usted acepta nosso uso de cookies.",
@@ -316,7 +316,7 @@ const translations = {
     hero_title: "Sites professionnels<br>en 48&nbsp;h",
     hero_subtitle:
       "Plus rapide et 5 à 10 fois moins cher que n'importe quelle agence locale en Europe. Ingénierie brésilienne haut de gamme pour les entreprises européennes.",
-    hero_cta: "Réserver un appel gratuit (15&nbsp;min)",
+    hero_cta: "Discuter avec un expert",
     hero_spots:
       "Plus que 2 places cette semaine pour garantir une livraison en 48&nbsp;h",
     hero_wise: "Paiement sécurisé via Wise",
@@ -404,14 +404,14 @@ const translations = {
     faq_3_a:
       "Aucun frais obligatoire. Le site est à vous. Nous proposons un plan de maintenance optionnel pour une tranquillité totale.",
     footer_ready: "Prêt à passer à l'échelle ?",
-    footer_cta: "Réserver un appel gratuit (15&nbsp;min)",
+    footer_cta: "Discuter avec un expert",
     footer_secure: "Connexion sécurisée · Directement au développeur",
     footer_refund:
       "50% seulement après approbation · Remboursement intégral si vous n'aimez pas",
-    footer_locations: "São Paulo, Brésil · Lisbonne, Portugal",
+    footer_locations: "Basé à Lisbonne, Portugal · Livraison Globale",
     footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
     footer_made_with:
-      'Fait avec <span class="text-brand">code</span> et 🇧🇷 au Brésil.',
+      'Fait avec <span class="text-brand">code</span> pour la haute performance.',
     footer_privacy: "Politique de Confidentialité",
     cookie_text:
       "Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. En cliquant sur 'Accepter', vous consentez à notre utilisation des cookies.",
@@ -564,14 +564,14 @@ const translations = {
     faq_3_a:
       "Keine obligatorischen Gebühren. Die Seite gehört Ihnen. Wir bieten einen optionalen Wartungsplan für totale Sorgenfreiheit an.",
     footer_ready: "Bereit zu wachsen?",
-    footer_cta: "Kostenlosen Anruf buchen (15 Min.)",
+    footer_cta: "Mit einem Experten chatten",
     footer_secure: "Sichere Verbindung · Direkt zum Entwickler",
     footer_refund:
       "50% erst nach Freigabe · Volle Rückerstattung, wenn es Ihnen nicht gefällt",
-    footer_locations: "São Paulo, Brasilien · Lissabon, Portugal",
+    footer_locations: "Sitz in Lissabon, Portugal · Globale Lieferung",
     footer_copyright_name: "Copyright © 2026 VibeWeb Partners",
     footer_made_with:
-      'Erstellt mit <span class="text-brand">Code</span> & 🇧🇷 in Brasilien.',
+      'Erstellt mit <span class="text-brand">Code</span> für hohe Leistung.',
     footer_privacy: "Datenschutzerklärung",
     cookie_text:
       "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern und unseren Datenverkehr zu analysieren. Durch Klicken auf 'Akzeptieren' stimmen Sie der Verwendung von Cookies zu.",
