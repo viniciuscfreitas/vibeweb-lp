@@ -583,6 +583,9 @@ input[type="email"] {
 .w-full {
   width: 100%;
 }
+.h-full {
+  height: 100%;
+}
 .w-24 {
   width: 6rem;
 }
@@ -740,6 +743,9 @@ input[type="email"] {
 }
 .aspect-\[4\/3\] {
   aspect-ratio: 4/3;
+}
+.aspect-\[16\/9\] {
+  aspect-ratio: 16/9;
 }
 .opacity-0 {
   opacity: 0;
