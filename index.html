@@ -220,11 +220,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
             <div class="pt-8 flex flex-col items-start">
               <a
-                href="https://wa.me/5513974023753"
-                rel="noopener noreferrer"
-                aria-label="Start conversation on WhatsApp (opens in new window)"
-                title="Start conversation on WhatsApp"
-                class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
+                href="javascript:void(0)"
+                class="js-open-modal w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
+                aria-label="Start project conversation"
                 data-i18n="hero_cta"
               >
                 Book free call (15 min)
@@ -645,10 +643,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 Perfect for: <span class="text-white">Startups & MVPs</span>
               </div>
               <a
-                href="https://wa.me/5513974023753"
-                rel="noopener noreferrer"
-                aria-label="Start conversation on WhatsApp"
-                class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
+                href="javascript:void(0)"
+                class="js-open-modal w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
+                aria-label="Start project conversation"
                 data-i18n="service_1_cta"
               >
                 Get Started
@@ -708,10 +705,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 <span class="text-white">Businesses Scaling Up</span>
               </div>
               <a
-                href="https://wa.me/5513974023753"
-                rel="noopener noreferrer"
-                aria-label="Start conversation on WhatsApp"
-                class="w-full block text-center bg-brand text-black font-bold py-3 hover:bg-green-400 transition-colors border border-transparent"
+                href="javascript:void(0)"
+                class="js-open-modal w-full block text-center bg-brand text-black font-bold py-3 hover:bg-green-400 transition-colors border border-transparent"
+                aria-label="Start project conversation"
                 data-i18n="service_2_cta"
               >
                 Claim My Spot
@@ -763,10 +759,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
                 Perfect for: <span class="text-white">SaaS & Tools</span>
               </div>
               <a
-                href="https://wa.me/5513974023753"
-                rel="noopener noreferrer"
-                aria-label="Start conversation on WhatsApp"
-                class="w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
+                href="javascript:void(0)"
+                class="js-open-modal w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
+                aria-label="Start project conversation"
                 data-i18n="service_3_cta"
               >
                 Build My App
@@ -836,10 +831,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
               quality.
             </p>
             <a
-              href="https://wa.me/5513974023753"
-              rel="noopener noreferrer"
-              aria-label="Start conversation on WhatsApp"
-              class="inline-block mt-6 text-white border-b border-brand pb-0.5 hover:text-brand transition-colors"
+              href="javascript:void(0)"
+              class="js-open-modal inline-block mt-6 text-white border-b border-brand pb-0.5 hover:text-brand transition-colors"
+              aria-label="Start project conversation"
               data-i18n="pricing_cta"
             >
               Let's talk about values →
@@ -1037,11 +1031,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           </h2>
 
           <a
-            href="https://wa.me/5513974023753"
-            rel="noopener noreferrer"
-            aria-label="Start conversation on WhatsApp (opens in new window)"
-            title="Start conversation on WhatsApp"
-            class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+            href="javascript:void(0)"
+            class="js-open-modal w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+            aria-label="Start project conversation"
             data-i18n="footer_cta"
           >
             Book free call (15 min)
@@ -1104,6 +1096,155 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     </main>
 
     <div id="cookie-backdrop" class="cookie-backdrop"></div>
+    <!-- Lead Capture Modal -->
+    <div
+      id="lead-modal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+      aria-hidden="true"
+      role="dialog"
+      aria-labelledby="modal-title"
+    >
+      <div
+        class="bg-neutral-900 border border-neutral-800 p-8 md:p-12 w-full max-w-lg relative transform scale-95 transition-transform duration-300 shadow-2xl"
+        id="lead-modal-content"
+      >
+        <button
+          id="close-modal"
+          class="absolute top-4 right-4 text-neutral-400 hover:text-white transition-colors"
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <h2
+          id="modal-title"
+          class="text-3xl font-black tracking-tighter text-white mb-2"
+          data-i18n="form_title"
+        >
+          Start your Project
+        </h2>
+        <p class="text-neutral-400 mb-8" data-i18n="form_subtitle">
+          Fill the form below to speed up our conversation.
+        </p>
+
+        <form id="lead-form" class="space-y-6">
+          <div>
+            <label
+              for="name"
+              class="block text-sm font-bold text-neutral-300 mb-2"
+              data-i18n="form_name_label"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full bg-neutral-950 border border-neutral-800 focus:border-brand focus:ring-1 focus:ring-brand text-white px-4 py-3 outline-none transition-colors placeholder-neutral-600"
+              placeholder="Your Name"
+              data-i18n-placeholder="form_name_placeholder"
+            />
+          </div>
+
+          <div>
+            <label
+              for="whatsapp"
+              class="block text-sm font-bold text-neutral-300 mb-2"
+              data-i18n="form_whatsapp_label"
+            >
+              WhatsApp
+            </label>
+            <input
+              type="tel"
+              id="whatsapp"
+              name="whatsapp"
+              required
+              class="w-full bg-neutral-950 border border-neutral-800 focus:border-brand focus:ring-1 focus:ring-brand text-white px-4 py-3 outline-none transition-colors placeholder-neutral-600"
+              placeholder="+1 234 567 8900"
+              data-i18n-placeholder="form_whatsapp_placeholder"
+            />
+          </div>
+
+          <div>
+            <label
+              for="project-type"
+              class="block text-sm font-bold text-neutral-300 mb-2"
+              data-i18n="form_project_label"
+            >
+              Project Type
+            </label>
+            <div class="relative">
+              <select
+                id="project-type"
+                name="project-type"
+                class="w-full bg-neutral-950 border border-neutral-800 focus:border-brand focus:ring-1 focus:ring-brand text-white px-4 py-3 outline-none transition-colors appearance-none"
+              >
+                <option value="Landing Page" data-i18n="form_project_option_1">
+                  Landing Page
+                </option>
+                <option value="Corporate Site" data-i18n="form_project_option_2">
+                  Corporate Site
+                </option>
+                <option value="Web App" data-i18n="form_project_option_3">
+                  Web App / SaaS
+                </option>
+              </select>
+              <div
+                class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-neutral-400"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-brand hover:bg-green-400 text-black font-bold py-4 transition-colors"
+            data-i18n="form_submit"
+          >
+            Request Contact
+          </button>
+        </form>
+
+        <div class="mt-6 text-center">
+          <span class="text-neutral-500 text-sm" data-i18n="form_or">or</span>
+          <a
+            href="https://wa.me/5513974023753"
+            class="block mt-2 text-white hover:text-brand text-sm font-bold underline decoration-neutral-700 underline-offset-4 hover:decoration-brand transition-all"
+            data-i18n="form_whatsapp_direct"
+            id="modal-direct-wa"
+          >
+            Chat on WhatsApp directly
+          </a>
+        </div>
+      </div>
+    </div>
     <div
       id="cookie-banner"
       role="region"
@@ -1161,6 +1302,105 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         );
 
         elements.forEach((el) => observer.observe(el));
+      })();
+
+      // Modal Logic
+      (function () {
+        const modal = document.getElementById("lead-modal");
+        const closeModalBtn = document.getElementById("close-modal");
+        const form = document.getElementById("lead-form");
+        const openBtns = document.querySelectorAll(".js-open-modal");
+        const directWaBtn = document.getElementById("modal-direct-wa");
+
+        if (!modal || !form) return;
+
+        function openModal(e) {
+          if (e) e.preventDefault();
+          modal.classList.remove("hidden");
+          // Small delay to allow display:block to apply before opacity transition
+          setTimeout(() => {
+            modal.classList.remove("opacity-0");
+            modal
+              .querySelector("div[id='lead-modal-content']")
+              .classList.remove("scale-95");
+            modal
+              .querySelector("div[id='lead-modal-content']")
+              .classList.add("scale-100");
+          }, 10);
+          document.body.style.overflow = "hidden"; // Prevent background scrolling
+        }
+
+        function closeModal() {
+          modal.classList.add("opacity-0");
+          modal
+            .querySelector("div[id='lead-modal-content']")
+            .classList.add("scale-95");
+          modal
+            .querySelector("div[id='lead-modal-content']")
+            .classList.remove("scale-100");
+          setTimeout(() => {
+            modal.classList.add("hidden");
+            document.body.style.overflow = "";
+          }, 300);
+        }
+
+        openBtns.forEach((btn) => btn.addEventListener("click", openModal));
+        closeModalBtn.addEventListener("click", closeModal);
+
+        // Close on backdrop click
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal();
+        });
+
+        // Close on Escape key
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            closeModal();
+          }
+        });
+
+        // Handle Form Submission
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(form);
+          const name = formData.get("name");
+          const whatsapp = formData.get("whatsapp");
+          const projectType = formData.get("project-type");
+
+          // 1. GTM Tracking
+          if (window.dataLayer) {
+            window.dataLayer.push({
+              event: "generate_lead",
+              lead_type: "whatsapp_form",
+              project_type: projectType,
+            });
+          }
+
+          // 2. Construct WhatsApp Message
+          const text = `Hello! My name is ${name}. I'm interested in a ${projectType} project. My number is ${whatsapp}.`;
+          const encodedText = encodeURIComponent(text);
+          const waUrl = `https://wa.me/5513974023753?text=${encodedText}`;
+
+          // 3. Open WhatsApp
+          window.open(waUrl, "_blank");
+
+          // 4. Close Modal
+          closeModal();
+          form.reset();
+        });
+
+        // Handle Direct WhatsApp Click in Modal (for tracking)
+        if (directWaBtn) {
+          directWaBtn.addEventListener("click", () => {
+            if (window.dataLayer) {
+              window.dataLayer.push({
+                event: "contact",
+                method: "whatsapp_direct_modal",
+              });
+            }
+          });
+        }
       })();
     </script>
   </body>
