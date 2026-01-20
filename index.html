@@ -1099,13 +1099,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     <!-- Lead Capture Modal -->
     <div
       id="lead-modal"
-      class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300"
       aria-hidden="true"
       role="dialog"
       aria-labelledby="modal-title"
     >
       <div
-        class="bg-neutral-900 border border-neutral-800 p-8 md:p-12 w-full max-w-lg relative transform scale-95 transition-transform duration-300 shadow-2xl"
+        class="bg-neutral-900 border border-neutral-800 p-8 md:p-12 w-full max-w-lg relative transform scale-90 opacity-0 transition-all duration-300 shadow-2xl mx-4"
         id="lead-modal-content"
       >
         <button
@@ -1317,28 +1317,28 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         function openModal(e) {
           if (e) e.preventDefault();
-          modal.classList.remove("hidden");
-          modal.classList.add("flex");
           
-          // Small delay to allow display:flex to apply before opacity transition
-          setTimeout(() => {
-            modal.classList.remove("opacity-0");
-            modalContent.classList.remove("scale-95");
-            modalContent.classList.add("scale-100");
-          }, 10);
-          document.body.style.overflow = "hidden"; // Prevent background scrolling
+          // Show modal
+          modal.classList.remove("opacity-0", "pointer-events-none");
+          modal.classList.add("opacity-100", "pointer-events-auto");
+          
+          // Animate content
+          modalContent.classList.remove("scale-90", "opacity-0");
+          modalContent.classList.add("scale-100", "opacity-100");
+          
+          document.body.style.overflow = "hidden";
         }
 
         function closeModal() {
-          modal.classList.add("opacity-0");
-          modalContent.classList.add("scale-95");
-          modalContent.classList.remove("scale-100");
+          // Hide modal
+          modal.classList.remove("opacity-100", "pointer-events-auto");
+          modal.classList.add("opacity-0", "pointer-events-none");
           
-          setTimeout(() => {
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-            document.body.style.overflow = "";
-          }, 300);
+          // Animate content out
+          modalContent.classList.remove("scale-100", "opacity-100");
+          modalContent.classList.add("scale-90", "opacity-0");
+          
+          document.body.style.overflow = "";
         }
 
         openBtns.forEach((btn) => btn.addEventListener("click", openModal));
