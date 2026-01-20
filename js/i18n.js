@@ -1,13 +1,13 @@
 const translations = {
   en: {
-    title: "VibeWeb – High-End Sites in 48h for the European Market",
+    title: "VibeWeb – High-End Sites in 48&nbsp;h for the European Market",
     meta_description:
-      "Professional sites in 48h. High-end Brazilian development for European businesses. 10x cheaper than local agencies with 100/100 performance.",
-    hero_title: "Professional sites<br>in 48h",
+      "Professional sites in 48&nbsp;h. High-end Brazilian development for European businesses. 10&times;&nbsp;cheaper than local agencies with 100/100 performance.",
+    hero_title: "Professional sites<br>in 48&nbsp;h",
     hero_subtitle:
-      "Faster and 5–10× cheaper than any local agency in Europe. High-end Brazilian engineering for European companies.",
-    hero_cta: "Book free call (15 min)",
-    hero_spots: "Only 2 spots left for this week to maintain 48h delivery",
+      "Faster and 5–10&times; cheaper than any local agency in Europe. High-end Brazilian engineering for European companies.",
+    hero_cta: "Book free call (15&nbsp;min)",
+    hero_spots: "Only 2 spots left for this week to maintain 48&nbsp;h delivery",
     hero_wise: "Secure Payment via Wise",
     hero_refund: "50% only after approval · Full refund if you don't love it",
     how_it_works_1_label: "01. Discovery",
@@ -16,7 +16,7 @@ const translations = {
     how_it_works_2_title: "Quick call to align expectations + secure start",
     how_it_works_3_label: "03. Build & Deliver",
     how_it_works_3_title:
-      "Your site ready in 48h–5 days with unlimited revisions",
+      "Your site ready in 48&nbsp;h–5 days with unlimited revisions",
     how_it_works_4_label: "04. Support",
     how_it_works_4_title: "Ongoing support and updates available",
     portfolio_title: "Recent Work.",
@@ -33,7 +33,7 @@ const translations = {
       'We don\'t use rigid price lists. Every project is unique.<br><span class="text-brand font-bold">Tell us your budget</span>, and we will tell you exactly what we can do for you.',
     service_1_name: "Essential Landing",
     service_1_feat_1: "One Page conversion focused",
-    service_1_feat_2: "48h Delivery",
+    service_1_feat_2: "48&nbsp;h Delivery",
     service_1_feat_3: "Fully Responsive (Mobile)",
     service_1_feat_4: "SEO Basic Setup",
     service_1_perfect:
@@ -44,7 +44,7 @@ const translations = {
     service_2_feat_1: "Multi-page Website",
     service_2_feat_2: "Premium Animations",
     service_2_feat_3: "CMS Content Management",
-    service_2_feat_4: "3-5 Days Delivery",
+    service_2_feat_4: "3–5&nbsp;Days Delivery",
     service_2_perfect:
       'Perfect for: <span class="text-white">Businesses Scaling Up</span>',
     service_2_cta: "Claim My Spot",
@@ -90,7 +90,7 @@ const translations = {
     faq_3_a:
       "No mandatory fees. The site is yours. We offer an optional maintenance plan if you want total peace of mind.",
     footer_ready: "Ready to scale?",
-    footer_cta: "Book free call (15 min)",
+    footer_cta: "Book free call (15&nbsp;min)",
     footer_secure: "Secure connection · Direct to developer",
     footer_refund: "50% only after approval · Full refund if you don't love it",
     footer_locations: "São Paulo, Brazil · Lisbon, Portugal",
@@ -140,9 +140,9 @@ const translations = {
     form_title: "Start your Project",
     form_subtitle: "Fill the form below to speed up our conversation.",
     form_name_label: "Name",
-    form_name_placeholder: "Your Name",
+    form_name_placeholder: "Your Name…",
     form_whatsapp_label: "WhatsApp",
-    form_whatsapp_placeholder: "+1 234 567 8900",
+    form_whatsapp_placeholder: "+1 234 567 8900…",
     form_project_label: "Project Type",
     form_project_option_1: "Landing Page",
     form_project_option_2: "Corporate Site",
@@ -152,15 +152,15 @@ const translations = {
     form_whatsapp_direct: "Chat on WhatsApp directly",
   },
   es: {
-    title: "VibeWeb – Sitios de Alta Gama en 48h para el Mercado Europeo",
+    title: "VibeWeb – Sitios de Alta Gama en 48&nbsp;h para el Mercado Europeo",
     meta_description:
-      "Sitios profesionales en 48h. Desarrollo brasileño de alta gama para empresas europeas. 10 veces más barato que las agencias locales.",
-    hero_title: "Sitios profesionales<br>en 48h",
+      "Sitios profesionales en 48&nbsp;h. Desarrollo brasileño de alta gama para empresas europeas. 10 veces más barato que las agencias locales.",
+    hero_title: "Sitios profesionales<br>en 48&nbsp;h",
     hero_subtitle:
       "Más rápido y de 5 a 10 veces más barato que cualquier agencia local en Europa. Ingeniería brasileña de alta gama para empresas europeas.",
-    hero_cta: "Reserva llamada gratis (15 min)",
+    hero_cta: "Reserva llamada gratis (15&nbsp;min)",
     hero_spots:
-      "Solo quedan 2 cupos esta semana para mantener la entrega en 48h",
+      "Solo quedan 2 cupos esta semana para mantener la entrega en 48&nbsp;h",
     hero_wise: "Pago Seguro vía Wise",
     hero_refund:
       "50% solo después de la aprobación · Reembolso total si no te encanta",
@@ -171,7 +171,7 @@ const translations = {
       "Llamada rápida para alinear expectativas + inicio seguro",
     how_it_works_3_label: "03. Construcción",
     how_it_works_3_title:
-      "Tu sitio listo en 48h–5 días con revisiones ilimitadas",
+      "Tu sitio listo en 48&nbsp;h–5 días con revisiones ilimitadas",
     how_it_works_4_label: "04. Soporte",
     how_it_works_4_title: "Soporte continuo y atualizaciones disponibles",
     portfolio_title: "Trabajos Recientes.",
@@ -188,7 +188,7 @@ const translations = {
       'No usamos listas de precios rígidas. Cada proyecto es único.<br><span class="text-brand font-bold">Cuéntanos tu presupuesto</span> y te diremos exactamente qué podemos hacer por ti.',
     service_1_name: "Landing Esencial",
     service_1_feat_1: "Una página enfocada en conversión",
-    service_1_feat_2: "Entrega en 48h",
+    service_1_feat_2: "Entrega en 48&nbsp;h",
     service_1_feat_3: "Totalmente Responsivo (Móvil)",
     service_1_feat_4: "Configuración SEO Básica",
     service_1_perfect:
@@ -199,7 +199,7 @@ const translations = {
     service_2_feat_1: "Sitio Web Multi-página",
     service_2_feat_2: "Animaciones Premium",
     service_2_feat_3: "Gestión de Contenido CMS",
-    service_2_feat_4: "Entrega en 3-5 Días",
+    service_2_feat_4: "Entrega en 3–5&nbsp;Días",
     service_2_perfect:
       'Ideal para: <span class="text-white">Negocios en Crecimiento</span>',
     service_2_cta: "Asegurar mi cupo",
@@ -245,7 +245,7 @@ const translations = {
     faq_3_a:
       "No hay cuotas obligatorias. El sitio es tuyo. Ofrecemos un plan de mantenimiento opcional si deseas total tranquilidad.",
     footer_ready: "¿Listo para escalar?",
-    footer_cta: "Reserva llamada gratis (15 min)",
+    footer_cta: "Reserva llamada gratis (15&nbsp;min)",
     footer_secure: "Conexión segura · Directo al desarrollador",
     footer_refund:
       "50% solo después de la aprobación · Reembolso total si no te encanta",
@@ -298,9 +298,9 @@ const translations = {
     form_title: "Inicia tu Proyecto",
     form_subtitle: "Completa el formulario para agilizar nuestra conversación.",
     form_name_label: "Nombre",
-    form_name_placeholder: "Tu Nombre",
+    form_name_placeholder: "Tu Nombre…",
     form_whatsapp_label: "WhatsApp",
-    form_whatsapp_placeholder: "+34 123 456 789",
+    form_whatsapp_placeholder: "+34 123 456 789…",
     form_project_label: "Tipo de Proyecto",
     form_project_option_1: "Landing Page",
     form_project_option_2: "Sitio Corporativo",
@@ -310,15 +310,15 @@ const translations = {
     form_whatsapp_direct: "Chatear por WhatsApp directamente",
   },
   fr: {
-    title: "VibeWeb – Sites Haut de Gamme en 48h pour le Marché Européen",
+    title: "VibeWeb – Sites Haut de Gamme en 48&nbsp;h pour le Marché Européen",
     meta_description:
-      "Sites professionnels en 48h. Développement brésilien haut de gamme pour les entreprises européennes. 10x moins cher que les agences locales.",
-    hero_title: "Sites professionnels<br>en 48h",
+      "Sites professionnels en 48&nbsp;h. Développement brésilien haut de gamme pour les entreprises européennes. 10&times;&nbsp;moins cher que les agences locales.",
+    hero_title: "Sites professionnels<br>en 48&nbsp;h",
     hero_subtitle:
       "Plus rapide et 5 à 10 fois moins cher que n'importe quelle agence locale en Europe. Ingénierie brésilienne haut de gamme pour les entreprises européennes.",
-    hero_cta: "Réserver un appel gratuit (15 min)",
+    hero_cta: "Réserver un appel gratuit (15&nbsp;min)",
     hero_spots:
-      "Plus que 2 places cette semaine pour garantir une livraison en 48h",
+      "Plus que 2 places cette semaine pour garantir une livraison en 48&nbsp;h",
     hero_wise: "Paiement sécurisé via Wise",
     hero_refund:
       "50% seulement après approbation · Remboursement intégral si vous n'aimez pas",
@@ -329,7 +329,7 @@ const translations = {
       "Appel rapide pour aligner les attentes + démarrage sécurisé",
     how_it_works_3_label: "03. Création",
     how_it_works_3_title:
-      "Votre site prêt en 48h–5 jours avec révisions illimitées",
+      "Votre site prêt en 48&nbsp;h–5 jours avec révisions illimitées",
     how_it_works_4_label: "04. Support",
     how_it_works_4_title: "Support continu et mises à jour disponibles",
     portfolio_title: "Travaux Récents.",
@@ -347,7 +347,7 @@ const translations = {
       'Nous n\'utilisons pas de listes de prix rigides. Chaque projet est unique.<br><span class="text-brand font-bold">Dites-nous votre budget</span> et nous vous dirons exactement ce que nous pouvons faire pour vous.',
     service_1_name: "Landing Essentielle",
     service_1_feat_1: "Une page axée sur la conversion",
-    service_1_feat_2: "Livraison en 48h",
+    service_1_feat_2: "Livraison en 48&nbsp;h",
     service_1_feat_3: "Entièrement Responsive (Mobile)",
     service_1_feat_4: "Configuration SEO de base",
     service_1_perfect:
@@ -358,7 +358,7 @@ const translations = {
     service_2_feat_1: "Site Web Multi-pages",
     service_2_feat_2: "Animations Premium",
     service_2_feat_3: "Gestion de Contenu CMS",
-    service_2_feat_4: "Livraison en 3-5 Jours",
+    service_2_feat_4: "Livraison en 3–5&nbsp;Jours",
     service_2_perfect:
       'Parfait pour: <span class="text-white">Entreprises en Croissance</span>',
     service_2_cta: "Réserver ma place",
@@ -404,7 +404,7 @@ const translations = {
     faq_3_a:
       "Aucun frais obligatoire. Le site est à vous. Nous proposons un plan de maintenance optionnel pour une tranquillité totale.",
     footer_ready: "Prêt à passer à l'échelle ?",
-    footer_cta: "Réserver un appel gratuit (15 min)",
+    footer_cta: "Réserver un appel gratuit (15&nbsp;min)",
     footer_secure: "Connexion sécurisée · Directement au développeur",
     footer_refund:
       "50% seulement après approbation · Remboursement intégral si vous n'aimez pas",
@@ -458,9 +458,9 @@ const translations = {
     form_title: "Démarrez votre Projet",
     form_subtitle: "Remplissez le formulaire pour accélérer notre échange.",
     form_name_label: "Nom",
-    form_name_placeholder: "Votre Nom",
+    form_name_placeholder: "Votre Nom…",
     form_whatsapp_label: "WhatsApp",
-    form_whatsapp_placeholder: "+33 6 12 34 56 78",
+    form_whatsapp_placeholder: "+33 6 12 34 56 78…",
     form_project_label: "Type de Projet",
     form_project_option_1: "Landing Page",
     form_project_option_2: "Site Corporatif",
@@ -473,13 +473,13 @@ const translations = {
     title:
       "VibeWeb – High-End-Websites in 48 Stunden für den europäischen Markt",
     meta_description:
-      "Professionelle Websites in 48 Stunden. Hochwertige brasilianische Entwicklung für europäische Unternehmen. 10x günstiger als lokale Agenturen.",
-    hero_title: "Professionelle Websites<br>in 48h",
+      "Professionelle Websites in 48 Stunden. Hochwertige brasilianische Entwicklung für europäische Unternehmen. 10&times;&nbsp;günstiger als lokale Agenturen.",
+    hero_title: "Professionelle Websites<br>in 48&nbsp;h",
     hero_subtitle:
       "Schneller und 5–10 Mal günstiger als jede lokale Agentur in Europa. Brasilianisches High-End-Engineering für europäische Unternehmen.",
     hero_cta: "Kostenlosen Anruf buchen (15 Min.)",
     hero_spots:
-      "Nur noch 2 Plätze diese Woche, um die 48h-Lieferung zu garantieren",
+      "Nur noch 2 Plätze diese Woche, um die 48&nbsp;h-Lieferung zu garantieren",
     hero_wise: "Sichere Zahlung über Wise",
     hero_refund:
       "50% erst nach Freigabe · Volle Rückerstattung, wenn es Ihnen nicht gefällt",
@@ -490,7 +490,7 @@ const translations = {
       "Kurzer Anruf zur Abstimmung der Erwartungen + sicherer Start",
     how_it_works_3_label: "03. Erstellung",
     how_it_works_3_title:
-      "Ihre Website bereit in 48h–5 Tagen mit unbegrenzten Revisionen",
+      "Ihre Website bereit in 48&nbsp;h–5 Tagen mit unbegrenzten Revisionen",
     how_it_works_4_label: "04. Support",
     how_it_works_4_title: "Laufender Support und Updates verfügbar",
     portfolio_title: "Aktuelle Arbeiten.",
@@ -507,7 +507,7 @@ const translations = {
       'Wir verwenden keine starren Preislisten. Jedes Projekt ist einzigartig.<br><span class="text-brand font-bold">Nennen Sie uns Ihr Budget</span>, und wir sagen Ihnen genau, was wir für Sie tun können.',
     service_1_name: "Essential Landing",
     service_1_feat_1: "Konversionsorientierte One-Page-Website",
-    service_1_feat_2: "48h Lieferung",
+    service_1_feat_2: "48&nbsp;h Lieferung",
     service_1_feat_3: "Vollständig responsiv (Mobil)",
     service_1_feat_4: "SEO-Basiseinrichtung",
     service_1_perfect:
@@ -518,7 +518,7 @@ const translations = {
     service_2_feat_1: "Mehrseitige Website",
     service_2_feat_2: "Premium-Animationen",
     service_2_feat_3: "CMS-Inhaltsverwaltung",
-    service_2_feat_4: "3-5 Tage Lieferung",
+    service_2_feat_4: "3–5&nbsp;Tage Lieferung",
     service_2_perfect:
       'Perfekt für: <span class="text-white">Wachsende Unternehmen</span>',
     service_2_cta: "Platz sichern",
@@ -619,9 +619,9 @@ const translations = {
     form_subtitle:
       "Füllen Sie das Formular aus, um unser Gespräch zu beschleunigen.",
     form_name_label: "Name",
-    form_name_placeholder: "Ihr Name",
+    form_name_placeholder: "Ihr Name…",
     form_whatsapp_label: "WhatsApp",
-    form_whatsapp_placeholder: "+49 151 12345678",
+    form_whatsapp_placeholder: "+49 151 12345678…",
     form_project_label: "Projekttyp",
     form_project_option_1: "Landing Page",
     form_project_option_2: "Unternehmenswebsite",
