@@ -1096,10 +1096,48 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     </main>
 
     <div id="cookie-backdrop" class="cookie-backdrop"></div>
-    <!-- Lead Capture Modal -->
+    <div
+      id="cookie-banner"
+      role="region"
+      aria-labelledby="cookie-heading"
+      aria-hidden="true"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
+      >
+        <div class="space-y-1">
+          <h2 id="cookie-heading" class="sr-only">Cookie Consent</h2>
+          <p
+            class="text-neutral-300 text-sm md:text-base"
+            data-i18n="cookie_text"
+          >
+            We use cookies to improve your experience and analyze our traffic.
+            By clicking 'Accept', you consent to our use of cookies.
+          </p>
+        </div>
+        <div class="flex items-center gap-6">
+          <button
+            id="cookie-decline"
+            class="focus:outline-none focus:ring-2 focus:ring-white p-2"
+            data-i18n="cookie_decline"
+          >
+            Decline
+          </button>
+          <button
+            id="cookie-accept"
+            class="focus:outline-none focus:ring-2 focus:ring-white"
+            data-i18n="cookie_accept"
+          >
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Capture Modal (Moved to end of body for stacking context safety) -->
     <div
       id="lead-modal"
-      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300"
+      class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300"
       aria-hidden="true"
       role="dialog"
       aria-labelledby="modal-title"
@@ -1245,43 +1283,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         </div>
       </div>
     </div>
-    <div
-      id="cookie-banner"
-      role="region"
-      aria-labelledby="cookie-heading"
-      aria-hidden="true"
-    >
-      <div
-        class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
-      >
-        <div class="space-y-1">
-          <h2 id="cookie-heading" class="sr-only">Cookie Consent</h2>
-          <p
-            class="text-neutral-300 text-sm md:text-base"
-            data-i18n="cookie_text"
-          >
-            We use cookies to improve your experience and analyze our traffic.
-            By clicking 'Accept', you consent to our use of cookies.
-          </p>
-        </div>
-        <div class="flex items-center gap-6">
-          <button
-            id="cookie-decline"
-            class="focus:outline-none focus:ring-2 focus:ring-white p-2"
-            data-i18n="cookie_decline"
-          >
-            Decline
-          </button>
-          <button
-            id="cookie-accept"
-            class="focus:outline-none focus:ring-2 focus:ring-white"
-            data-i18n="cookie_accept"
-          >
-            Accept
-          </button>
-        </div>
-      </div>
-    </div>
 
     <script>
       // Scroll Reveal
@@ -1317,15 +1318,15 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         function openModal(e) {
           if (e) e.preventDefault();
-          
+
           // Show modal
           modal.classList.remove("opacity-0", "pointer-events-none");
           modal.classList.add("opacity-100", "pointer-events-auto");
-          
+
           // Animate content
           modalContent.classList.remove("scale-90", "opacity-0");
           modalContent.classList.add("scale-100", "opacity-100");
-          
+
           document.body.style.overflow = "hidden";
         }
 
@@ -1333,11 +1334,11 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           // Hide modal
           modal.classList.remove("opacity-100", "pointer-events-auto");
           modal.classList.add("opacity-0", "pointer-events-none");
-          
+
           // Animate content out
           modalContent.classList.remove("scale-100", "opacity-100");
           modalContent.classList.add("scale-90", "opacity-0");
-          
+
           document.body.style.overflow = "";
         }
 
