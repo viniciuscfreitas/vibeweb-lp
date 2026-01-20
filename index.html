@@ -1443,26 +1443,18 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           const originalText = btnText.textContent;
           btnText.innerHTML = `<span class="spinner" aria-hidden="true"></span> Sending…`;
 
-          // 1. GTM Tracking (Controle do Jotinha)
+          // 1. GTM Tracking (Controle Centralizado)
           if (window.dataLayer) {
             window.dataLayer.push({
               event: "generate_lead",
               lead_type: "whatsapp_form",
               project_type: projectType,
-              lead_source: "WhatsApp", // Adicionado compatibilidade
-              location: "VibeWeb_LP", // Adicionado compatibilidade
+              lead_source: "WhatsApp",
+              location: "VibeWeb_LP",
             });
           }
 
-          // 2. Facebook Pixel Direto (Redundância/Segurança Extra)
-          if (typeof fbq === "function") {
-            fbq("track", "Lead", {
-              content_name: projectType,
-              content_category: "WhatsApp Contact",
-            });
-          }
-
-          // 3. Construct WhatsApp Message
+          // 2. Construct WhatsApp Message
           const text = `Hello! My name is ${name}. I'm interested in a ${projectType} project. My number is ${whatsapp}.`;
           const encodedText = encodeURIComponent(text);
           const waUrl = `https://wa.me/5513974023753?text=${encodedText}`;
