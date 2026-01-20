@@ -58,19 +58,27 @@ svg {
   outline: none;
 }
 
+/* Global Focus Management */
+*:focus,
+*:focus-within {
+  outline: none;
+}
+
 /* Accessible Focus Indicators (No Rings) */
-a:focus-visible {
+a:focus-visible,
+button:focus-visible,
+.js-open-modal:focus-visible {
   color: var(--brand);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [role="button"]:focus-visible {
   border-color: var(--brand) !important;
+  box-shadow: 0 0 0 1px var(--brand);
 }
 
 /* Form Styles */
@@ -80,9 +88,10 @@ textarea:focus-visible,
   border: 1px solid var(--neutral-800);
   color: #fff;
   padding: 0.75rem 1rem;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
   font-family: inherit;
+  font-size: 16px; /* Prevent iOS zoom */
 }
 
 select.form-input {
@@ -114,6 +123,44 @@ select.form-input {
   pointer-events: none;
   color: var(--neutral-400);
 }
+
+/* Interactive Targets */
+button, 
+a, 
+input, 
+select {
+  touch-action: manipulation;
+  min-height: 44px; /* Mobile hit target */
+}
+
+/* Tabular numbers for stats */
+.stats-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Modal Behavior */
+#lead-modal-content {
+  overscroll-behavior: contain;
+}
+
+/* Loading Spinner */
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin-right: 0.5rem;
+  vertical-align: text-bottom;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Skip Link */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
