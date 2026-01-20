@@ -1380,7 +1380,42 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           if (lastFocusedElement) lastFocusedElement.focus();
         }
 
-        openBtns.forEach((btn) => btn.addEventListener("click", openModal));
+        openBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            openModal(e);
+
+            // GTM Tracking: Open Modal (Intent)
+            if (window.dataLayer) {
+              // Try to identify location based on parent section or button text context
+              let location = "unknown";
+              if (btn.closest("header")) location = "hero";
+              else if (btn.closest("footer")) location = "footer";
+              else if (btn.closest("section")) location = "services";
+
+              window.dataLayer.push({
+                event: "open_lead_modal",
+                location: location,
+              });
+            }
+          });
+        });
+
+        // Portfolio Tracking
+        const portfolioLinks = document.querySelectorAll(
+          'section[aria-labelledby="portfolio-heading"] a'
+        );
+        portfolioLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            if (window.dataLayer) {
+              const title = link.querySelector("h3")?.textContent.trim();
+              window.dataLayer.push({
+                event: "select_content",
+                content_type: "portfolio_project",
+                content_id: title || link.href,
+              });
+            }
+          });
+        });
 
         // Close on backdrop click
         modal.addEventListener("click", (e) => {

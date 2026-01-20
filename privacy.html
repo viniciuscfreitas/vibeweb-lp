@@ -326,6 +326,21 @@
           { threshold: 0.1 }
         );
         elements.forEach((el) => observer.observe(el));
+
+        // WhatsApp Tracking for Privacy Page Footer
+        const footerWaBtn = document.querySelector(
+          'footer a[href^="https://wa.me"]'
+        );
+        if (footerWaBtn) {
+          footerWaBtn.addEventListener("click", () => {
+            if (window.dataLayer) {
+              window.dataLayer.push({
+                event: "contact",
+                method: "whatsapp_privacy_footer",
+              });
+            }
+          });
+        }
       })();
     </script>
   </body>
