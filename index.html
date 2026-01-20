@@ -1454,34 +1454,81 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             });
           }
 
-          // 2. Construct WhatsApp Message
+          // 2. Enviar para a API do VibeWeb OS (Lead Capture)
+          // Usamos try/catch para garantir que o redirecionamento para o WhatsApp ocorra 
+          // mesmo se a API estiver fora do ar.
+          const sendLeadToAPI = async () => {
+            try {
+              // URL da API (ajuste conforme seu domínio de produção)
+              const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:3000/api/leads'
+                : 'https://api.vibe-web.com/api/leads'; // Ajuste para seu domínio real
+
+              await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  client: name,
+                  contact: whatsapp,
+                  description: `Interesse em: ${projectType}`,
+                  source: 'VibeWeb LP'
+                }),
+              });
+              console.log('[Lead] API submission successful');
+            } catch (error) {
+              console.error('[Lead] API submission failed:', error);
+            }
+          };
+
+          // 3. Construct WhatsApp Message
           const text = `Hello! My name is ${name}. I'm interested in a ${projectType} project. My number is ${whatsapp}.`;
           const encodedText = encodeURIComponent(text);
           const waUrl = `https://wa.me/5513974023753?text=${encodedText}`;
 
-          // Simulate slight delay for "delightful" feedback
-          setTimeout(() => {
-            // 3. Open WhatsApp
-            window.open(waUrl, "_blank");
+          // Executa envio para API em paralelo e redireciona
+          sendLeadToAPI().finally(() => {
+            // Simulate slight delay for "delightful" feedback
+            setTimeout(() => {
+              // 4. Open WhatsApp
+              window.open(waUrl, "_blank");
 
-            // 4. Close Modal
-            closeModal();
+              // 5. Close Modal
+              closeModal();
 
-            // Reset state
-            submitBtn.disabled = false;
-            btnText.textContent = originalText;
-            form.reset();
-          }, 600);
+              // Reset state
+              submitBtn.disabled = false;
+              btnText.textContent = originalText;
+              form.reset();
+            }, 600);
+          });
         });
 
-        // Handle Direct WhatsApp Click in Modal (for tracking)
+        // Handle Direct WhatsApp Click in Modal (for tracking and lead capture)
         if (directWaBtn) {
-          directWaBtn.addEventListener("click", () => {
+          directWaBtn.addEventListener("click", async (e) => {
+            // GTM Tracking
             if (window.dataLayer) {
               window.dataLayer.push({
                 event: "contact",
                 method: "whatsapp_direct_modal",
               });
+            }
+
+            // Lead Capture (Direct Click)
+            try {
+              const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:3000/api/leads'
+                : 'https://api.vibe-web.com/api/leads';
+
+              fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ source: 'WhatsApp' }),
+              });
+            } catch (err) {
+              // Ignore errors for direct clicks
             }
           });
         }
