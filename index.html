@@ -1455,14 +1455,14 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           }
 
           // 2. Enviar para a API do VibeWeb OS (Lead Capture)
-          // Usamos try/catch para garantir que o redirecionamento para o WhatsApp ocorra 
+          // Usamos try/catch para garantir que o redirecionamento para o WhatsApp ocorra
           // mesmo se a API estiver fora do ar.
           const sendLeadToAPI = async () => {
             try {
               // URL da API (ajuste conforme seu domínio de produção)
-              const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:3000/api/leads'
-                : 'https://api.vibe-web.com/api/leads'; // Ajuste para seu domínio real
+                  const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? 'http://localhost:3000/api/leads'
+                    : 'https://admin.vibe-web.com/api/leads'; // Ajuste para seu domínio real
 
               await fetch(apiUrl, {
                 method: 'POST',
@@ -1520,7 +1520,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             try {
               const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
                 ? 'http://localhost:3000/api/leads'
-                : 'https://api.vibe-web.com/api/leads';
+                : 'https://admin.vibe-web.com/api/leads';
 
               fetch(apiUrl, {
                 method: 'POST',
