@@ -64,13 +64,13 @@ const translations = {
     pricing_desc:
       "Have a specific budget in mind? Tell us.<br>We will tailor the scope to fit your wallet without compromising quality.",
     pricing_cta: "Let's talk about values →",
-    about_kaio_desc:
-      "Head of Growth. Strategist focused on delivering high-converting digital solutions for the European market.",
+    about_jotinha_desc:
+      "Growth Partner & Head of Traffic. Expert in paid media and ROI-focused strategies for scaling businesses in Europe.",
     about_vinicius_desc:
       "Lead Developer. Technical engine ensuring 100/100 performance for European businesses.",
     testimonials_title: 'The "Aha" Moment: Real Results',
     test_1_text:
-      '"Kaio delivered a modern barbershop platform with integrated bookings and finances. Simple for staff and clients."',
+      '"VibeWeb delivered a modern barbershop platform with integrated bookings and finances. Simple for staff and clients."',
     test_1_author: "— Alafy Lima, Founder of Dlux Barbearia",
     test_2_text:
       '"Fast, well-structured, and presents my work professionally. Communication was clear and on point."',
@@ -219,13 +219,13 @@ const translations = {
     pricing_desc:
       "¿Tienes un presupuesto específico? Cuéntanos.<br>Adaptaremos el alcance a tu bolsillo sin comprometer la calidad.",
     pricing_cta: "Hablemos de valores →",
-    about_kaio_desc:
-      "Head of Growth. Estratega enfocado en entregar soluciones digitales de alta conversión para el mercado europeo.",
+    about_jotinha_desc:
+      "Socio de Crecimiento y Head of Traffic. Experto en medios pagados y estrategias enfocadas en el ROI para escalar negocios en Europa.",
     about_vinicius_desc:
       "Lead Developer. Motor técnico que garantiza un rendimiento 100/100 para empresas europeas.",
     testimonials_title: 'El Momento "Aha": Resultados Reales',
     test_1_text:
-      '"Kaio entregó una plataforma de barbería moderna con reservas y finanzas integradas. Simple para el personal y los clientes."',
+      '"VibeWeb entregó una plataforma de barbería moderna con reservas y finanzas integradas. Simple para el personal y los clientes."',
     test_1_author: "— Alafy Lima, Fundador de Dlux Barbearia",
     test_2_text:
       '"Rápido, bem estruturado e apresenta meu trabalho profissionalmente. A comunicação foi clara e objetiva."',
@@ -378,13 +378,13 @@ const translations = {
     pricing_desc:
       "Vous avez un budget spécifique ? Dites-le nous.<br>Nous adapterons la portée à votre portefeuille sans compromis sur la qualité.",
     pricing_cta: "Parlons de valeurs →",
-    about_kaio_desc:
-      "Head of Growth. Stratège axé sur la livraison de solutions numériques à haute conversion pour le marché européen.",
+    about_jotinha_desc:
+      "Partenaire de Croissance & Head of Traffic. Expert en médias payants et stratégies axées sur le ROI pour faire évoluer les entreprises en Europe.",
     about_vinicius_desc:
       "Lead Developer. Moteur technique garantissant une performance 100/100 pour les entreprises européennes.",
     testimonials_title: 'Le Moment "Aha": Résultats Réels',
     test_1_text:
-      '"Kaio a livré une plateforme de barbier moderne avec réservations et finances intégrées. Simple pour le personnel et les clients."',
+      '"VibeWeb a livré une plateforme de barbier moderne avec réservations et finances intégrées. Simple pour le personnel et les clients."',
     test_1_author: "— Alafy Lima, Fondateur de Dlux Barbearia",
     test_2_text:
       '"Rapide, bien structuré et présente mon travail de manière professionnelle. La communication était claire et directe."',
@@ -538,13 +538,13 @@ const translations = {
     pricing_desc:
       "Haben Sie ein bestimmtes Budget im Kopf? Sagen Sie es uns.<br>Wir passen den Umfang an Ihren Geldbeutel an, ohne die Qualität zu beeinträchtigen.",
     pricing_cta: "Reden wir über Werte →",
-    about_kaio_desc:
-      "Head of Growth. Stratege mit Fokus auf hochkonvertierende digitale Lösungen für den europäischen Markt.",
+    about_jotinha_desc:
+      "Growth Partner & Head of Traffic. Experte für bezahlte Medien und ROI-orientierte Strategien zur Skalierung von Unternehmen in Europa.",
     about_vinicius_desc:
       "Lead Developer. Technischer Motor, der 100/100 Leistung für europäische Unternehmen garantiert.",
     testimonials_title: 'Der "Aha"-Moment: Echte Ergebnisse',
     test_1_text:
-      '"Kaio hat eine moderne Barbershop-Plattform mit integrierten Buchungen und Finanzen geliefert. Einfach für Mitarbeiter und Kunden."',
+      '"VibeWeb hat eine moderne Barbershop-Plattform mit integrierten Buchungen und Finanzen geliefert. Einfach für Mitarbeiter und Kunden."',
     test_1_author: "— Alafy Lima, Gründer von Dlux Barbearia",
     test_2_text:
       '"Schnell, gut strukturiert und präsentiert meine Arbeit professionell. Die Kommunikation war klar und auf den Punkt."',
