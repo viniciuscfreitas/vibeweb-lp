@@ -26,7 +26,7 @@ const translations = {
     portfolio_2_type: "News Automation • AI & WordPress Integration",
     portfolio_3_type: "Real Estate Portfolio • Private Broker",
     portfolio_4_type: "Gaming Community • Minecraft Server",
-    portfolio_5_type: "Creative Director • Branding & Visuals",
+    portfolio_5_type: "Science-Based Training • Fitness & Health",
     portfolio_6_type: "Video Editor Portfolio • High Performance",
     services_title: "What We Build.",
     services_subtitle:
@@ -181,7 +181,7 @@ const translations = {
     portfolio_2_type: "Automatización de Noticias • IA e Integración WordPress",
     portfolio_3_type: "Portafolio Inmobiliario • Bróker Privado",
     portfolio_4_type: "Comunidad de Gaming • Servidor Minecraft",
-    portfolio_5_type: "Director Creativo • Branding y Visuales",
+    portfolio_5_type: "Entrenamiento Basado en Ciencia • Fitness y Salud",
     portfolio_6_type: "Portafolio de Editor de Video • Alto Rendimiento",
     services_title: "Lo Que Construimos.",
     services_subtitle:
@@ -340,7 +340,7 @@ const translations = {
       "Automatisation de Nouvelles • IA et Intégration WordPress",
     portfolio_3_type: "Portfolio Immobilier • Courtier Privé",
     portfolio_4_type: "Communauté de Gaming • Serveur Minecraft",
-    portfolio_5_type: "Directeur Créatif • Branding et Visuels",
+    portfolio_5_type: "Entraînement Scientifique • Fitness et Santé",
     portfolio_6_type: "Portfolio de Monteur Vidéo • Haute Performance",
     services_title: "Ce Que Nous Créons.",
     services_subtitle:
@@ -500,7 +500,7 @@ const translations = {
     portfolio_2_type: "News-Automatisierung • KI & WordPress-Integration",
     portfolio_3_type: "Immobilien-Portfolio • Privater Makler",
     portfolio_4_type: "Gaming-Community • Minecraft-Server",
-    portfolio_5_type: "Creative Director • Branding & Visuals",
+    portfolio_5_type: "Wissenschaftsbasiertes Training • Fitness & Gesundheit",
     portfolio_6_type: "Video-Editor-Portfolio • High Performance",
     services_title: "Was Wir Bauen.",
     services_subtitle:
