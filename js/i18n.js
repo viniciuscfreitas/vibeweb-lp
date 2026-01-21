@@ -22,7 +22,7 @@ const translations = {
     portfolio_title: "Recent Work.",
     portfolio_subtitle: "Real speed. Real results.",
     portfolio_demo: "Live Demo →",
-    portfolio_1_type: "Management Platform • SaaS & Bookings",
+    portfolio_1_type: "Gift List App • Couples & Romance",
     portfolio_2_type: "News Automation • AI & WordPress Integration",
     portfolio_3_type: "Real Estate Portfolio • Private Broker",
     portfolio_4_type: "Gaming Community • Minecraft Server",
@@ -70,8 +70,8 @@ const translations = {
       "Lead Developer. Technical engine ensuring 100/100 performance for European businesses.",
     testimonials_title: 'The "Aha" Moment: Real Results',
     test_1_text:
-      '"VibeWeb delivered a modern barbershop platform with integrated bookings and finances. Simple for staff and clients."',
-    test_1_author: "— Alafy Lima, Founder of Dlux Barbearia",
+      '"The secret to always getting it right. A smart gift list that protects the surprise and ensures you get what you really want."',
+    test_1_author: "— Julia & Chris, Amorzinho Users",
     test_2_text:
       '"Fast, well-structured, and presents my work professionally. Communication was clear and on point."',
     test_2_author: "— Justin Rudi, Video Editor @ JCuts",
@@ -177,7 +177,7 @@ const translations = {
     portfolio_title: "Trabajos Recientes.",
     portfolio_subtitle: "Velocidad real. Resultados reales.",
     portfolio_demo: "Demo en vivo →",
-    portfolio_1_type: "Plataforma de Gestión • SaaS y Reservas",
+    portfolio_1_type: "App de Lista de Regalos • Parejas",
     portfolio_2_type: "Automatización de Noticias • IA e Integración WordPress",
     portfolio_3_type: "Portafolio Inmobiliario • Bróker Privado",
     portfolio_4_type: "Comunidad de Gaming • Servidor Minecraft",
@@ -225,8 +225,8 @@ const translations = {
       "Lead Developer. Motor técnico que garantiza un rendimiento 100/100 para empresas europeas.",
     testimonials_title: 'El Momento "Aha": Resultados Reales',
     test_1_text:
-      '"VibeWeb entregó una plataforma de barbería moderna con reservas y finanzas integradas. Simple para el personal y los clientes."',
-    test_1_author: "— Alafy Lima, Fundador de Dlux Barbearia",
+      '"El secreto para acertar siempre. Una lista de regalos inteligente que protege la sorpresa y asegura que recibas lo que realmente quieres."',
+    test_1_author: "— Julia & Chris, Usuarios de Amorzinho",
     test_2_text:
       '"Rápido, bem estruturado e apresenta meu trabalho profissionalmente. A comunicação foi clara e objetiva."',
     test_2_author: "— Justin Rudi, Editor de Vídeo @ JCuts",
@@ -286,7 +286,7 @@ const translations = {
       "Retirar el consentimiento para el seguimiento en cualquier momento.",
     privacy_section_4_title: "4. Terceros",
     privacy_section_4_desc:
-      "No vendemos sus datos. Utilizamos servicios de terceros de confianza como Wise (para pagos) y Meta/Google (para análisis), que tienen sus propias políticas de privacidad.",
+      "No vendemos sus datos. Utilizamos servicios de terceros de confianza como Wise (para pagos) y Meta/Google (for análisis), que tienen sus propias políticas de privacidad.",
     privacy_section_5_title: "5. Contacto",
     privacy_section_5_desc:
       "Si tiene alguna pregunta sobre esta política, contáctenos directamente a través de WhatsApp.",
@@ -335,7 +335,7 @@ const translations = {
     portfolio_title: "Travaux Récents.",
     portfolio_subtitle: "Vitesse réelle. Résultats réels.",
     portfolio_demo: "Démo en direct →",
-    portfolio_1_type: "Plateforme de Gestion • SaaS et Réservations",
+    portfolio_1_type: "App de Liste de Cadeaux • Couples",
     portfolio_2_type:
       "Automatisation de Nouvelles • IA et Intégration WordPress",
     portfolio_3_type: "Portfolio Immobilier • Courtier Privé",
@@ -353,8 +353,8 @@ const translations = {
     service_1_perfect:
       'Parfait pour: <span class="text-white">Startups et MVPs</span>',
     service_1_cta: "Commencer",
-    service_2_popular: "Plus Populaire",
-    service_2_name: "Autorité de Marque",
+    service_2_popular: "Most Popular",
+    service_2_name: "Brand Authority",
     service_2_feat_1: "Site Web Multi-pages",
     service_2_feat_2: "Animations Premium",
     service_2_feat_3: "Gestion de Contenu CMS",
@@ -382,10 +382,10 @@ const translations = {
       "Partenaire de Croissance & Head of Traffic. Expert en médias payants et stratégies axées sur le ROI pour faire évoluer les entreprises en Europe.",
     about_vinicius_desc:
       "Lead Developer. Moteur technique garantissant une performance 100/100 pour les entreprises européennes.",
-    testimonials_title: 'Le Moment "Aha": Résultats Réels',
+    testimonials_title: 'Le Moment "Aha": Résultats Récels',
     test_1_text:
-      '"VibeWeb a livré une plateforme de barbier moderne avec réservations et finances intégrées. Simple pour le personnel et les clients."',
-    test_1_author: "— Alafy Lima, Fondateur de Dlux Barbearia",
+      '"Kaio a livré une liste de cadeaux intelligente qui protège la surprise et garantit que vous obtenez ce que vous voulez vraiment."',
+    test_1_author: "— Julia & Chris, Utilisateurs d'Amorzinho",
     test_2_text:
       '"Rapide, bien structuré et présente mon travail de manière professionnelle. La communication était claire et directe."',
     test_2_author: "— Justin Rudi, Monteur Vidéo @ JCuts",
@@ -476,7 +476,7 @@ const translations = {
       "Professionelle Websites in 48 Stunden. Hochwertige brasilianische Entwicklung für europäische Unternehmen. 10&times;&nbsp;günstiger als lokale Agenturen.",
     hero_title: "Professionelle Websites<br>in 48&nbsp;h",
     hero_subtitle:
-      "Schneller und 5–10 Mal günstiger als jede lokale Agentur in Europa. High-End-Engineering für europäische Unternehmen.",
+      "Schneller und 5–10 Mal günstiger als jede lokale Agentur in Europa. Brasilianisches High-End-Engineering für europäische Unternehmen.",
     hero_cta: "Kostenlosen Anruf buchen (15 Min.)",
     hero_spots:
       "Nur noch 2 Plätze diese Woche, um die 48&nbsp;h-Lieferung zu garantieren",
@@ -496,7 +496,7 @@ const translations = {
     portfolio_title: "Aktuelle Arbeiten.",
     portfolio_subtitle: "Echte Geschwindigkeit. Echte Ergebnisse.",
     portfolio_demo: "Live-Demo →",
-    portfolio_1_type: "Management-Plattform • SaaS & Buchungen",
+    portfolio_1_type: "Geschenkeliste-App • Paare",
     portfolio_2_type: "News-Automatisierung • KI & WordPress-Integration",
     portfolio_3_type: "Immobilien-Portfolio • Privater Makler",
     portfolio_4_type: "Gaming-Community • Minecraft-Server",
@@ -544,8 +544,8 @@ const translations = {
       "Lead Developer. Technischer Motor, der 100/100 Leistung für europäische Unternehmen garantiert.",
     testimonials_title: 'Der "Aha"-Moment: Echte Ergebnisse',
     test_1_text:
-      '"VibeWeb hat eine moderne Barbershop-Plattform mit integrierten Buchungen und Finanzen geliefert. Einfach für Mitarbeiter und Kunden."',
-    test_1_author: "— Alafy Lima, Gründer von Dlux Barbearia",
+      '"Das Geheimnis, immer das Richtige zu schenken. Eine intelligente Geschenkeliste, die die Überraschung schützt."',
+    test_1_author: "— Julia & Chris, Amorzinho-Nutzer",
     test_2_text:
       '"Schnell, gut strukturiert und präsentiert meine Arbeit professionell. Die Kommunikation war klar und auf den Punkt."',
     test_2_author: "— Justin Rudi, Video-Editor @ JCuts",
