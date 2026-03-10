@@ -9,7 +9,7 @@ html {
   scroll-behavior: smooth;
 }
 body {
-  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   background: #000;
   color: #fff;
   overflow-x: hidden;
@@ -367,7 +367,7 @@ input[type="email"] {
   line-height: 1;
 }
 h1, h2, h3, .font-black {
-  font-family: "Syne", system-ui, sans-serif;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
 }
 .font-mono {
   font-family: ui-monospace, monospace;
@@ -379,7 +379,7 @@ h1, h2, h3, .font-black {
   font-weight: 700;
 }
 .font-black {
-  font-weight: 900;
+  font-weight: 800;
 }
 .tracking-tighter {
   letter-spacing: -0.05em;
@@ -982,6 +982,81 @@ h1, h2, h3, .font-black {
 }
 .opacity-100 {
   opacity: 1;
+}
+
+/* Hero subtitle refinement */
+.hero-subtitle {
+  max-width: 36rem;
+}
+
+/* Pricing card hover lift */
+.pricing-card {
+  transition: transform 0.3s cubic-bezier(0.5, 0, 0, 1), border-color 0.3s ease;
+}
+.pricing-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Testimonial quote marks */
+.testimonial-quote::before {
+  content: "\201C";
+  font-family: "Bricolage Grotesque", serif;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--brand);
+  opacity: 0.3;
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+}
+.testimonial-quote {
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+/* Stats counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle grain texture for hero */
+.hero-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+/* Green glow on featured card */
+.featured-glow {
+  box-shadow: 0 0 40px rgba(4, 211, 97, 0.08), 0 0 80px rgba(4, 211, 97, 0.04);
+}
+
+/* Smooth button press effect */
+.btn-press:active {
+  transform: translateY(1px) !important;
+  transition-duration: 50ms;
+}
+
+/* Toast notification animation */
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.toast-notification {
+  animation: slideIn 0.3s cubic-bezier(0.5, 0, 0, 1);
+}
+
+/* Portfolio image zoom on hover */
+.portfolio-img-zoom {
+  transition: transform 0.6s cubic-bezier(0.5, 0, 0, 1);
+}
+.group:hover .portfolio-img-zoom {
+  transform: scale(1.05);
 }
 
 /* Language Switcher */
