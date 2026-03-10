@@ -9,7 +9,7 @@ html {
   scroll-behavior: smooth;
 }
 body {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
   background: #000;
   color: #fff;
   overflow-x: hidden;
@@ -365,6 +365,9 @@ input[type="email"] {
 .text-6xl {
   font-size: 3.75rem;
   line-height: 1;
+}
+h1, h2, h3, .font-black {
+  font-family: "Syne", system-ui, sans-serif;
 }
 .font-mono {
   font-family: ui-monospace, monospace;
@@ -979,4 +982,17 @@ input[type="email"] {
 }
 .opacity-100 {
   opacity: 1;
+}
+
+/* Language Switcher */
+.lang-btn[aria-current="true"] {
+  color: #fff;
+  border-bottom: 2px solid var(--brand);
+  padding-bottom: 2px;
+}
+.lang-btn {
+  min-height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
 }

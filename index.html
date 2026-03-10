@@ -64,10 +64,10 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet"
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"
     media="print" onload="this.media='all'" />
   <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
   </noscript>
 
   <script src="js/i18n.js" defer></script>
@@ -134,6 +134,15 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     <div class="text-2xl font-bold tracking-tighter flex items-center gap-2">
       VibeWeb
     </div>
+    <div class="flex items-center gap-1" role="group" aria-label="Select language">
+      <button type="button" onclick="switchLang('en')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="en" aria-label="English">EN</button>
+      <span class="text-neutral-800" aria-hidden="true">·</span>
+      <button type="button" onclick="switchLang('es')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="es" aria-label="Español">ES</button>
+      <span class="text-neutral-800" aria-hidden="true">·</span>
+      <button type="button" onclick="switchLang('fr')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="fr" aria-label="Français">FR</button>
+      <span class="text-neutral-800" aria-hidden="true">·</span>
+      <button type="button" onclick="switchLang('de')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="de" aria-label="Deutsch">DE</button>
+    </div>
   </nav>
 
   <main id="main-content">
@@ -166,14 +175,13 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
               <div class="hidden md:block h-12 w-px bg-neutral-800"></div>
               <div class="flex flex-col">
                 <span class="text-neutral-300 text-sm font-mono uppercase tracking-widest">Projects from</span>
-                <span class="text-white font-bold text-xl">€290</span>
+                <span class="text-white font-bold text-xl">€390</span>
               </div>
             </div>
 
-            <p class="text-sm text-white opacity-90 mt-6 flex items-center gap-2">
-              <span class="w-2 h-2 bg-brand rounded-full animate-pulse"></span>
-              <span data-i18n="hero_spots">Only 2 spots left for this week to maintain 48&nbsp;h
-                delivery</span>
+            <p class="text-sm text-neutral-300 mt-6 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span data-i18n="hero_trust">Trusted by businesses in 8+ European countries</span>
             </p>
 
             <!-- Moved Stats Block for Social Proof -->
@@ -266,72 +274,6 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <a href="https://amorzinho.app/" target="_blank" rel="noopener noreferrer"
-          aria-label="Amorzinho Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-amorzinho.webp" alt="Amorzinho Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Amorzinho</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_1_type">
-              Gift List App • Couples & Romance
-            </p>
-          </div>
-        </a>
-
-        <a href="https://www.postaeweb.com/" target="_blank" rel="noopener noreferrer"
-          aria-label="Postaê Web Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-postae.webp" alt="Postaê Web Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Postaê Web</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_2_type">
-              News Automation • AI & WordPress Integration
-            </p>
-          </div>
-        </a>
-
-        <a href="https://marcelobraz.vinicius.xyz/" target="_blank" rel="noopener noreferrer"
-          aria-label="Marcelo Braz Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-marcelo.webp" alt="Marcelo Braz Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Marcelo Braz</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_3_type">
-              Real Estate Portfolio • Private Broker
-            </p>
-          </div>
-        </a>
-
         <a href="http://vanderberg.vibe-web.com/" target="_blank" rel="noopener noreferrer"
           aria-label="Vanderberg & Associés Live Demo (opens in new window)"
           class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block">
@@ -394,6 +336,72 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
             <h3 class="text-xl font-bold text-white mb-1">JCuts</h3>
             <p class="text-neutral-300 text-sm" data-i18n="portfolio_6_type">
               Video Editor Portfolio • High Performance
+            </p>
+          </div>
+        </a>
+
+        <a href="https://amorzinho.app/" target="_blank" rel="noopener noreferrer"
+          aria-label="Amorzinho Live Demo (opens in new window)"
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block">
+          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
+            <img src="fotos/portfolio-amorzinho.webp" alt="Amorzinho Website Preview"
+              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
+              loading="lazy" decoding="async" width="800" height="450" />
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
+              aria-hidden="true">
+              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
+                data-i18n="portfolio_demo">Live Demo →</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-white mb-1">Amorzinho</h3>
+            <p class="text-neutral-300 text-sm" data-i18n="portfolio_1_type">
+              Gift List App • Couples & Romance
+            </p>
+          </div>
+        </a>
+
+        <a href="https://www.postaeweb.com/" target="_blank" rel="noopener noreferrer"
+          aria-label="Postaê Web Live Demo (opens in new window)"
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block">
+          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
+            <img src="fotos/portfolio-postae.webp" alt="Postaê Web Website Preview"
+              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
+              loading="lazy" decoding="async" width="800" height="450" />
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
+              aria-hidden="true">
+              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
+                data-i18n="portfolio_demo">Live Demo →</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-white mb-1">Postaê Web</h3>
+            <p class="text-neutral-300 text-sm" data-i18n="portfolio_2_type">
+              News Automation • AI & WordPress Integration
+            </p>
+          </div>
+        </a>
+
+        <a href="https://marcelobraz.vinicius.xyz/" target="_blank" rel="noopener noreferrer"
+          aria-label="Marcelo Braz Live Demo (opens in new window)"
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block">
+          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
+            <img src="fotos/portfolio-marcelo.webp" alt="Marcelo Braz Website Preview"
+              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300"
+              loading="lazy" decoding="async" width="800" height="450" />
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
+              aria-hidden="true">
+              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
+                data-i18n="portfolio_demo">Live Demo →</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-white mb-1">Marcelo Braz</h3>
+            <p class="text-neutral-300 text-sm" data-i18n="portfolio_3_type">
+              Real Estate Portfolio • Private Broker
             </p>
           </div>
         </a>
@@ -770,10 +778,19 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         </div>
 
         <div>
-          <label for="whatsapp" class="block text-sm font-bold text-neutral-300 mb-2" data-i18n="form_whatsapp_label">
-            WhatsApp
+          <label for="email" class="block text-sm font-bold text-neutral-300 mb-2" data-i18n="form_email_label">
+            Email
           </label>
-          <input type="tel" id="whatsapp" name="whatsapp" required class="form-input"
+          <input type="email" id="email" name="email" required class="form-input" placeholder="e.g. john@company.com"
+            autocomplete="email" spellcheck="false" data-i18n-placeholder="form_email_placeholder" />
+        </div>
+
+        <div>
+          <label for="whatsapp" class="block text-sm font-bold text-neutral-300 mb-2">
+            <span data-i18n="form_whatsapp_label">WhatsApp</span>
+            <span class="text-neutral-500 font-normal" data-i18n="form_optional">(optional)</span>
+          </label>
+          <input type="tel" id="whatsapp" name="whatsapp" class="form-input"
             placeholder="e.g. +1 234 567 8900…" autocomplete="tel" inputmode="tel"
             data-i18n-placeholder="form_whatsapp_placeholder" />
         </div>
@@ -984,6 +1001,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         const formData = new FormData(form);
         const name = formData.get("name").trim();
+        const email = formData.get("email").trim();
         const whatsapp = formData.get("whatsapp").trim();
         const projectType = formData.get("project-type");
 
@@ -1020,7 +1038,8 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
               },
               body: JSON.stringify({
                 client: name,
-                contact: whatsapp,
+                email: email,
+                contact: whatsapp || null,
                 description: `Interesse em: ${projectType} (via ${lastTriggerSource})`,
                 source: `LP Form (${lastTriggerSource})`
               }),
@@ -1031,25 +1050,34 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           }
         };
 
-        // 3. Construct WhatsApp Message
-        const text = `Hello! My name is ${name}. I'm interested in a ${projectType} project. My number is ${whatsapp}.`;
-        const encodedText = encodeURIComponent(text);
-        const waUrl = `https://wa.me/5513974023753?text=${encodedText}`;
+        // 3. Construct WhatsApp Message (only if WhatsApp provided)
+        const hasWhatsApp = whatsapp.length > 0;
+        let waUrl = null;
+        if (hasWhatsApp) {
+          const text = `Hello! My name is ${name} (${email}). I'm interested in a ${projectType} project.`;
+          waUrl = `https://wa.me/5513974023753?text=${encodeURIComponent(text)}`;
+        }
 
-        // Executa envio para API em paralelo e redireciona
+        // Executa envio para API e redireciona
         sendLeadToAPI().finally(() => {
-          // Simulate slight delay for "delightful" feedback
           setTimeout(() => {
-            // 4. Open WhatsApp
-            window.open(waUrl, "_blank");
-
-            // 5. Close Modal
+            if (waUrl) {
+              window.open(waUrl, "_blank");
+            }
             closeModal();
-
-            // Reset state
             submitBtn.disabled = false;
             btnText.textContent = originalText;
             form.reset();
+
+            // Show confirmation for email-only submissions
+            if (!hasWhatsApp) {
+              const confirmed = document.createElement('div');
+              confirmed.className = 'fixed top-6 right-6 bg-brand text-black font-bold px-6 py-4 z-[10000] shadow-2xl';
+              confirmed.setAttribute('role', 'alert');
+              confirmed.textContent = 'We\'ll reach out to you shortly!';
+              document.body.appendChild(confirmed);
+              setTimeout(() => confirmed.remove(), 4000);
+            }
           }, 600);
         });
       });

@@ -7,7 +7,7 @@ const translations = {
     hero_subtitle:
       "Faster and 5–10&times; cheaper than any local agency in Europe. High-end engineering for European companies.",
     hero_cta: "Chat with an expert",
-    hero_spots: "Only 2 spots left for this week to maintain 48&nbsp;h delivery",
+    hero_trust: "Trusted by businesses in 8+ European countries",
     hero_wise: "Secure Payment via Wise",
     hero_refund: "50% only after approval · Full refund if you don't love it",
     how_it_works_1_label: "01. Discovery",
@@ -141,6 +141,9 @@ const translations = {
     form_subtitle: "Fill the form below to speed up our conversation.",
     form_name_label: "Name",
     form_name_placeholder: "Your Name…",
+    form_email_label: "Email",
+    form_email_placeholder: "e.g. john@company.com",
+    form_optional: "(optional)",
     form_whatsapp_label: "WhatsApp",
     form_whatsapp_placeholder: "+1 234 567 8900…",
     form_project_label: "Project Type",
@@ -159,8 +162,7 @@ const translations = {
     hero_subtitle:
       "Más rápido y de 5 a 10 veces más barato que cualquier agencia local en Europa. Ingeniería brasileña de alta gama para empresas europeas.",
     hero_cta: "Hablar con un experto",
-    hero_spots:
-      "Solo quedan 2 cupos esta semana para mantener la entrega en 48&nbsp;h",
+    hero_trust: "Empresas de más de 8 países europeos confían en nosotros",
     hero_wise: "Pago Seguro vía Wise",
     hero_refund:
       "50% solo después de la aprobación · Reembolso total si no te encanta",
@@ -299,6 +301,9 @@ const translations = {
     form_subtitle: "Completa el formulario para agilizar nuestra conversación.",
     form_name_label: "Nombre",
     form_name_placeholder: "Tu Nombre…",
+    form_email_label: "Correo electrónico",
+    form_email_placeholder: "ej. juan@empresa.com",
+    form_optional: "(opcional)",
     form_whatsapp_label: "WhatsApp",
     form_whatsapp_placeholder: "+34 123 456 789…",
     form_project_label: "Tipo de Proyecto",
@@ -317,8 +322,7 @@ const translations = {
     hero_subtitle:
       "Plus rapide et 5 à 10 fois moins cher que n'importe quelle agence locale en Europe. Ingénierie brésilienne haut de gamme pour les entreprises européennes.",
     hero_cta: "Discuter avec un expert",
-    hero_spots:
-      "Plus que 2 places cette semaine pour garantir une livraison en 48&nbsp;h",
+    hero_trust: "Des entreprises de plus de 8 pays européens nous font confiance",
     hero_wise: "Paiement sécurisé via Wise",
     hero_refund:
       "50% seulement après approbation · Remboursement intégral si vous n'aimez pas",
@@ -459,6 +463,9 @@ const translations = {
     form_subtitle: "Remplissez le formulaire pour accélérer notre échange.",
     form_name_label: "Nom",
     form_name_placeholder: "Votre Nom…",
+    form_email_label: "E-mail",
+    form_email_placeholder: "ex. jean@entreprise.com",
+    form_optional: "(facultatif)",
     form_whatsapp_label: "WhatsApp",
     form_whatsapp_placeholder: "+33 6 12 34 56 78…",
     form_project_label: "Type de Projet",
@@ -478,8 +485,7 @@ const translations = {
     hero_subtitle:
       "Schneller und 5–10 Mal günstiger als jede lokale Agentur in Europa. Brasilianisches High-End-Engineering für europäische Unternehmen.",
     hero_cta: "Kostenlosen Anruf buchen (15 Min.)",
-    hero_spots:
-      "Nur noch 2 Plätze diese Woche, um die 48&nbsp;h-Lieferung zu garantieren",
+    hero_trust: "Unternehmen aus über 8 europäischen Ländern vertrauen uns",
     hero_wise: "Sichere Zahlung über Wise",
     hero_refund:
       "50% erst nach Freigabe · Volle Rückerstattung, wenn es Ihnen nicht gefällt",
@@ -620,6 +626,9 @@ const translations = {
       "Füllen Sie das Formular aus, um unser Gespräch zu beschleunigen.",
     form_name_label: "Name",
     form_name_placeholder: "Ihr Name…",
+    form_email_label: "E-Mail",
+    form_email_placeholder: "z.B. hans@unternehmen.com",
+    form_optional: "(optional)",
     form_whatsapp_label: "WhatsApp",
     form_whatsapp_placeholder: "+49 151 12345678…",
     form_project_label: "Projekttyp",
@@ -712,8 +721,72 @@ function initCookieBanner() {
   });
 }
 
+window.switchLang = function(lang) {
+  if (!translations[lang]) return;
+
+  // Apply translations
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Apply placeholder translations
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
+
+  // Apply meta translations
+  document.querySelectorAll('[data-i18n-meta]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-meta');
+    if (translations[lang][key]) {
+      el.setAttribute('content', translations[lang][key]);
+    }
+  });
+
+  // Update page title
+  if (translations[lang].title) {
+    document.title = translations[lang].title;
+  }
+
+  // Update HTML lang
+  document.documentElement.lang = lang;
+
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.setAttribute('aria-current', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
+  });
+
+  // Save preference
+  localStorage.setItem('vibe-lang', lang);
+};
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initI18n);
+  document.addEventListener("DOMContentLoaded", function() {
+    initI18n();
+
+    // Highlight active language button on load
+    var currentLang = localStorage.getItem('vibe-lang') ||
+      (navigator.language || navigator.userLanguage || 'en').slice(0, 2);
+    if (!translations[currentLang]) currentLang = 'en';
+
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      btn.setAttribute('aria-current', btn.getAttribute('data-lang') === currentLang ? 'true' : 'false');
+    });
+  });
 } else {
   initI18n();
+
+  // Highlight active language button on load
+  var currentLang = localStorage.getItem('vibe-lang') ||
+    (navigator.language || navigator.userLanguage || 'en').slice(0, 2);
+  if (!translations[currentLang]) currentLang = 'en';
+
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.setAttribute('aria-current', btn.getAttribute('data-lang') === currentLang ? 'true' : 'false');
+  });
 }
