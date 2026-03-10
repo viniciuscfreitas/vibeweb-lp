@@ -1059,6 +1059,209 @@ h1, h2, h3, .font-black {
   transform: scale(1.05);
 }
 
+/* ═══════════════════════════════════════════
+   SIGNATURE VISUAL EFFECTS
+   ═══════════════════════════════════════════ */
+
+/* 1. Hero Gradient Text — signature green-to-white */
+.hero-gradient-text {
+  background: linear-gradient(135deg, #fff 0%, #fff 40%, var(--brand) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 2. Sticky Frosted Glass Nav */
+.nav-sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-sticky.is-visible {
+  transform: translateY(0);
+}
+.nav-sticky .nav-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .nav-sticky .nav-inner {
+    padding: 0.75rem 3rem;
+  }
+}
+
+/* 3. Custom Cursor */
+@media (pointer: fine) {
+  .custom-cursor {
+    cursor: none;
+  }
+  .cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--brand);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(4, 211, 97, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                width 0.3s ease,
+                height 0.3s ease,
+                border-color 0.3s ease;
+  }
+  .cursor-ring.is-hovering {
+    width: 56px;
+    height: 56px;
+    border-color: var(--brand);
+  }
+}
+
+/* 4. Section Watermark — giant decorative outlined text */
+.section-watermark {
+  position: relative;
+  overflow: hidden;
+}
+.watermark-text {
+  position: absolute;
+  top: -0.15em;
+  right: -0.02em;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: clamp(8rem, 18vw, 20rem);
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+/* 5. Gradient Border on Pricing Cards */
+.gradient-border {
+  position: relative;
+  background: var(--neutral-950);
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    rgba(4, 211, 97, 0.15) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 6. Animated Green Accent Line — section divider */
+.accent-divider {
+  position: relative;
+  overflow: hidden;
+}
+.accent-divider::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--brand) 50%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+/* 7. Stat Numbers Glow */
+.stats-number {
+  text-shadow: 0 0 30px rgba(4, 211, 97, 0.15);
+}
+
+/* 8. CTA Button Shimmer Effect */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 9. Portfolio Card — reveal line on hover */
+.portfolio-reveal-line::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--brand);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.portfolio-reveal-line:hover::after {
+  width: 100%;
+}
+
+/* 10. Footer CTA Glow Pulse */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(4, 211, 97, 0.2), 0 0 60px rgba(4, 211, 97, 0.05); }
+  50% { box-shadow: 0 0 40px rgba(4, 211, 97, 0.3), 0 0 80px rgba(4, 211, 97, 0.1); }
+}
+.footer-cta-glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
 /* Language Switcher */
 .lang-btn[aria-current="true"] {
   color: #fff;

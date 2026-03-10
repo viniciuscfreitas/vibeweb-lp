@@ -121,11 +121,17 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
     </script>
 </head>
 
-<body class="antialiased">
+<body class="antialiased custom-cursor">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T66KGKHZ" height="0" width="0"
       style="display: none; visibility: hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
+  <div id="sticky-nav" class="nav-sticky" aria-hidden="true">
+    <div class="nav-inner">
+      <span class="text-lg font-bold tracking-tighter">VibeWeb</span>
+      <button type="button" class="js-open-modal btn-press bg-brand text-black font-bold text-sm px-4 py-2 hover:bg-green-400 transition-colors" aria-label="Start project conversation" data-i18n="hero_cta">Get your free project plan</button>
+    </div>
+  </div>
   <a href="#main-content" class="skip-link">
     Skip to content
   </a>
@@ -154,7 +160,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       </div>
       <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pt-12 pb-24 md:pt-24 md:pb-32">
         <div class="flex flex-col items-start gap-8">
-          <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-white"
+          <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-white hero-gradient-text"
             data-i18n="hero_title">
             Professional sites<br />
             in 48&nbsp;h
@@ -168,7 +174,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
           <div class="pt-8 flex flex-col items-start w-full">
             <div class="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
               <button type="button"
-                class="js-open-modal btn-press w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
+                class="js-open-modal btn-press btn-shimmer w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
                 aria-label="Start project conversation" data-i18n="hero_cta">
                 Chat with an expert
               </button>
@@ -227,7 +233,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       </div>
     </header>
 
-    <section class="border-y border-neutral-800 bg-neutral-950/50" aria-labelledby="how-it-works-heading">
+    <section class="border-y border-neutral-800 bg-neutral-950/50 accent-divider" aria-labelledby="how-it-works-heading">
       <h2 id="how-it-works-heading" class="sr-only">How it works</h2>
       <div
         class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-neutral-800">
@@ -262,8 +268,9 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       </div>
     </section>
 
-    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto border-b border-neutral-800"
+    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto border-b border-neutral-800 section-watermark"
       aria-labelledby="portfolio-heading">
+      <span class="watermark-text" aria-hidden="true">Work</span>
       <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-on-scroll">
         <h2 id="portfolio-heading" class="text-4xl md:text-6xl font-black tracking-tighter" data-i18n="portfolio_title">
           Recent Work.
@@ -276,7 +283,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <a href="http://vanderberg.vibe-web.com/" target="_blank" rel="noopener noreferrer"
           aria-label="Vanderberg & Associés Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block">
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block portfolio-reveal-line">
           <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
             <img src="fotos/portfolio-vanderberg.webp" alt="Vanderberg & Associés Website Preview"
               class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
@@ -298,7 +305,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <a href="https://berlinkinetics.vibe-web.com/" target="_blank" rel="noopener noreferrer"
           aria-label="Berlin Kinetics Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block">
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block portfolio-reveal-line">
           <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
             <img src="fotos/portfolio-berlinkinetics.webp" alt="Berlin Kinetics Website Preview"
               class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
@@ -320,7 +327,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <a href="https://jcuts.io/" target="_blank" rel="noopener noreferrer"
           aria-label="JCuts Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block">
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block portfolio-reveal-line">
           <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
             <img src="fotos/portfolio-jcuts.webp" alt="JCuts Website Preview"
               class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
@@ -342,7 +349,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <a href="https://amorzinho.app/" target="_blank" rel="noopener noreferrer"
           aria-label="Amorzinho Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block">
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block portfolio-reveal-line">
           <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
             <img src="fotos/portfolio-amorzinho.webp" alt="Amorzinho Website Preview"
               class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
@@ -364,7 +371,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <a href="https://www.postaeweb.com/" target="_blank" rel="noopener noreferrer"
           aria-label="Postaê Web Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block">
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block portfolio-reveal-line">
           <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
             <img src="fotos/portfolio-postae.webp" alt="Postaê Web Website Preview"
               class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
@@ -386,7 +393,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <a href="https://marcelobraz.vinicius.xyz/" target="_blank" rel="noopener noreferrer"
           aria-label="Marcelo Braz Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block">
+          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block portfolio-reveal-line">
           <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
             <img src="fotos/portfolio-marcelo.webp" alt="Marcelo Braz Website Preview"
               class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
@@ -408,7 +415,8 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       </div>
     </section>
 
-    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto" aria-labelledby="services-heading">
+    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto section-watermark" aria-labelledby="services-heading">
+      <span class="watermark-text" aria-hidden="true">Build</span>
       <h2 id="services-heading" class="text-4xl md:text-6xl font-black tracking-tighter mb-4 reveal-on-scroll"
         data-i18n="services_title">
         What We Build.
@@ -422,7 +430,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <!-- Option 1: Web App (Old Option 3) - High Anchor -->
         <div
-          class="pricing-card border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-100 bg-neutral-950/50">
+          class="pricing-card border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-100 bg-neutral-950/50 gradient-border">
           <div>
             <span class="text-neutral-500 text-sm font-mono uppercase tracking-widest mb-4 block">Option 01</span>
             <div class="text-3xl font-black text-white mb-1">From €2,490</div>
@@ -507,7 +515,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
 
         <!-- Option 3: Essential Landing (Old Option 1) - Low Anchor -->
         <div
-          class="pricing-card border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-300 bg-neutral-950/50">
+          class="pricing-card border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-300 bg-neutral-950/50 gradient-border">
           <div>
             <span class="text-neutral-500 text-sm font-mono uppercase tracking-widest mb-4 block">Option 03</span>
             <div class="text-3xl font-black text-white mb-1">From €390</div>
@@ -602,7 +610,8 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       </div>
     </section>
 
-    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto" aria-labelledby="testimonials-heading">
+    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto section-watermark" aria-labelledby="testimonials-heading">
+      <span class="watermark-text" aria-hidden="true">Trust</span>
       <h2 id="testimonials-heading" class="text-3xl font-bold mb-12 text-center text-neutral-500 reveal-on-scroll"
         data-i18n="testimonials_title">
         The "Aha" Moment: Real Results
@@ -692,7 +701,7 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
         </h2>
 
         <button type="button"
-          class="js-open-modal btn-press w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
+          class="js-open-modal btn-press footer-cta-glow w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
           aria-label="Start project conversation" data-i18n="footer_cta">
           Chat with an expert
         </button>
@@ -1111,6 +1120,98 @@ DEPLOY CHECKLIST (before Meta Ads campaign):
       }
     })();
   </script>
+<script>
+  // Sticky Nav on Scroll
+  (function() {
+    var stickyNav = document.getElementById('sticky-nav');
+    if (!stickyNav) return;
+    var lastScroll = 0;
+    var heroHeight = window.innerHeight * 0.6;
+
+    window.addEventListener('scroll', function() {
+      var currentScroll = window.pageYOffset;
+      if (currentScroll > heroHeight) {
+        stickyNav.classList.add('is-visible');
+        stickyNav.setAttribute('aria-hidden', 'false');
+      } else {
+        stickyNav.classList.remove('is-visible');
+        stickyNav.setAttribute('aria-hidden', 'true');
+      }
+      lastScroll = currentScroll;
+    }, { passive: true });
+  })();
+
+  // Custom Cursor (desktop only)
+  (function() {
+    if (window.matchMedia('(pointer: fine)').matches === false) return;
+    var dot = document.getElementById('cursor-dot');
+    var ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+
+    var mouseX = 0, mouseY = 0;
+    var ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.transform = 'translate(' + (mouseX - 4) + 'px, ' + (mouseY - 4) + 'px)';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      ring.style.transform = 'translate(' + (ringX - 18) + 'px, ' + (ringY - 18) + 'px)';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Expand ring on interactive elements
+    var hoverTargets = document.querySelectorAll('a, button, .js-open-modal, input, select, textarea');
+    hoverTargets.forEach(function(el) {
+      el.addEventListener('mouseenter', function() { ring.classList.add('is-hovering'); });
+      el.addEventListener('mouseleave', function() { ring.classList.remove('is-hovering'); });
+    });
+  })();
+
+  // Animated Number Counter
+  (function() {
+    var counters = document.querySelectorAll('.stats-number');
+    if (!counters.length) return;
+
+    var observed = false;
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !observed) {
+          observed = true;
+          counters.forEach(function(counter) {
+            var text = counter.textContent.trim();
+            var match = text.match(/^(\d+)/);
+            if (!match) return;
+            var target = parseInt(match[1]);
+            var suffix = text.replace(match[1], '');
+            var current = 0;
+            var duration = 1500;
+            var start = performance.now();
+
+            function step(now) {
+              var progress = Math.min((now - start) / duration, 1);
+              var eased = 1 - Math.pow(1 - progress, 3);
+              current = Math.round(target * eased);
+              counter.textContent = current + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          });
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(function(c) { observer.observe(c); });
+  })();
+</script>
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
 </body>
 
 </html>
