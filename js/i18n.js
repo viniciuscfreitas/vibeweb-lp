@@ -711,6 +711,7 @@ function initCookieBanner() {
     if (backdrop) backdrop.classList.remove("is-visible");
     banner.setAttribute("aria-hidden", "true");
     if (window.loadGTM) window.loadGTM();
+    if (window.loadFBPixel) window.loadFBPixel();
   });
 
   declineBtn.addEventListener("click", () => {
