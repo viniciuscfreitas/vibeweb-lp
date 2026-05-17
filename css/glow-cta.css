@@ -150,3 +150,14 @@
   55%  { transform: translateX(150%); }
   100% { transform: translateX(150%); }
 }
+
+/* WCAG: kill non-essential motion for users who request it (vestibular safety).
+   Halos go static, shimmer freezes, mascot bob/walk/wave disabled. Functional
+   transitions (hover, focus, dock-into-section) stay because they convey state. */
+@media (prefers-reduced-motion: reduce) {
+  .glow-cta .glow-ring::before,
+  .glow-cta .glow-ring-soft::before,
+  .glow-cta .glass-shine {
+    animation: none !important;
+  }
+}

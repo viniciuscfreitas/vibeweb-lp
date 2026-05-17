@@ -49,6 +49,23 @@
    handles the entrance. Override the .reveal-text .word hidden state. */
 .hero__line .word { opacity: 1; filter: none; transform: none; transition: none; }
 
+/* WCAG: instant in for users who request reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero__line {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .site-icon.vibo,
+  .vibo__eyes,
+  .vibo__hat rect:last-child,
+  .is-walking .vibo__leg--l,
+  .is-walking .vibo__leg--r,
+  .is-settled .vibo__arm--r {
+    animation: none !important;
+  }
+}
+
 /* Mascot wrapper — JS controls position. CSS provides initial state + transitions. */
 .site-icon-wrap {
   position: fixed;
