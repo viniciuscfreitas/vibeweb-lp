@@ -1,0 +1,72 @@
+/*
+ * Custom scrollbars — match the design system.
+ * Strategy: hide the bulky native scrollbar via CSS pseudo-elements +
+ * Firefox properties, expose a thin themed track instead. Thumb adapts to
+ * theme; turns brand-green on hover. Same treatment applied to the
+ * horizontal process-grid scroll for visual consistency.
+ *
+ * No JS overlay scrollbar — pure CSS, works in 95%+ of browsers, zero
+ * runtime cost. iOS Safari already overlays automatically.
+ */
+
+/* Vertical page scroll */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(10, 10, 10, 0.22) transparent;
+}
+html::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 10, 0.22);
+  border-radius: 100px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background var(--transition-base);
+}
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--color-vibeweb-green);
+  background-clip: padding-box;
+}
+
+/* Dark theme — invert thumb base color */
+[data-theme="dark"] html,
+html[data-theme="dark"] {
+  scrollbar-color: rgba(245, 245, 245, 0.20) transparent;
+}
+[data-theme="dark"]::-webkit-scrollbar-thumb,
+html[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background: rgba(245, 245, 245, 0.20);
+  background-clip: padding-box;
+}
+
+/* Horizontal process grid uses the SAME styling — single source of truth.
+   Scoped to .process__grid so it doesn't bleed onto other overflow elements. */
+.process__grid {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(10, 10, 10, 0.22) transparent;
+}
+.process__grid::-webkit-scrollbar {
+  height: 6px;
+}
+.process__grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+.process__grid::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 10, 0.22);
+  border-radius: 100px;
+  transition: background var(--transition-base);
+}
+.process__grid::-webkit-scrollbar-thumb:hover {
+  background: var(--color-vibeweb-green);
+}
+[data-theme="dark"] .process__grid {
+  scrollbar-color: rgba(245, 245, 245, 0.20) transparent;
+}
+[data-theme="dark"] .process__grid::-webkit-scrollbar-thumb {
+  background: rgba(245, 245, 245, 0.20);
+}

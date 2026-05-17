@@ -1,340 +1,225 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" style="color-scheme: dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n="privacy_title">Privacy Policy – VibeWeb</title>
-    <!-- Google Tag Manager -->
-    <script>
-      window.loadGTM = function () {
-        if (window.gtmLoaded) return;
-        window.gtmLoaded = true;
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-          var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != "dataLayer" ? "&l=" + l : "";
-          j.async = true;
-          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-          f.parentNode.insertBefore(j, f);
-        })(window, document, "script", "dataLayer", "GTM-T66KGKHZ");
-      };
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f0f0">
+  <title>Privacy · Vibe Web</title>
+  <meta name="description" content="How Vibe Web handles personal data — short, plain-English privacy policy.">
+  <meta name="robots" content="noindex">
 
-      (function () {
-        const consent = localStorage.getItem("vibe-cookie-consent");
-        if (consent === "accepted") {
-          window.loadGTM();
-        }
-      })();
-    </script>
-    <!-- End Google Tag Manager -->
-    <meta name="robots" content="noindex, follow" />
-    <link rel="icon" type="image/png" href="fotos/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/i18n.js" defer></script>
-    <style>
-      .policy-content h2 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        color: var(--brand);
-      }
-      .policy-content p {
-        color: var(--neutral-400);
-        line-height: 1.6;
-        margin-bottom: 1rem;
-      }
-      .policy-content ul {
-        list-style-type: disc;
-        padding-left: 1.5rem;
-        color: var(--neutral-400);
-        margin-bottom: 1rem;
-      }
-      .policy-content li {
-        margin-bottom: 0.5rem;
-      }
-    </style>
-  </head>
-  <body class="antialiased bg-black text-white">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-T66KGKHZ"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <a
-      href="#privacy-content"
-      class="skip-link"
-    >
-      Skip to content
-    </a>
-    <nav
-      class="w-full py-6 px-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto z-40 relative"
-      aria-label="Main navigation"
-      role="navigation"
-    >
-      <a
-        href="index.html"
-        class="text-2xl font-bold tracking-tighter flex items-center gap-2"
-      >
-        VibeWeb
-      </a>
-      <a
-        href="index.html"
-        class="text-sm font-bold border-b border-brand pb-0.5 text-white hover:text-brand transition-colors"
-        data-i18n="back_home"
-      >
-        Back to Home
-      </a>
-    </nav>
+  <link rel="icon" type="image/png" sizes="32x32" href="/fotos/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/fotos/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/fotos/apple-touch-icon.png">
 
-    <main id="privacy-content">
-      <div class="max-w-4xl mx-auto px-6 py-24">
-        <h1
-          class="text-5xl md:text-7xl font-black tracking-tighter mb-12"
-          data-i18n="privacy_h1"
-        >
-          Privacy Policy.
-        </h1>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Syne:wght@700&display=swap">
 
-        <div class="policy-content reveal-on-scroll is-visible">
-          <p data-i18n="privacy_intro">
-            At VibeWeb, we value your privacy. This policy outlines how we
-            handle your data when you visit our website and use our services.
-          </p>
+  <link rel="stylesheet" href="/css/styles.css?v=32">
+  <style>
+    .privacy {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: calc(var(--space-7xl) + 60px) var(--page-pad) var(--space-6xl);
+    }
+    .privacy__head { margin-bottom: var(--space-3xl); }
+    .privacy__head .section-label { margin-bottom: var(--space-md); }
+    .privacy__title {
+      font-family: inherit;
+      font-weight: var(--font-label);
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+    }
+    .privacy__updated {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: var(--space-md);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .privacy__body { display: flex; flex-direction: column; gap: var(--space-2xl); }
+    .privacy__body section h2 {
+      font-family: inherit;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.014em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .privacy__body p,
+    .privacy__body li {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+    .privacy__body p + p { margin-top: var(--space-md); }
+    .privacy__body ul { list-style: none; padding: 0; margin-top: var(--space-md); }
+    .privacy__body li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: var(--space-sm);
+    }
+    .privacy__body li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--color-vibeweb-green);
+    }
+    .privacy__body strong { color: var(--text-primary); font-weight: 500; }
+    .privacy__body a {
+      color: var(--text-primary);
+      text-decoration: underline;
+      text-decoration-color: var(--color-vibeweb-green);
+      text-underline-offset: 3px;
+    }
+    .privacy__body a:hover { text-decoration-color: var(--text-primary); }
+  </style>
+</head>
+<body>
 
-          <h2 data-i18n="privacy_section_1_title">1. Data Collection</h2>
-          <p data-i18n="privacy_section_1_desc">
-            We collect minimal information necessary to provide our services,
-            including:
-          </p>
-          <ul>
-            <li data-i18n="privacy_section_1_item_1">
-              Contact information (Name, WhatsApp number, Email) when you reach
-              out to us.
-            </li>
-            <li data-i18n="privacy_section_1_item_2">
-              Usage data via Google Tag Manager and Meta Pixel to improve our
-              advertising.
-            </li>
-          </ul>
+<a href="#main" class="skip-link">Skip to content</a>
 
-          <h2 data-i18n="privacy_section_2_title">2. How We Use Your Data</h2>
-          <p data-i18n="privacy_section_2_desc">
-            Your data is used exclusively for:
-          </p>
-          <ul>
-            <li data-i18n="privacy_section_2_item_1">
-              Responding to your service inquiries.
-            </li>
-            <li data-i18n="privacy_section_2_item_2">
-              Processing project payments via Wise.
-            </li>
-            <li data-i18n="privacy_section_2_item_3">
-              Optimizing our website performance and marketing campaigns.
-            </li>
-          </ul>
-
-          <h2 data-i18n="privacy_section_3_title">3. GDPR Compliance</h2>
-          <p data-i18n="privacy_section_3_desc">
-            For our European clients, we comply with GDPR regulations. You have
-            the right to:
-          </p>
-          <ul>
-            <li data-i18n="privacy_section_3_item_1">
-              Access the personal data we hold about you.
-            </li>
-            <li data-i18n="privacy_section_3_item_2">
-              Request correction or deletion of your data.
-            </li>
-            <li data-i18n="privacy_section_3_item_3">
-              Withdraw consent for tracking at any time.
-            </li>
-          </ul>
-
-          <h2 data-i18n="privacy_section_4_title">4. Third Parties</h2>
-          <p data-i18n="privacy_section_4_desc">
-            We do not sell your data. We use trusted third-party services like
-            Wise (for payments) and Meta/Google (for analytics), which have
-            their own privacy policies.
-          </p>
-
-          <h2 data-i18n="privacy_section_5_title">5. Contact</h2>
-          <p data-i18n="privacy_section_5_desc">
-            If you have any questions about this policy, contact us directly via
-            WhatsApp.
-          </p>
-        </div>
-      </div>
-
-      <footer
-        class="border-t border-neutral-800 py-16 px-6 text-center bg-neutral-950"
-      >
-        <div
-          class="max-w-4xl mx-auto flex flex-col items-center gap-8 reveal-on-scroll"
-        >
-          <h2
-            class="text-4xl md:text-5xl font-black tracking-tighter"
-            data-i18n="footer_ready"
-          >
-            Ready to scale?
-          </h2>
-
-          <a
-            href="https://wa.me/5513974023753"
-            rel="noopener noreferrer"
-            aria-label="Start conversation on WhatsApp (opens in new window)"
-            title="Start conversation on WhatsApp"
-            class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
-            data-i18n="footer_cta"
-          >
-            Book free call (15 min)
-          </a>
-
-          <div class="flex items-center gap-2 text-neutral-500 text-xs mt-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-brand"
-              aria-hidden="true"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            <span data-i18n="footer_secure"
-              >Secure connection · Direct to developer</span
-            >
-          </div>
-
-          <p class="text-sm text-neutral-400 mt-4" data-i18n="footer_refund">
-            50% only after approval · Full refund if you don't love it
-          </p>
-
-          <div
-            class="text-neutral-500 text-xs mt-12 flex flex-col items-center gap-2"
-          >
-            <p data-i18n="footer_locations">
-              Based in Lisbon, Portugal · Global Delivery
-            </p>
-          </div>
-
-          <p class="text-neutral-500 text-sm mt-8">
-            <span data-i18n="footer_copyright_name"
-              >Copyright © 2026 VibeWeb Partners</span
-            >
-            ·
-            <a
-              href="privacy.html"
-              class="text-neutral-500 hover:text-brand transition-colors"
-              data-i18n="footer_privacy"
-              >Privacy Policy</a
-            >
-            ·
-            <span data-i18n="footer_made_with"
-              >Made with <span class="text-brand">code</span> for high-performance.</span
-            >
-          </p>
-        </div>
-      </footer>
-    </main>
-
-    <div id="cookie-backdrop" class="cookie-backdrop"></div>
-    <div
-      id="cookie-banner"
-      role="region"
-      aria-labelledby="cookie-heading"
-      aria-hidden="true"
-    >
-      <div
-        class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
-      >
-        <div class="space-y-1">
-          <h2 id="cookie-heading" class="sr-only">Cookie Consent</h2>
-          <p
-            class="text-neutral-300 text-sm md:text-base"
-            data-i18n="cookie_text"
-          >
-            We use cookies to improve your experience and analyze our traffic.
-            By clicking 'Accept', you consent to our use of cookies.
-          </p>
-        </div>
-        <div class="flex items-center gap-6">
-          <button
-            id="cookie-decline"
-            class="focus:outline-none focus:ring-2 focus:ring-white p-2"
-            data-i18n="cookie_decline"
-          >
-            Decline
-          </button>
-          <button
-            id="cookie-accept"
-            class="focus:outline-none focus:ring-2 focus:ring-white"
-            data-i18n="cookie_accept"
-          >
-            Accept
-          </button>
-        </div>
-      </div>
+<nav class="nav" aria-label="Primary">
+  <a href="/" class="nav-logo" aria-label="Vibe Web — home">
+    <svg class="nav-logo-mark" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+      <g transform="translate(3.5, 3) scale(0.105)" fill="currentColor" fill-rule="evenodd">
+        <path d="M 0,0 L 69.6,152.7 L 82.6,144 L 82.6,122.2 L 95.7,122.2 L 69.6,248.7 L 60.9,253.1 L 52.2,309.8 L 34.8,344.7 L 47.8,353.5 L 95.7,327.3 L 152.2,318.5 L 208.7,440.7 L 226.1,445.1 L 226.1,475.6 L 369.6,475.6 L 595.7,0 L 434.8,0 L 300,279.3 L 282.6,244.4 L 269.6,244.4 L 269.6,274.9 L 256.5,274.9 L 273.9,148.4 L 221.7,174.5 L 173.9,183.3 L 126.1,61.1 L 113,61.1 L 104.3,117.8 L 91.3,117.8 L 56.5,43.6 L 134.8,39.3 L 182.6,122.2 L 182.6,144 L 200,161.5 L 230.4,152.7 L 160.9,0 L 4.3,0 Z"/>
+        <path d="M 460.9,43.6 L 313,353.5 L 300,366.5 L 282.6,353.5 L 252.2,279.3 L 226.1,440.7 L 234.8,414.5 L 252.2,432 L 343.5,432 L 352.2,423.3 L 369.6,366.5 L 534.8,48 L 465.2,43.6 Z"/>
+      </g>
+    </svg>
+    <span class="nav-logo-divider" aria-hidden="true"></span>
+    <span class="nav-logo-name">Vibe Web</span>
+  </a>
+  <div class="nav-right">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/#contact" class="nav-cta">Get in touch <span class="nav-cta__arrow" aria-hidden="true">→</span></a>
+    <div class="theme-switcher" role="radiogroup" aria-label="Theme">
+      <div class="theme-switcher-pill" data-pos="0" aria-hidden="true"></div>
+      <button class="theme-switcher-option active" data-theme-value="light" aria-label="Light mode" role="radio" aria-checked="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="theme-switcher-option" data-theme-value="dark" aria-label="Dark mode" role="radio" aria-checked="false">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
+  </div>
+</nav>
 
-    <script>
-      (function () {
-        const elements = document.querySelectorAll(".reveal-on-scroll");
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("is-visible");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.1 }
-        );
-        elements.forEach((el) => observer.observe(el));
+<main id="main" class="privacy">
+  <header class="privacy__head">
+    <span class="section-label">Privacy</span>
+    <h1 class="privacy__title">How we handle your data.</h1>
+    <p class="privacy__updated">Last updated · 3 May 2026</p>
+  </header>
 
-        // WhatsApp Tracking for Privacy Page Footer
-        const footerWaBtn = document.querySelector(
-          'footer a[href^="https://wa.me"]'
-        );
-        if (footerWaBtn) {
-          footerWaBtn.addEventListener("click", () => {
-            if (window.dataLayer) {
-              window.dataLayer.push({
-                event: "contact",
-                method: "whatsapp_privacy_footer",
-              });
-            }
-          });
-        }
-      })();
-    </script>
-  </body>
+  <div class="privacy__body">
+
+    <section>
+      <h2>The short version</h2>
+      <p>
+        Vibe Web is a one-person studio. I collect the bare minimum needed to
+        deliver custom websites and answer your messages — nothing more.
+        I don't sell, share, or mine your data.
+      </p>
+    </section>
+
+    <section>
+      <h2>What I collect</h2>
+      <ul>
+        <li><strong>Contact details</strong> you give me directly — name, email,
+          message — when you DM me on Instagram or send an email.</li>
+        <li><strong>Project files</strong> you share during a build — copy,
+          photos, brand assets — used only to deliver the site.</li>
+        <li><strong>Anonymous analytics</strong> on this site: page views,
+          country, device type. No cookies that identify you personally.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>What I don't collect</h2>
+      <ul>
+        <li>No third-party tracking pixels (no Facebook Pixel, no Google
+          Analytics ID tied to your identity).</li>
+        <li>No advertising cookies, no retargeting.</li>
+        <li>No session recording, heatmaps, or behavior tracking.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How long I keep it</h2>
+      <p>
+        DM threads and project files: as long as we're working together,
+        plus 12 months for tax/legal purposes. After that, I delete them.
+      </p>
+      <p>
+        Anonymous analytics: rolling 90 days, no association with you.
+      </p>
+    </section>
+
+    <section>
+      <h2>Your rights (GDPR)</h2>
+      <p>
+        If you're in the EU/EEA, you can ask me at any time to:
+      </p>
+      <ul>
+        <li>See what I have about you.</li>
+        <li>Correct anything that's wrong.</li>
+        <li>Delete it (subject to legal retention).</li>
+        <li>Export it.</li>
+      </ul>
+      <p>
+        Just reply to any thread we have, or email
+        <a href="mailto:hi@vibe-web.com">hi@vibe-web.com</a>. I respond within
+        48h.
+      </p>
+    </section>
+
+    <section>
+      <h2>Hosting &amp; processors</h2>
+      <p>
+        This site is hosted on a private VPS in Europe. The contact channel is
+        <strong>Instagram</strong> (Meta) — by DMing
+        <a href="https://www.instagram.com/vibeweb.eu" target="_blank" rel="noopener">@vibeweb.eu</a>
+        you accept Instagram's data terms.
+      </p>
+    </section>
+
+    <section>
+      <h2>Changes to this policy</h2>
+      <p>
+        If I change anything material, I update the date at the top and post a
+        note on Instagram. No silent edits.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <a href="/" class="footer-logo" aria-label="Vibe Web — home">
+      <svg class="footer-logo-mark" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+        <g transform="translate(3.5, 3) scale(0.105)" fill="currentColor" fill-rule="evenodd">
+          <path d="M 0,0 L 69.6,152.7 L 82.6,144 L 82.6,122.2 L 95.7,122.2 L 69.6,248.7 L 60.9,253.1 L 52.2,309.8 L 34.8,344.7 L 47.8,353.5 L 95.7,327.3 L 152.2,318.5 L 208.7,440.7 L 226.1,445.1 L 226.1,475.6 L 369.6,475.6 L 595.7,0 L 434.8,0 L 300,279.3 L 282.6,244.4 L 269.6,244.4 L 269.6,274.9 L 256.5,274.9 L 273.9,148.4 L 221.7,174.5 L 173.9,183.3 L 126.1,61.1 L 113,61.1 L 104.3,117.8 L 91.3,117.8 L 56.5,43.6 L 134.8,39.3 L 182.6,122.2 L 182.6,144 L 200,161.5 L 230.4,152.7 L 160.9,0 L 4.3,0 Z"/>
+          <path d="M 460.9,43.6 L 313,353.5 L 300,366.5 L 282.6,353.5 L 252.2,279.3 L 226.1,440.7 L 234.8,414.5 L 252.2,432 L 343.5,432 L 352.2,423.3 L 369.6,366.5 L 534.8,48 L 465.2,43.6 Z"/>
+        </g>
+      </svg>
+      <span class="footer-logo-divider" aria-hidden="true"></span>
+      <span class="footer-logo-name">Vibe Web</span>
+    </a>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/vibeweb.eu" target="_blank" rel="noopener">Instagram</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+    <span class="footer-meta">© 2026 · Built in seven days</span>
+  </div>
+</footer>
+
+<script src="/js/main.js?v=32"></script>
+</body>
 </html>

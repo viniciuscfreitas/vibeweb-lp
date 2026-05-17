@@ -1,0 +1,91 @@
+/* Glass button atoms (.glass-btn / .nav-action-btn / .glass-shine), tags. */
+
+.glass-btn-wrap { position: relative; display: inline-block; }
+
+.glass-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 14px 32px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: var(--font-label);
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  box-shadow: rgba(255, 255, 255, 0.06) 0 0 8px 0,
+              rgba(255, 255, 255, 0.15) 0 1px 0 0 inset;
+  overflow: hidden;
+  transition: background var(--transition-base), transform var(--transition-fast);
+  isolation: isolate;
+  white-space: nowrap; /* keep "Send 'site' to my DMs" on one line, always */
+}
+.glass-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+}
+.glass-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(255, 255, 255, 0.4) 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.4) 70%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+.glass-btn:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-1px);
+}
+.glass-btn:hover::after { opacity: 0.8; }
+.glass-btn:active { transform: translateY(0); }
+
+.glass-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 70%
+  );
+  transition: opacity var(--transition-base);
+}
+.glass-btn:hover .glass-shine { opacity: 1; }
+
+.btn-arrow {
+  display: inline-block;
+  font-size: 14px;
+  transition: transform 0.25s ease;
+}
+.glass-btn:hover .btn-arrow { transform: translateX(2px); }
+
+/* Outline tag — used in case-card. Stronger contrast on text + border for WCAG. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  background: transparent;
+  color: #3a3a3a;            /* 8.7:1 on white card */
+  border: 1px solid #c0c0c0; /* visible to low-vision users */
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}

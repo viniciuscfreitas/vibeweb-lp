@@ -1,0 +1,186 @@
+/* Selling sections (Schwartz-mapped, applied implicitly).
+   - .agitate  → single dramatic statement (problem-pain reveal)
+   - .process  → 7-step Day 1 -> Day 7 timeline (solution mechanism)
+   - .offer    → 2-column Included / Not included (offer mechanics)
+   Vertical rhythm is normalized to var(--space-6xl) / mobile var(--space-4xl). */
+
+.agitate,
+.process,
+.offer {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-6xl) var(--page-pad);
+}
+@media (max-width: 768px) {
+  .agitate,
+  .process,
+  .offer { padding: var(--space-4xl) var(--page-pad); }
+}
+
+/* ─── Agitate ─── */
+.agitate__line {
+  font-family: inherit;
+  font-weight: var(--font-label);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  max-width: 28ch;
+}
+.agitate__line em {
+  font-style: normal;
+  color: var(--color-vibeweb-green);
+}
+.agitate__sub {
+  margin-top: var(--space-md);
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 50ch;
+}
+
+/* ─── Process — horizontal scroll snap timeline (all viewports) ─── */
+/* Bleeds full-width so the rightmost cards extend past the section gutter,
+   signaling "scroll to see more". Day numbers are HUGE Syne green to mirror
+   the IG carousel-process slides aesthetic. */
+
+.process {
+  max-width: none;     /* override the default selling-section max-width */
+  padding: var(--space-6xl) 0;
+}
+.process__head {
+  max-width: var(--page-max);
+  margin: 0 auto var(--space-3xl);
+  padding: 0 var(--page-pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.process__title {
+  font-family: inherit;
+  font-weight: var(--font-label);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.022em;
+  color: var(--text-primary);
+  max-width: 24ch;
+}
+
+.process__grid {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 4px var(--page-pad) var(--space-lg);
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--page-pad);
+  -webkit-overflow-scrolling: touch;
+  /* Native subtle scrollbar — no custom green track. Matches the system. */
+  scrollbar-width: thin;
+}
+
+/* Cards mirror .offer__card: bg-surface, radius-lg, no border, no stripe.
+   Title is the hero (Inter 500), day label is a subtle eyebrow (uppercase
+   like .section-label). Same cloth as the rest of the site. */
+.process__step {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-height: 200px;
+  transition: transform var(--transition-base);
+}
+.process__step:hover { transform: translateY(-3px); }
+
+.process__step .day {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-vibeweb-green);
+  line-height: 1;
+}
+.process__step .title {
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+.process__step .body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-top: auto; /* pushes body to bottom; day+title sit at top */
+}
+
+@media (max-width: 640px) {
+  .process__step { flex-basis: 250px; min-height: 180px; padding: var(--space-lg); }
+  .process__step .title { font-size: 19px; }
+}
+
+/* ─── Offer — 2-col included / excluded ─── */
+.offer__head { margin-bottom: var(--space-3xl); }
+.offer__title {
+  font-family: inherit;
+  font-weight: var(--font-label);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.022em;
+  color: var(--text-primary);
+  max-width: 28ch;
+}
+.offer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+@media (min-width: 768px) {
+  .offer__grid { grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+}
+.offer__card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+@media (max-width: 640px) {
+  .offer__card { padding: 28px 24px; }
+}
+.offer__card h3 {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--text-primary);
+}
+.offer__list { display: flex; flex-direction: column; gap: 10px; }
+.offer__list li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+.offer__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-vibeweb-green);
+}
+.offer__card--out .offer__list li::before { background: var(--text-muted); }
+.offer__card--out .offer__list li {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+}

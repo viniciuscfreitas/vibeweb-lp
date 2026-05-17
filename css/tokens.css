@@ -1,0 +1,111 @@
+/*
+ * Vibe Web — Design tokens (Plan B: single light theme + VW green only).
+ * Structure follows Someone & Others verbatim; the rainbow conversation glow
+ * is replaced by a tonal Vibe Web green conic gradient. Dark/dim themes
+ * removed — single brand voice.
+ */
+
+:root {
+  /* Spacing (xs through 7xl, S&O scale) */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-2xl: 60px;
+  --space-3xl: 80px;
+  --space-4xl: 100px;
+  --space-5xl: 120px;
+  --space-6xl: 160px;
+  --space-7xl: 200px;
+
+  /* Radii (S&O scale + pill) */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-pill: 100px;
+
+  /* Type weights — Inter substitutes SuisseIntl */
+  --font-display: 200;
+  --font-body:    300;
+  --font-label:   400;
+
+  /* Transitions (signature S&O reveal easing preserved) */
+  --transition-fast:   0.2s ease;
+  --transition-base:   0.3s ease;
+  --transition-slow:   0.6s ease;
+  --transition-reveal: 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout — reduced on smaller viewports for breathing room */
+  --page-pad: 48px;
+  --page-max: 1400px;
+}
+
+@media (max-width: 1024px) {
+  :root { --page-pad: 32px; }
+}
+@media (max-width: 640px) {
+  :root { --page-pad: 20px; }
+}
+
+/* Re-open :root so the rest of the tokens stay in this declaration */
+:root {
+
+  /* Vibe Web brand green (3 tonal stops for the CTA conic gradient) */
+  --color-vibeweb-green:      #04d361;
+  --color-vibeweb-green-deep: #03a84d;
+  --color-vibeweb-green-soft: #6cf09b;
+
+  /* Surfaces & text — single light palette */
+  /* Light theme defaults — also applied as :root so theme-less first paint
+     never shows unstyled colors. */
+  --bg:           #f0f0f0;
+  --bg-surface:   #f5f5f5;
+  --bg-elevated:  #fafafa;
+  --bg-hover:     rgba(0, 0, 0, 0.04);
+  --text-primary: #0a0a0a;
+  --text-secondary: rgba(10, 10, 10, 0.62);   /* WCAG AA: ~5.4:1 on #f0f0f0 */
+  --text-muted:     rgba(10, 10, 10, 0.55);   /* WCAG AA: ~5.4:1 on #f0f0f0 */
+  --border:        rgba(0, 0, 0, 0.12);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --card-bg:       #f5f5f5;
+  --card-border:   rgba(0, 0, 0, 0.06);
+  --shadow-card:       0 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 0 0 1px rgba(0, 0, 0, 0.12), 0 24px 48px -12px rgba(0, 0, 0, 0.12);
+  --glass-bg:       rgba(0, 0, 0, 0.06);
+  --glass-bg-hover: rgba(0, 0, 0, 0.10);
+
+  /* Body text colors used inside the always-light case-card overlay
+     (intentionally stays light against the screenshot regardless of theme) */
+  --card-content-text:    #1a1a1a;
+  --card-content-meta:    #555;
+  --card-content-faded:   #888;
+
+  /* Default color-scheme — supports correct browser scrollbars on both themes */
+  color-scheme: light;
+}
+
+/* Dark theme — explicit token override; auto-applied if user toggles via JS */
+[data-theme="dark"] {
+  --bg:           #0a0a0a;
+  --bg-surface:   #161616;
+  --bg-elevated:  #1f1f1f;
+  --bg-hover:     rgba(255, 255, 255, 0.06);
+  --text-primary: #f5f5f5;
+  /* WCAG AA in dark: text-secondary ~6.6:1, text-muted ~5.4:1 on #0a0a0a */
+  --text-secondary: rgba(245, 245, 245, 0.70);
+  --text-muted:     rgba(245, 245, 245, 0.60);
+  --border:        rgba(255, 255, 255, 0.14);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --card-bg:       #161616;
+  --card-border:   rgba(255, 255, 255, 0.08);
+  --shadow-card:       0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-card-hover: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 24px 48px -12px rgba(0, 0, 0, 0.5);
+  --glass-bg:       rgba(255, 255, 255, 0.08);
+  --glass-bg-hover: rgba(255, 255, 255, 0.14);
+
+  color-scheme: dark;
+}

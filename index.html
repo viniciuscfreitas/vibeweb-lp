@@ -1,1246 +1,351 @@
-<!-- VibeWeb Production Build v1.0.1 -->
 <!DOCTYPE html>
-<!--
-DEPLOY CHECKLIST (before Meta Ads campaign):
-1. Replace vibe-web.com with actual domain in .env
-2. Ensure Meta Pixel is configured via GTM (GTM-T66KGKHZ) instead of hardcoded ID.
-3. Ensure WHATSAPP_NUMBER in .env is only numbers (ex: 5513974023753)
-4. Test all WhatsApp links work
-5. Verify photos load (fotos/joao-victor.webp, fotos/vinicius.webp)
--->
-<html lang="en" class="scroll-smooth" style="color-scheme: dark" itemscope itemtype="https://schema.org/WebPage">
-
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="title">
-    VibeWeb – High-End Sites in 48&nbsp;h for the European Market
-  </title>
-  <!-- Google Tag Manager -->
-  <script>
-    window.loadGTM = function () {
-      if (window.gtmLoaded) return;
-      window.gtmLoaded = true;
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-T66KGKHZ");
-    };
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f0f0">
+  <title>Vibe Web — Custom websites in 7 days.</title>
+  <meta name="description" content="If your work deserves better, your site should match. Custom websites in 7 days, for European freelancers and small businesses.">
 
-    (function () {
-      const consent = localStorage.getItem("vibe-cookie-consent");
-      if (consent === "accepted") {
-        window.loadGTM();
-      }
-    })();
-  </script>
-  <!-- End Google Tag Manager -->
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Vibe Web">
+  <meta property="og:title" content="Vibe Web — Custom websites in 7 days.">
+  <meta property="og:description" content="If your work deserves better, your site should match. For European freelancers and small businesses.">
+  <meta property="og:url" content="https://vibe-web.com/">
+  <meta property="og:image" content="https://vibe-web.com/fotos/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Vibe Web — Custom websites · €450 · 7 days. If your work deserves better, your site should match.">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vibe Web — Custom websites in 7 days.">
+  <meta name="twitter:description" content="If your work deserves better, your site should match.">
+  <meta name="twitter:image" content="https://vibe-web.com/fotos/og-image.png">
+  <meta name="twitter:image:alt" content="Vibe Web — Custom websites in 7 days for European freelancers.">
+
+  <link rel="canonical" href="https://vibe-web.com/">
+
+  <!-- Favicons (full set) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/fotos/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/fotos/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/fotos/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/fotos/icon-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Syne:wght@700&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.css?v=32">
 
   <!-- Meta Pixel Code -->
   <script>
-    window.loadFBPixel = function () {
-      if (window.fbPixelLoaded) return;
-      window.fbPixelLoaded = true;
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1623715775404942');
-      fbq('track', 'PageView');
-    };
-
-    (function () {
-      const consent = localStorage.getItem("vibe-cookie-consent");
-      if (consent === "accepted") {
-        window.loadFBPixel();
-      }
-    })();
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1623715775404942');
+    fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1623715775404942&ev=PageView&noscript=1"
     alt="" /></noscript>
   <!-- End Meta Pixel Code -->
-  <meta name="description"
-    content="Professional sites in 48&nbsp;h. High-end development for European businesses. 10&times;&nbsp;cheaper than local agencies with 100/100 performance."
-    data-i18n-meta="meta_description" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="canonical" href="https://vibe-web.com/" />
-  <meta name="robots" content="index, follow" />
-  <link rel="icon" type="image/png" href="fotos/favicon.png" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://vibe-web.com/" />
-  <meta property="og:title" content="VibeWeb – High-End Sites in 48&nbsp;h for Europe" />
-  <meta property="og:description"
-    content="Professional sites in 48&nbsp;h. High-end development for European companies. 10&times;&nbsp;cheaper than local agencies with 100/100 performance." />
-  <meta property="og:image" content="https://vibe-web.com/fotos/og-image.webp" />
-  <meta property="og:locale" content="en_US" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="VibeWeb – High-End Sites in 48&nbsp;h for Europe" />
-  <meta name="twitter:description"
-    content="Professional sites in 48&nbsp;h. High-end development for European companies. 10&times;&nbsp;cheaper than local agencies." />
-  <meta name="twitter:image" content="https://vibe-web.com/fotos/og-image.webp" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"
-    media="print" onload="this.media='all'" />
-  <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  </noscript>
-
-  <script src="js/i18n.js" defer></script>
-  <link rel="stylesheet" href="css/styles.css" />
-
-  <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": "VibeWeb",
-        "description": "Professional websites in 48&nbsp;h. Faster and cheaper than EU agencies.",
-        "url": "https://vibe-web.com/",
-        "provider": {
-          "@type": "Organization",
-          "name": "VibeWeb Partners",
-          "founder": [
-            {
-              "@type": "Person",
-              "name": "João Victor",
-              "jobTitle": "Head of Traffic"
-            },
-            {
-              "@type": "Person",
-              "name": "Vinícius",
-              "jobTitle": "Lead Developer"
-            }
-          ]
-        },
-        "areaServed": {
-          "@type": "Place",
-          "name": "Europe"
-        },
-        "offers": [
-          {
-            "@type": "Offer",
-            "name": "Basic Landing",
-            "description": "For those who need to exist on Google yesterday. 48&nbsp;h delivery."
-          },
-          {
-            "@type": "Offer",
-            "name": "Pro Portfolio",
-            "description": "High-end design to convert leads. 3 days delivery."
-          },
-          {
-            "@type": "Offer",
-            "name": "Fullstack",
-            "description": "CRUD, dashboard, member areas. 3–5 days delivery."
-          }
-        ]
-      }
-    </script>
 </head>
+<body>
 
-<body class="antialiased custom-cursor">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T66KGKHZ" height="0" width="0"
-      style="display: none; visibility: hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <div id="sticky-nav" class="nav-sticky" aria-hidden="true">
-    <div class="nav-inner">
-      <span class="text-lg font-bold tracking-tighter">VibeWeb</span>
-      <button type="button" class="js-open-modal btn-press bg-brand text-black font-bold text-sm px-4 py-2 hover:bg-green-400 transition-colors" aria-label="Start project conversation" data-i18n="hero_cta">Get your free project plan</button>
-    </div>
-  </div>
-  <a href="#main-content" class="skip-link">
-    Skip to content
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="site-icon-wrap" id="siteIconWrap" aria-hidden="true">
+  <!-- Mascot "Vibe" — capsule humanoid with V-form legs (brand tie via the V).
+       Multiple grouped layers so individual parts (eyes, arms, legs, spark)
+       can animate independently via CSS classes (.is-walking, .is-settled,
+       always-on idle bob + blink). -->
+  <svg class="site-icon vibo" viewBox="0 0 70 84" xmlns="http://www.w3.org/2000/svg" focusable="false">
+    <!-- Body capsule (head + torso merged for clean silhouette at 32px) -->
+    <rect x="20" y="8" width="30" height="52" rx="15" fill="currentColor"/>
+    <!-- Hard-hat brim — dark stripe splits the capsule into "hat dome" (top
+         rounded portion) and "face/body" (below). Reads as a builder at any
+         size. Tiny VW logo plate sits on the dome. -->
+    <g class="vibo__hat">
+      <rect x="17" y="14" width="36" height="2.4" rx="1" fill="#0a0a0a"/>
+      <rect x="32" y="10.5" width="6" height="3" rx="0.6" fill="#0a0a0a"/>
+    </g>
+    <!-- Eyes (white sclera + dark pupils, scale-y animates the blink) -->
+    <g class="vibo__eyes">
+      <ellipse cx="29" cy="22" rx="3.4" ry="3.6" fill="#fff"/>
+      <ellipse cx="41" cy="22" rx="3.4" ry="3.6" fill="#fff"/>
+      <circle cx="29" cy="22.5" r="1.6" fill="#0a0a0a"/>
+      <circle cx="41" cy="22.5" r="1.6" fill="#0a0a0a"/>
+    </g>
+    <!-- Smile (subtle, dark stroke arc) -->
+    <path class="vibo__smile" d="M 28 32 Q 35 37 42 32" stroke="#0a0a0a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <!-- Arms (rotate from shoulder for wave) -->
+    <line class="vibo__arm vibo__arm--l" x1="20" y1="34" x2="11" y2="46" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    <line class="vibo__arm vibo__arm--r" x1="50" y1="34" x2="59" y2="46" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    <!-- V-form legs (brand mark hint — when walking they alternate stride) -->
+    <line class="vibo__leg vibo__leg--l" x1="29" y1="58" x2="22" y2="80" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+    <line class="vibo__leg vibo__leg--r" x1="41" y1="58" x2="48" y2="80" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<nav class="nav" aria-label="Primary">
+  <a href="/" class="nav-logo" aria-label="Vibe Web — home">
+    <svg class="nav-logo-mark" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+      <g transform="translate(3.5, 3) scale(0.105)" fill="currentColor" fill-rule="evenodd">
+        <path d="M 0,0 L 69.6,152.7 L 82.6,144 L 82.6,122.2 L 95.7,122.2 L 69.6,248.7 L 60.9,253.1 L 52.2,309.8 L 34.8,344.7 L 47.8,353.5 L 95.7,327.3 L 152.2,318.5 L 208.7,440.7 L 226.1,445.1 L 226.1,475.6 L 369.6,475.6 L 595.7,0 L 434.8,0 L 300,279.3 L 282.6,244.4 L 269.6,244.4 L 269.6,274.9 L 256.5,274.9 L 273.9,148.4 L 221.7,174.5 L 173.9,183.3 L 126.1,61.1 L 113,61.1 L 104.3,117.8 L 91.3,117.8 L 56.5,43.6 L 134.8,39.3 L 182.6,122.2 L 182.6,144 L 200,161.5 L 230.4,152.7 L 160.9,0 L 4.3,0 Z"/>
+        <path d="M 460.9,43.6 L 313,353.5 L 300,366.5 L 282.6,353.5 L 252.2,279.3 L 226.1,440.7 L 234.8,414.5 L 252.2,432 L 343.5,432 L 352.2,423.3 L 369.6,366.5 L 534.8,48 L 465.2,43.6 Z"/>
+      </g>
+    </svg>
+    <span class="nav-logo-divider" aria-hidden="true"></span>
+    <span class="nav-logo-name">Vibe Web</span>
   </a>
-  <nav class="w-full py-6 px-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto z-40 relative"
-    aria-label="Main navigation" role="navigation">
-    <div class="text-2xl font-bold tracking-tighter flex items-center gap-2">
-      VibeWeb
+  <div class="nav-right">
+    <a href="#work" class="nav-link">Work</a>
+    <a href="#contact" class="nav-cta">Get in touch <span class="nav-cta__arrow" aria-hidden="true">→</span></a>
+    <div class="theme-switcher" role="radiogroup" aria-label="Theme">
+      <div class="theme-switcher-pill" data-pos="0" aria-hidden="true"></div>
+      <button class="theme-switcher-option active" data-theme-value="light" aria-label="Light mode" role="radio" aria-checked="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="theme-switcher-option" data-theme-value="dark" aria-label="Dark mode" role="radio" aria-checked="false">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
-    <div class="flex items-center gap-1" role="group" aria-label="Select language">
-      <button type="button" onclick="switchLang('en')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="en" aria-label="English">EN</button>
-      <span class="text-neutral-800" aria-hidden="true">·</span>
-      <button type="button" onclick="switchLang('es')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="es" aria-label="Español">ES</button>
-      <span class="text-neutral-800" aria-hidden="true">·</span>
-      <button type="button" onclick="switchLang('fr')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="fr" aria-label="Français">FR</button>
-      <span class="text-neutral-800" aria-hidden="true">·</span>
-      <button type="button" onclick="switchLang('de')" class="lang-btn px-2 py-1 text-xs font-bold uppercase tracking-wider text-neutral-500 hover:text-white transition-colors" data-lang="de" aria-label="Deutsch">DE</button>
-    </div>
-  </nav>
+  </div>
+</nav>
 
-  <main id="main-content">
-    <header class="relative w-full min-h-[600px] md:min-h-[800px] flex items-center overflow-hidden bg-neutral-950 hero-grain">
-      <div class="absolute inset-0 z-0">
-        <img src="fotos/og-image.webp" alt="" class="w-full h-full object-cover opacity-60" role="presentation"
-          loading="eager" fetchpriority="high" decoding="async" width="1920" height="1080" />
-        <div class="absolute inset-0 bg-gradient-to-b from-neutral-950/80 via-neutral-950/50 to-neutral-950"></div>
-      </div>
-      <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pt-12 pb-24 md:pt-24 md:pb-32">
-        <div class="flex flex-col items-start gap-8">
-          <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-white hero-gradient-text"
-            data-i18n="hero_title">
-            Professional sites<br />
-            in 48&nbsp;h
-          </h1>
+<main id="main">
 
-          <p class="text-xl md:text-3xl text-white max-w-3xl leading-snug font-medium" data-i18n="hero_subtitle">
-            Faster and 5–10&times; cheaper than any local agency in Europe. High-end
-            engineering for European companies.
-          </p>
+  <!-- 1. HERO — Problem-aware hook + offer crystal + CTA implied below -->
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="large-type reveal-text" data-visible-words="4">
+      If your work deserves better, your site should match.
+    </h1>
+    <h2 class="large-type compact reveal-text" data-visible-words="3" style="margin-top: var(--space-xl);">
+      Custom websites in 7 days, for European freelancers and small businesses.
+    </h2>
+  </section>
 
-          <div class="pt-8 flex flex-col items-start w-full">
-            <div class="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
-              <button type="button"
-                class="js-open-modal btn-press btn-shimmer w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
-                aria-label="Start project conversation" data-i18n="hero_cta">
-                Chat with an expert
-              </button>
-              <div class="hidden md:block h-12 w-px bg-neutral-800"></div>
-              <div class="flex flex-col">
-                <span class="text-neutral-300 text-sm font-mono uppercase tracking-widest">Projects from</span>
-                <span class="text-white font-bold text-xl">€390</span>
-              </div>
-            </div>
+  <!-- 2. AGITATE — Cost of waiting (problem-pain reveal) -->
+  <section class="agitate fade-in" aria-labelledby="agitate-title">
+    <h2 id="agitate-title" class="agitate__line">
+      Every week without a site, <em>~3 prospects pick someone else.</em>
+    </h2>
+    <p class="agitate__sub">Most never tell you why. They just disappear.</p>
+  </section>
 
-            <p class="text-sm text-neutral-300 mt-6 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              <span data-i18n="hero_trust">Trusted by businesses in 8+ European countries</span>
-            </p>
-
-            <!-- Moved Stats Block for Social Proof -->
-            <div
-              class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-4 mt-8 border-t border-neutral-800/50 pt-6 w-full max-w-2xl">
-              <div class="flex flex-col items-start">
-                <span class="text-2xl font-black text-white stats-number">50+</span>
-                <span class="text-[10px] uppercase tracking-widest text-neutral-500 font-bold"
-                  data-i18n="stats_delivered">Delivered</span>
-              </div>
-              <div class="flex flex-col items-start">
-                <span class="text-2xl font-black text-white stats-number">100%</span>
-                <span class="text-[10px] uppercase tracking-widest text-neutral-500 font-bold"
-                  data-i18n="stats_satisfaction">Satisfaction</span>
-              </div>
-              <div class="flex flex-col items-start">
-                <span class="text-2xl font-black text-white stats-number">24/7</span>
-                <span class="text-[10px] uppercase tracking-widest text-neutral-500 font-bold"
-                  data-i18n="stats_support">Support</span>
-              </div>
-              <div class="flex flex-col items-start">
-                <span class="text-2xl font-black text-white stats-number">48 h</span>
-                <span class="text-[10px] uppercase tracking-widest text-neutral-500 font-bold"
-                  data-i18n="stats_delivery">Delivery</span>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2 mt-6 opacity-60">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-brand"
-                aria-hidden="true">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              <span class="text-[10px] uppercase tracking-widest font-bold text-neutral-300"
-                data-i18n="hero_wise">Secure Payment via Wise</span>
-            </div>
-            <p class="text-xs text-neutral-300 mt-2" data-i18n="hero_refund">
-              50% only after approval · Full refund if you don't love it
-            </p>
-          </div>
-        </div>
-      </div>
+  <!-- 3. MECHANISM — How the 7-day path works (solution-aware) -->
+  <section class="process fade-in" aria-labelledby="process-title">
+    <header class="process__head">
+      <span class="section-label">How it works</span>
+      <h2 id="process-title" class="process__title">
+        Day 1 to Day 7. Real timeline. No asterisks.
+      </h2>
     </header>
-
-    <section class="border-y border-neutral-800 bg-neutral-950/50 accent-divider" aria-labelledby="how-it-works-heading">
-      <h2 id="how-it-works-heading" class="sr-only">How it works</h2>
-      <div
-        class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-neutral-800">
-        <div class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-100">
-          <span class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest"
-            data-i18n="how_it_works_1_label">01. Discovery</span>
-          <h3 class="text-2xl font-bold" data-i18n="how_it_works_1_title">
-            We understand your business and goals
-          </h3>
-        </div>
-        <div class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-200">
-          <span class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest"
-            data-i18n="how_it_works_2_label">02. Agreement</span>
-          <h3 class="text-2xl font-bold" data-i18n="how_it_works_2_title">
-            Quick call to align expectations + secure start
-          </h3>
-        </div>
-        <div class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-300">
-          <span class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest"
-            data-i18n="how_it_works_3_label">03. Build & Deliver</span>
-          <h3 class="text-2xl font-bold" data-i18n="how_it_works_3_title">
-            Your site ready in 48&nbsp;h–5 days with unlimited revisions
-          </h3>
-        </div>
-        <div class="p-8 flex flex-col gap-4 hover:bg-neutral-900 transition-colors group reveal-on-scroll delay-400">
-          <span class="text-brand group-hover:text-accent transition-colors font-mono text-sm uppercase tracking-widest"
-            data-i18n="how_it_works_4_label">04. Support</span>
-          <h3 class="text-2xl font-bold" data-i18n="how_it_works_4_title">
-            Ongoing support and updates available
-          </h3>
-        </div>
-      </div>
-    </section>
-
-    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto border-b border-neutral-800 section-watermark"
-      aria-labelledby="portfolio-heading">
-      <span class="watermark-text" aria-hidden="true">Work</span>
-      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-on-scroll">
-        <h2 id="portfolio-heading" class="text-4xl md:text-6xl font-black tracking-tighter" data-i18n="portfolio_title">
-          Recent Work.
-        </h2>
-        <p class="text-neutral-300 font-mono text-sm uppercase tracking-widest mb-2" data-i18n="portfolio_subtitle">
-          Real speed. Real results.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <a href="http://vanderberg.vibe-web.com/" target="_blank" rel="noopener noreferrer"
-          aria-label="Vanderberg & Associés Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block portfolio-reveal-line">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-vanderberg.webp" alt="Vanderberg & Associés Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Vanderberg & Associés</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_4_type">
-              International Law Firm • Legal & Corporate
-            </p>
-          </div>
-        </a>
-
-        <a href="https://berlinkinetics.vibe-web.com/" target="_blank" rel="noopener noreferrer"
-          aria-label="Berlin Kinetics Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block portfolio-reveal-line">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-berlinkinetics.webp" alt="Berlin Kinetics Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Berlin Kinetics</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_5_type">
-              Science-Based Training • Fitness & Health
-            </p>
-          </div>
-        </a>
-
-        <a href="https://jcuts.io/" target="_blank" rel="noopener noreferrer"
-          aria-label="JCuts Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block portfolio-reveal-line">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-jcuts.webp" alt="JCuts Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">JCuts</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_6_type">
-              Video Editor Portfolio • High Performance
-            </p>
-          </div>
-        </a>
-
-        <a href="https://amorzinho.app/" target="_blank" rel="noopener noreferrer"
-          aria-label="Amorzinho Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-100 block portfolio-reveal-line">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-amorzinho.webp" alt="Amorzinho Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Amorzinho</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_1_type">
-              Gift List App • Couples & Romance
-            </p>
-          </div>
-        </a>
-
-        <a href="https://www.postaeweb.com/" target="_blank" rel="noopener noreferrer"
-          aria-label="Postaê Web Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-200 block portfolio-reveal-line">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-postae.webp" alt="Postaê Web Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Postaê Web</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_2_type">
-              News Automation • AI & WordPress Integration
-            </p>
-          </div>
-        </a>
-
-        <a href="https://marcelobraz.vinicius.xyz/" target="_blank" rel="noopener noreferrer"
-          aria-label="Marcelo Braz Live Demo (opens in new window)"
-          class="group relative bg-neutral-900 border border-neutral-800 hover:border-brand transition-colors duration-300 reveal-on-scroll delay-300 block portfolio-reveal-line">
-          <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800 relative">
-            <img src="fotos/portfolio-marcelo.webp" alt="Marcelo Braz Website Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300 portfolio-img-zoom"
-              loading="lazy" decoding="async" width="800" height="450" />
-            <div
-              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0"
-              aria-hidden="true">
-              <span class="bg-brand text-black font-bold px-6 py-3 uppercase tracking-wider text-sm"
-                data-i18n="portfolio_demo">Live Demo →</span>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-white mb-1">Marcelo Braz</h3>
-            <p class="text-neutral-300 text-sm" data-i18n="portfolio_3_type">
-              Real Estate Portfolio • Private Broker
-            </p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto section-watermark" aria-labelledby="services-heading">
-      <span class="watermark-text" aria-hidden="true">Build</span>
-      <h2 id="services-heading" class="text-4xl md:text-6xl font-black tracking-tighter mb-4 reveal-on-scroll"
-        data-i18n="services_title">
-        What We Build.
-      </h2>
-      <p class="text-xl text-neutral-300 mb-16 reveal-on-scroll max-w-2xl" data-i18n="services_subtitle">
-        We don't use rigid price lists. Every project is unique. <br />
-        <span class="text-brand font-bold">Tell us your budget</span>, and we
-        will tell you exactly what we can do for you.
-      </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <!-- Option 1: Web App (Old Option 3) - High Anchor -->
-        <div
-          class="pricing-card border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-100 bg-neutral-950/50 gradient-border">
-          <div>
-            <span class="text-neutral-500 text-sm font-mono uppercase tracking-widest mb-4 block">Option 01</span>
-            <div class="text-3xl font-black text-white mb-1">From €2,490</div>
-            <h3 class="text-xl font-bold mb-4 text-neutral-300" data-i18n="service_3_name">
-              Web Application
-            </h3>
-            <ul class="space-y-3 text-neutral-300 mb-8">
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_3_feat_1">Custom Functionality</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_3_feat_2">Dashboards & Login Areas</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_3_feat_3">Database Integration</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_3_feat_4">Complex Logic</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <div class="text-lg font-medium text-neutral-300 mb-4" data-i18n="service_3_perfect">
-              Perfect for: <span class="text-white">SaaS & Tools</span>
-            </div>
-            <button type="button"
-              class="js-open-modal btn-press w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
-              aria-label="Start project conversation" data-i18n="service_3_cta">
-              Build My App
-            </button>
-          </div>
-        </div>
-
-        <!-- Option 2: Brand Authority (Remains Option 2) - Target/Recommended -->
-        <div
-          class="pricing-card featured-glow border-2 border-brand bg-neutral-900 p-8 flex flex-col justify-between min-h-[400px] relative shadow-[0_0_20px_rgba(4,211,97,0.1)] reveal-on-scroll delay-200 transform md:-translate-y-4">
-          <div class="absolute top-0 right-0 bg-accent text-black font-bold text-xs px-3 py-1 uppercase"
-            aria-label="Best value plan">
-            Best Value
-          </div>
-          <div>
-            <span class="text-brand text-sm font-mono uppercase tracking-widest mb-4 block">Option 02</span>
-            <div class="text-4xl font-black text-white mb-1">From €490</div>
-            <h3 class="text-xl font-bold mb-4 text-white" data-i18n="service_2_name">
-              Brand Authority
-            </h3>
-            <ul class="space-y-3 text-neutral-300 mb-8">
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_2_feat_1">Multi-page Website</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_2_feat_2">Premium Animations</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_2_feat_3">CMS Content Management</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_2_feat_4">3–5&nbsp;Days Delivery</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <div class="text-lg font-medium text-neutral-300 mb-4" data-i18n="service_2_perfect">
-              Perfect for:
-              <span class="text-white">Businesses Scaling Up</span>
-            </div>
-            <button type="button"
-              class="js-open-modal btn-press w-full block text-center bg-brand text-black font-bold py-3 hover:bg-green-400 transition-colors border border-transparent"
-              aria-label="Start project conversation" data-i18n="service_2_cta">
-              Claim My Spot
-            </button>
-          </div>
-        </div>
-
-        <!-- Option 3: Essential Landing (Old Option 1) - Low Anchor -->
-        <div
-          class="pricing-card border border-neutral-800 p-8 flex flex-col justify-between min-h-[400px] hover:border-neutral-600 transition-colors reveal-on-scroll delay-300 bg-neutral-950/50 gradient-border">
-          <div>
-            <span class="text-neutral-500 text-sm font-mono uppercase tracking-widest mb-4 block">Option 03</span>
-            <div class="text-3xl font-black text-white mb-1">From €390</div>
-            <h3 class="text-xl font-bold mb-4 text-neutral-300" data-i18n="service_1_name">
-              Essential Landing
-            </h3>
-            <ul class="space-y-3 text-neutral-300 mb-8">
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_1_feat_1">One Page conversion focused</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_1_feat_2">48&nbsp;h Delivery</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_1_feat_3">Fully Responsive (Mobile)</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="text-brand">✓</span>
-                <span data-i18n="service_1_feat_4">SEO Basic Setup</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <div class="text-lg font-medium text-neutral-300 mb-4" data-i18n="service_1_perfect">
-              Perfect for: <span class="text-white">Startups & MVPs</span>
-            </div>
-            <button type="button"
-              class="js-open-modal btn-press w-full block text-center border-2 border-white text-white font-bold py-3 bg-neutral-900/50 hover:bg-white hover:text-black transition-colors"
-              aria-label="Start project conversation" data-i18n="service_1_cta">
-              Get Started
-            </button>
-          </div>
-        </div>
-      </div>
-
-
-
-      <div class="bg-green-950/20 border border-green-900/50 p-8 inline-block rounded-sm max-w-4xl w-full">
-        <p class="text-brand font-bold text-xl md:text-3xl leading-tight mb-4" data-i18n="pricing_quote">
-          "Flexible pricing for smart clients."
-        </p>
-        <p class="text-neutral-300 md:text-lg" data-i18n="pricing_desc">
-          Have a specific budget in mind? Tell us.<br />
-          We will tailor the scope to fit your wallet without compromising
-          quality.
-        </p>
-        <button type="button"
-          class="js-open-modal btn-press inline-block mt-6 text-white border-b border-brand pb-0.5 hover:text-brand transition-colors"
-          aria-label="Start project conversation" data-i18n="pricing_cta">
-          Let's talk about values →
-        </button>
-      </div>
-      </div>
-    </section>
-
-    <section class="border-t border-neutral-800" aria-labelledby="about-heading">
-      <h2 id="about-heading" class="sr-only">About us</h2>
-      <div
-        class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-neutral-800">
-        <div class="p-12 flex flex-col gap-6 reveal-on-scroll">
-          <div
-            class="w-24 h-24 bg-neutral-800 rounded-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
-            <img src="fotos/joao-victor.webp" alt="João Victor" class="w-full h-full object-cover" loading="lazy"
-              width="96" height="96" decoding="async" />
-          </div>
-          <div>
-            <h3 class="text-2xl font-bold mb-2">João Victor</h3>
-            <p class="text-neutral-300 leading-relaxed" data-i18n="about_joao_victor_desc">
-              Growth Partner & Head of Traffic. Expert in paid media and ROI-focused strategies for scaling businesses
-              in Europe.
-            </p>
-          </div>
-        </div>
-
-        <div class="p-12 flex flex-col gap-6 reveal-on-scroll delay-200">
-          <div
-            class="w-24 h-24 bg-neutral-800 rounded-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
-            <img src="fotos/vinicius.webp" alt="Vinícius" class="w-full h-full object-cover" loading="lazy" width="96"
-              height="96" decoding="async" />
-          </div>
-          <div>
-            <h3 class="text-2xl font-bold mb-2">Vinícius</h3>
-            <p class="text-neutral-300 leading-relaxed" data-i18n="about_vinicius_desc">
-              Lead Developer. Technical engine ensuring 100/100 performance
-              for European businesses.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="px-6 md:px-12 py-24 max-w-7xl mx-auto section-watermark" aria-labelledby="testimonials-heading">
-      <span class="watermark-text" aria-hidden="true">Trust</span>
-      <h2 id="testimonials-heading" class="text-3xl font-bold mb-12 text-center text-neutral-500 reveal-on-scroll"
-        data-i18n="testimonials_title">
-        The "Aha" Moment: Real Results
-      </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div
-          class="bg-neutral-900/50 p-8 border border-neutral-800 hover:border-brand transition-colors reveal-on-scroll delay-100">
-          <div class="text-brand font-black text-4xl mb-2">36h</div>
-          <p class="testimonial-quote text-lg italic mb-4 text-white" data-i18n="test_1_text">
-            "VibeWeb delivered a modern barbershop platform with integrated
-            bookings and finances. Simple for staff and clients."
-          </p>
-          <cite class="text-neutral-500 not-italic font-bold block" data-i18n="test_1_author">— Alafy Lima, Founder of
-            Dlux Barbearia</cite>
-        </div>
-
-        <div
-          class="bg-neutral-900/50 p-8 border border-neutral-800 hover:border-brand transition-colors reveal-on-scroll delay-200">
-          <div class="text-brand font-black text-4xl mb-2">100/100</div>
-          <p class="testimonial-quote text-lg italic mb-4 text-white" data-i18n="test_2_text">
-            "Fast, well-structured, and presents my work professionally.
-            Communication was clear and on point."
-          </p>
-          <cite class="text-neutral-500 not-italic font-bold block" data-i18n="test_2_author">— Justin Rudi, Video
-            Editor @ JCuts</cite>
-        </div>
-
-        <div
-          class="bg-neutral-900/50 p-8 border-2 border-brand reveal-on-scroll delay-300 shadow-[0_0_20px_rgba(4,211,97,0.1)]">
-          <div class="text-accent font-black text-4xl mb-2" data-i18n="test_3_label">
-            Efficiency
-          </div>
-          <p class="testimonial-quote text-lg font-black text-white mb-4" data-i18n="test_3_text">
-            "We launch portfolios in minutes with great performance and
-            polished UX. Consistent delivery and attention to detail."
-          </p>
-          <cite class="text-neutral-500 not-italic font-bold block" data-i18n="test_3_author">— Mara Collins, Product
-            Lead @ Magic Portfolio</cite>
-        </div>
-      </div>
-    </section>
-
-    <section class="border-t border-neutral-800 px-6 md:px-12 py-24 max-w-7xl mx-auto" aria-labelledby="faq-heading">
-      <h2 id="faq-heading" class="text-3xl font-bold mb-16 text-center text-neutral-500 reveal-on-scroll"
-        data-i18n="faq_title">
-        Frequently Asked Questions
-      </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-        <div class="reveal-on-scroll delay-100">
-          <h3 class="text-xl font-bold text-white mb-4" data-i18n="faq_1_q">
-            Do I own the domain and code?
-          </h3>
-          <p class="text-neutral-300 leading-relaxed" data-i18n="faq_1_a">
-            Yes. You own 100% of the assets. We transfer everything to you
-            upon completion.
-          </p>
-        </div>
-
-        <div class="reveal-on-scroll delay-200">
-          <h3 class="text-xl font-bold text-white mb-4" data-i18n="faq_2_q">
-            What if I don't like the design?
-          </h3>
-          <p class="text-neutral-300 leading-relaxed" data-i18n="faq_2_a">
-            You don't pay the final 50%. We revise it until you love it, or we
-            refund your deposit. No hard feelings.
-          </p>
-        </div>
-
-        <div class="reveal-on-scroll delay-300">
-          <h3 class="text-xl font-bold text-white mb-4" data-i18n="faq_3_q">
-            Are there monthly fees?
-          </h3>
-          <p class="text-neutral-300 leading-relaxed" data-i18n="faq_3_a">
-            No mandatory fees. The site is yours. We offer an optional
-            maintenance plan if you want total peace of mind.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="border-t border-neutral-800 py-16 px-6 text-center bg-neutral-950">
-      <div class="max-w-4xl mx-auto flex flex-col items-center gap-8 reveal-on-scroll">
-        <h2 class="text-4xl md:text-5xl font-black tracking-tighter" data-i18n="footer_ready">
-          Ready to scale?
-        </h2>
-
-        <button type="button"
-          class="js-open-modal btn-press footer-cta-glow w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]"
-          aria-label="Start project conversation" data-i18n="footer_cta">
-          Chat with an expert
-        </button>
-
-        <div class="flex items-center gap-2 text-neutral-500 text-xs mt-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-brand"
-            aria-hidden="true">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span data-i18n="footer_secure">Secure connection · Direct to developer</span>
-        </div>
-
-        <p class="text-sm text-neutral-300 mt-4" data-i18n="footer_refund">
-          50% only after approval · Full refund if you don't love it
-        </p>
-
-        <div class="text-neutral-500 text-xs mt-12 flex flex-col items-center gap-2">
-          <p data-i18n="footer_locations">
-            Based in Lisbon, Portugal · Global Delivery
-          </p>
-        </div>
-
-        <p class="text-neutral-500 text-sm mt-8">
-          <span data-i18n="footer_copyright_name">Copyright © 2026 VibeWeb Partners</span>
-          ·
-          <a href="privacy.html" class="text-neutral-500 hover:text-brand transition-colors"
-            data-i18n="footer_privacy">Privacy Policy</a>
-          ·
-          <span data-i18n="footer_made_with">Made with <span class="text-brand">code</span> for high-performance.</span>
-        </p>
-      </div>
-    </footer>
-  </main>
-
-  <div id="cookie-backdrop" class="cookie-backdrop"></div>
-  <div id="cookie-banner" role="region" aria-labelledby="cookie-heading" aria-hidden="true">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="space-y-1">
-        <h2 id="cookie-heading" class="sr-only">Cookie Consent</h2>
-        <p class="text-neutral-300 text-sm md:text-base" data-i18n="cookie_text">
-          We use cookies to improve your experience and analyze our traffic.
-          By clicking 'Accept', you consent to our use of cookies.
-        </p>
-      </div>
-      <div class="flex items-center gap-6">
-        <button id="cookie-decline"
-          class="focus:outline-none focus:ring-2 focus:ring-brand p-2 text-neutral-300 hover:text-white"
-          data-i18n="cookie_decline">
-          Decline
-        </button>
-        <button id="cookie-accept"
-          class="focus:outline-none focus:ring-2 focus:ring-brand bg-white text-black px-4 py-2 font-bold hover:bg-neutral-200"
-          data-i18n="cookie_accept">
-          Accept
-        </button>
-      </div>
+    <div class="process__grid">
+      <article class="process__step">
+        <span class="day">Day 1</span>
+        <h3 class="title">Brief</h3>
+        <p class="body">30-min call. I leave with everything I need.</p>
+      </article>
+      <article class="process__step">
+        <span class="day">Day 2</span>
+        <h3 class="title">Wireframes</h3>
+        <p class="body">Structure first. Voice and message before pixels.</p>
+      </article>
+      <article class="process__step">
+        <span class="day">Day 3</span>
+        <h3 class="title">Design</h3>
+        <p class="body">Visual direction. Typography, color, layout — done.</p>
+      </article>
+      <article class="process__step">
+        <span class="day">Day 4</span>
+        <h3 class="title">Build</h3>
+        <p class="body">Hand-coded HTML/CSS. No framework you don't need.</p>
+      </article>
+      <article class="process__step">
+        <span class="day">Day 5</span>
+        <h3 class="title">Polish</h3>
+        <p class="body">Micro-interactions, edge cases, mobile QA.</p>
+      </article>
+      <article class="process__step">
+        <span class="day">Day 6</span>
+        <h3 class="title">Review</h3>
+        <p class="body">Two rounds of feedback. Fast turnaround.</p>
+      </article>
+      <article class="process__step">
+        <span class="day">Day 7</span>
+        <h3 class="title">Ship</h3>
+        <p class="body">DNS propagated. Live on your domain. Owned by you.</p>
+      </article>
     </div>
-  </div>
+  </section>
 
-  <!-- Lead Capture Modal -->
-  <div id="lead-modal"
-    class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300"
-    aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div
-      class="bg-neutral-900 border border-neutral-800 p-8 md:p-12 w-[90%] max-w-[440px] relative transform scale-90 opacity-0 transition-all duration-300 shadow-2xl"
-      id="lead-modal-content" tabindex="-1">
-      <h2 id="modal-title" class="text-3xl font-black tracking-tighter text-white mb-2" data-i18n="form_title">
-        Start your Project
-      </h2>
-      <p class="text-neutral-300 mb-8" data-i18n="form_subtitle">
-        Fill the form below to speed up our conversation…
-      </p>
-
-      <form id="lead-form" class="space-y-6">
-        <div>
-          <label for="name" class="block text-sm font-bold text-neutral-300 mb-2" data-i18n="form_name_label">
-            Name
-          </label>
-          <input type="text" id="name" name="name" required class="form-input" placeholder="e.g. John Doe…"
-            autocomplete="name" spellcheck="false" data-i18n-placeholder="form_name_placeholder" />
-        </div>
-
-        <div>
-          <label for="email" class="block text-sm font-bold text-neutral-300 mb-2" data-i18n="form_email_label">
-            Email
-          </label>
-          <input type="email" id="email" name="email" required class="form-input" placeholder="e.g. john@company.com"
-            autocomplete="email" spellcheck="false" data-i18n-placeholder="form_email_placeholder" />
-        </div>
-
-        <div>
-          <label for="whatsapp" class="block text-sm font-bold text-neutral-300 mb-2">
-            <span data-i18n="form_whatsapp_label">WhatsApp</span>
-            <span class="text-neutral-500 font-normal" data-i18n="form_optional">(optional)</span>
-          </label>
-          <input type="tel" id="whatsapp" name="whatsapp" class="form-input"
-            placeholder="e.g. +1 234 567 8900…" autocomplete="tel" inputmode="tel"
-            data-i18n-placeholder="form_whatsapp_placeholder" />
-        </div>
-
-        <div>
-          <label for="project-type" class="block text-sm font-bold text-neutral-300 mb-2"
-            data-i18n="form_project_label">
-            Project Type
-          </label>
-          <div class="select-wrapper">
-            <select id="project-type" name="project-type" class="form-input" autocomplete="off">
-              <option value="Landing Page" data-i18n="form_project_option_1">
-                Landing Page
-              </option>
-              <option value="Corporate Site" data-i18n="form_project_option_2">
-                Corporate Site
-              </option>
-              <option value="Web App" data-i18n="form_project_option_3">
-                Web App / SaaS
-              </option>
-            </select>
-            <div class="select-arrow" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" id="submit-btn"
-          class="w-full mt-8 bg-brand hover:bg-green-400 text-black text-lg md:text-xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-          data-i18n="form_submit">
-          <span id="btn-text">Get My Quote</span>
-        </button>
-        <p class="text-xs text-neutral-300 mt-2 text-center">Reply in < 1 hour · Direct developer access</p>
-      </form>
-
-      <div class="mt-6 text-center">
-        <span class="text-neutral-500 text-sm" data-i18n="form_or">or</span>
-        <a href="https://wa.me/5513974023753"
-          class="block mt-2 text-white hover:text-brand text-sm font-bold underline decoration-neutral-700 underline-offset-4 hover:decoration-brand transition-all"
-          data-i18n="form_whatsapp_direct" id="modal-direct-wa">
-          Chat on WhatsApp directly
-        </a>
-      </div>
+  <!-- 4. PROOF — Selected work (product-aware via social proof) -->
+  <section class="case-studies fade-in" id="work" aria-labelledby="work-label">
+    <div class="container">
+      <h2 id="work-label" class="section-label" style="display:block;">Selected work</h2>
     </div>
+    <div class="case-stack">
+
+      <article class="case-card" aria-labelledby="case-onearc">
+        <div class="case-card-image">
+          <img src="/fotos/site-onearc.png" alt="OneArc Residence — luxury home concept site">
+        </div>
+        <div class="case-card-overlay" aria-hidden="true"></div>
+        <div class="case-card-content">
+          <div class="case-card-meta">Architecture</div>
+          <h3 id="case-onearc" class="case-card-name">OneArc Residence</h3>
+          <p class="case-card-desc">Single-page concept site for a residential architecture studio.</p>
+          <div class="case-card-tags"><span class="tag">Brand &amp; Web</span></div>
+        </div>
+      </article>
+
+      <article class="case-card" aria-labelledby="case-lunera">
+        <div class="case-card-image">
+          <img src="/fotos/site-lunera.png" alt="Lunera — personal finance app product page">
+        </div>
+        <div class="case-card-overlay" aria-hidden="true"></div>
+        <div class="case-card-content">
+          <div class="case-card-meta">FinTech</div>
+          <h3 id="case-lunera" class="case-card-name">Lunera</h3>
+          <p class="case-card-desc">Mobile-first product page for a personal finance app.</p>
+          <div class="case-card-tags"><span class="tag">Product</span></div>
+        </div>
+      </article>
+
+      <article class="case-card" aria-labelledby="case-dreelio">
+        <div class="case-card-image">
+          <img src="/fotos/site-dreelio.png" alt="Dreelio — freelancer business platform marketing site">
+        </div>
+        <div class="case-card-overlay" aria-hidden="true"></div>
+        <div class="case-card-content">
+          <div class="case-card-meta">SaaS</div>
+          <h3 id="case-dreelio" class="case-card-name">Dreelio</h3>
+          <p class="case-card-desc">Marketing site for a freelancer ops platform.</p>
+          <div class="case-card-tags"><span class="tag">Marketing</span></div>
+        </div>
+      </article>
+
+      <article class="case-card" aria-labelledby="case-messageai">
+        <div class="case-card-image">
+          <img src="/fotos/site-messageai.png" alt="MessageAI — AI messaging product brand and landing">
+        </div>
+        <div class="case-card-overlay" aria-hidden="true"></div>
+        <div class="case-card-content">
+          <div class="case-card-meta">AI</div>
+          <h3 id="case-messageai" class="case-card-name">MessageAI</h3>
+          <p class="case-card-desc">Brand and landing for an AI messaging tool.</p>
+          <div class="case-card-tags"><span class="tag">Brand</span></div>
+        </div>
+      </article>
+
+      <article class="case-card" aria-labelledby="case-alytics">
+        <div class="case-card-image">
+          <img src="/fotos/site-alytics.png" alt="Alytics — B2B analytics product page">
+        </div>
+        <div class="case-card-overlay" aria-hidden="true"></div>
+        <div class="case-card-content">
+          <div class="case-card-meta">B2B SaaS</div>
+          <h3 id="case-alytics" class="case-card-name">Alytics</h3>
+          <p class="case-card-desc">Product page with feature grid, integrations row and free-trial CTA.</p>
+          <div class="case-card-tags"><span class="tag">Product</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 5. OFFER — What's in / what's not (most-aware decision support) -->
+  <section class="offer fade-in" aria-labelledby="offer-title">
+    <header class="offer__head">
+      <span class="section-label">The €450 package</span>
+      <h2 id="offer-title" class="offer__title">
+        What's actually included — and what isn't.
+      </h2>
+    </header>
+    <div class="offer__grid">
+      <article class="offer__card">
+        <h3>What you get</h3>
+        <ul class="offer__list">
+          <li>5 custom-designed pages (home, work, services, about, contact)</li>
+          <li>Hand-written HTML/CSS — no Wix, Squarespace or Webflow lock-in</li>
+          <li>Mobile-first, responsive on every screen size</li>
+          <li>SEO foundations + analytics ready out of the box</li>
+          <li>Two rounds of revisions during the build</li>
+          <li>Full ownership — code, domain, hosting in your name</li>
+          <li>Live on your domain by Day 7</li>
+        </ul>
+      </article>
+      <article class="offer__card offer__card--out">
+        <h3>What you don't</h3>
+        <ul class="offer__list">
+          <li>Generic templates dressed up as "custom"</li>
+          <li>Stock photography or AI-generated illustrations</li>
+          <li>Six-week timelines pretending to be "thorough"</li>
+          <li>Endless upsells (CMS, blog, e-commerce — separate scope)</li>
+          <li>Monthly retainers you didn't ask for</li>
+          <li>Surprise invoices after sign-off</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6. CLOSE — Final CTA with risk reversal -->
+  <section class="final-cta fade-in" id="contact" aria-labelledby="cta-title">
+    <h2 id="cta-title" class="large-type reveal-text" data-visible-words="2">
+      Send "site" to my DMs.
+    </h2>
+    <p class="body-prose reveal-text" data-visible-words="0" style="margin-top: var(--space-xl);">
+      I'll record a 5-minute Loom showing exactly how I'd build yours. Free.
+      No deck. No commitment. If you like the take, we book Day 1.
+    </p>
+    <div class="cta-dock" id="ctaDock"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-row">
+    <a href="/" class="footer-logo" aria-label="Vibe Web — home">
+      <svg class="footer-logo-mark" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+        <g transform="translate(3.5, 3) scale(0.105)" fill="currentColor" fill-rule="evenodd">
+          <path d="M 0,0 L 69.6,152.7 L 82.6,144 L 82.6,122.2 L 95.7,122.2 L 69.6,248.7 L 60.9,253.1 L 52.2,309.8 L 34.8,344.7 L 47.8,353.5 L 95.7,327.3 L 152.2,318.5 L 208.7,440.7 L 226.1,445.1 L 226.1,475.6 L 369.6,475.6 L 595.7,0 L 434.8,0 L 300,279.3 L 282.6,244.4 L 269.6,244.4 L 269.6,274.9 L 256.5,274.9 L 273.9,148.4 L 221.7,174.5 L 173.9,183.3 L 126.1,61.1 L 113,61.1 L 104.3,117.8 L 91.3,117.8 L 56.5,43.6 L 134.8,39.3 L 182.6,122.2 L 182.6,144 L 200,161.5 L 230.4,152.7 L 160.9,0 L 4.3,0 Z"/>
+          <path d="M 460.9,43.6 L 313,353.5 L 300,366.5 L 282.6,353.5 L 252.2,279.3 L 226.1,440.7 L 234.8,414.5 L 252.2,432 L 343.5,432 L 352.2,423.3 L 369.6,366.5 L 534.8,48 L 465.2,43.6 Z"/>
+        </g>
+      </svg>
+      <span class="footer-logo-divider" aria-hidden="true"></span>
+      <span class="footer-logo-name">Vibe Web</span>
+    </a>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/vibeweb.eu" target="_blank" rel="noopener">Instagram</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+    <span class="footer-meta">© 2026 · Built in seven days</span>
   </div>
+</footer>
 
-  <script>
-    // Scroll Reveal
-    (function () {
-      const elements = document.querySelectorAll(".reveal-on-scroll");
-      if (elements.length === 0) return;
+<div class="glow-cta glass-btn-wrap" id="glowCta">
+  <div class="glow-ring-soft" aria-hidden="true"></div>
+  <div class="glow-ring" aria-hidden="true"></div>
+  <a href="https://ig.me/m/vibeweb.eu"
+     target="_blank"
+     rel="noopener"
+     class="glass-btn"
+     aria-label="Open Instagram DMs to @vibeweb.eu — type the word 'site' to start">
+    <span class="glass-shine" aria-hidden="true"></span>
+    Send "site" to my DMs
+    <span class="btn-arrow" aria-hidden="true">→</span>
+  </a>
+</div>
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
-      );
-
-      elements.forEach((el) => observer.observe(el));
-    })();
-
-    // Modal Logic
-    (function () {
-      const modal = document.getElementById("lead-modal");
-      const modalContent = document.getElementById("lead-modal-content");
-      const form = document.getElementById("lead-form");
-      const openBtns = document.querySelectorAll(".js-open-modal");
-      const directWaBtn = document.getElementById("modal-direct-wa");
-      const submitBtn = document.getElementById("submit-btn");
-      const btnText = document.getElementById("btn-text");
-
-      let lastFocusedElement;
-      let lastTriggerSource = "Unknown"; // Store which button opened the modal
-
-      if (!modal || !form || !modalContent) return;
-
-      function trapFocus(e) {
-        const focusableElements = modalContent.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.key === "Tab") {
-          if (e.shiftKey) {
-            if (document.activeElement === firstElement) {
-              lastElement.focus();
-              e.preventDefault();
-            }
-          } else {
-            if (document.activeElement === lastElement) {
-              firstElement.focus();
-              e.preventDefault();
-            }
-          }
-        }
-      }
-
-      function openModal(e) {
-        if (e) {
-          e.preventDefault();
-          const btn = e.currentTarget;
-          if (btn) {
-            if (btn.closest("header")) lastTriggerSource = "Hero";
-            else if (btn.closest("footer")) lastTriggerSource = "Footer";
-            else if (btn.closest("section")) lastTriggerSource = "Section";
-          }
-        }
-        lastFocusedElement = document.activeElement;
-
-        // Show modal
-        modal.classList.remove("opacity-0", "pointer-events-none");
-        modal.classList.add("opacity-100", "pointer-events-auto");
-        modal.setAttribute("aria-hidden", "false");
-
-        // Animate content
-        modalContent.classList.remove("scale-90", "opacity-0");
-        modalContent.classList.add("scale-100", "opacity-100");
-
-        document.body.style.overflow = "hidden";
-
-        // Focus first input
-        setTimeout(() => {
-          const firstInput = modalContent.querySelector("input");
-          if (firstInput) firstInput.focus();
-        }, 100);
-
-        modal.addEventListener("keydown", trapFocus);
-      }
-
-      function closeModal() {
-        // Hide modal
-        modal.classList.remove("opacity-100", "pointer-events-auto");
-        modal.classList.add("opacity-0", "pointer-events-none");
-        modal.setAttribute("aria-hidden", "true");
-
-        // Animate content out
-        modalContent.classList.remove("scale-100", "opacity-100");
-        modalContent.classList.add("scale-90", "opacity-0");
-
-        document.body.style.overflow = "";
-        modal.removeEventListener("keydown", trapFocus);
-
-        if (lastFocusedElement) lastFocusedElement.focus();
-      }
-
-      openBtns.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          openModal(e);
-
-          // GTM Tracking: Open Modal (Intent)
-          if (window.dataLayer) {
-            // Try to identify location based on parent section or button text context
-            let location = "unknown";
-            if (btn.closest("header")) location = "hero";
-            else if (btn.closest("footer")) location = "footer";
-            else if (btn.closest("section")) location = "services";
-
-            window.dataLayer.push({
-              event: "open_lead_modal",
-              location: location,
-            });
-          }
-        });
-      });
-
-      // Portfolio Tracking
-      const portfolioLinks = document.querySelectorAll(
-        'section[aria-labelledby="portfolio-heading"] a'
-      );
-      portfolioLinks.forEach((link) => {
-        link.addEventListener("click", () => {
-          if (window.dataLayer) {
-            const title = link.querySelector("h3")?.textContent.trim();
-            window.dataLayer.push({
-              event: "select_content",
-              content_type: "portfolio_project",
-              content_id: title || link.href,
-            });
-          }
-        });
-      });
-
-      // Close on backdrop click
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-      });
-
-      // Close on Escape key
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false") {
-          closeModal();
-        }
-      });
-
-      // Handle Form Submission
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const name = formData.get("name").trim();
-        const email = formData.get("email").trim();
-        const whatsapp = formData.get("whatsapp").trim();
-        const projectType = formData.get("project-type");
-
-        // Show loading state
-        submitBtn.disabled = true;
-        const originalText = btnText.textContent;
-        btnText.innerHTML = `<span class="spinner" aria-hidden="true"></span> Sending…`;
-
-        // 1. GTM Tracking (Controle Centralizado)
-        if (window.dataLayer) {
-          window.dataLayer.push({
-            event: "generate_lead",
-            lead_type: "whatsapp_form",
-            project_type: projectType,
-            lead_source: "WhatsApp",
-            location: "VibeWeb_LP",
-          });
-        }
-
-        // 2. Enviar para a API do VibeWeb OS (Lead Capture)
-        // Usamos try/catch para garantir que o redirecionamento para o WhatsApp ocorra
-        // mesmo se a API estiver fora do ar.
-        const sendLeadToAPI = async () => {
-          try {
-            // URL da API (ajuste conforme seu domínio de produção)
-            const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-              ? 'http://localhost:3000/api/leads'
-              : 'https://admin.vibe-web.com/api/leads'; // Ajuste para seu domínio real
-
-            await fetch(apiUrl, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                client: name,
-                email: email,
-                contact: whatsapp || null,
-                description: `Interesse em: ${projectType} (via ${lastTriggerSource})`,
-                source: `LP Form (${lastTriggerSource})`
-              }),
-            });
-            console.log('[Lead] API submission successful');
-          } catch (error) {
-            console.error('[Lead] API submission failed:', error);
-          }
-        };
-
-        // 3. Construct WhatsApp Message (only if WhatsApp provided)
-        const hasWhatsApp = whatsapp.length > 0;
-        let waUrl = null;
-        if (hasWhatsApp) {
-          const text = `Hello! My name is ${name} (${email}). I'm interested in a ${projectType} project.`;
-          waUrl = `https://wa.me/5513974023753?text=${encodeURIComponent(text)}`;
-        }
-
-        // Executa envio para API e redireciona
-        sendLeadToAPI().finally(() => {
-          setTimeout(() => {
-            if (waUrl) {
-              window.open(waUrl, "_blank");
-            }
-            closeModal();
-            submitBtn.disabled = false;
-            btnText.textContent = originalText;
-            form.reset();
-
-            // Show confirmation for email-only submissions
-            if (!hasWhatsApp) {
-              const confirmed = document.createElement('div');
-              confirmed.className = 'fixed top-6 right-6 bg-brand text-black font-bold px-6 py-4 z-[10000] shadow-2xl';
-              confirmed.setAttribute('role', 'alert');
-              confirmed.textContent = 'We\'ll reach out to you shortly!';
-              document.body.appendChild(confirmed);
-              setTimeout(() => confirmed.remove(), 4000);
-            }
-          }, 600);
-        });
-      });
-
-      // Handle Direct WhatsApp Click in Modal (for tracking and lead capture)
-      if (directWaBtn) {
-        directWaBtn.addEventListener("click", async (e) => {
-          // GTM Tracking
-          if (window.dataLayer) {
-            window.dataLayer.push({
-              event: "contact",
-              method: "whatsapp_direct_modal",
-            });
-          }
-
-          // Lead Capture (Direct Click)
-          try {
-            const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-              ? 'http://localhost:3000/api/leads'
-              : 'https://admin.vibe-web.com/api/leads';
-
-            fetch(apiUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ source: `WhatsApp Direct (${lastTriggerSource})` }),
-            });
-          } catch (err) {
-            // Ignore errors for direct clicks
-          }
-        });
-      }
-    })();
-  </script>
-<script>
-  // Sticky Nav on Scroll
-  (function() {
-    var stickyNav = document.getElementById('sticky-nav');
-    if (!stickyNav) return;
-    var lastScroll = 0;
-    var heroHeight = window.innerHeight * 0.6;
-
-    window.addEventListener('scroll', function() {
-      var currentScroll = window.pageYOffset;
-      if (currentScroll > heroHeight) {
-        stickyNav.classList.add('is-visible');
-        stickyNav.setAttribute('aria-hidden', 'false');
-      } else {
-        stickyNav.classList.remove('is-visible');
-        stickyNav.setAttribute('aria-hidden', 'true');
-      }
-      lastScroll = currentScroll;
-    }, { passive: true });
-  })();
-
-  // Custom Cursor (desktop only)
-  (function() {
-    if (window.matchMedia('(pointer: fine)').matches === false) return;
-    var dot = document.getElementById('cursor-dot');
-    var ring = document.getElementById('cursor-ring');
-    if (!dot || !ring) return;
-
-    var mouseX = 0, mouseY = 0;
-    var ringX = 0, ringY = 0;
-
-    document.addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.transform = 'translate(' + (mouseX - 4) + 'px, ' + (mouseY - 4) + 'px)';
-    });
-
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      ring.style.transform = 'translate(' + (ringX - 18) + 'px, ' + (ringY - 18) + 'px)';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    // Expand ring on interactive elements
-    var hoverTargets = document.querySelectorAll('a, button, .js-open-modal, input, select, textarea');
-    hoverTargets.forEach(function(el) {
-      el.addEventListener('mouseenter', function() { ring.classList.add('is-hovering'); });
-      el.addEventListener('mouseleave', function() { ring.classList.remove('is-hovering'); });
-    });
-  })();
-
-  // Animated Number Counter
-  (function() {
-    var counters = document.querySelectorAll('.stats-number');
-    if (!counters.length) return;
-
-    var observed = false;
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting && !observed) {
-          observed = true;
-          counters.forEach(function(counter) {
-            var text = counter.textContent.trim();
-            var match = text.match(/^(\d+)/);
-            if (!match) return;
-            var target = parseInt(match[1]);
-            var suffix = text.replace(match[1], '');
-            var current = 0;
-            var duration = 1500;
-            var start = performance.now();
-
-            function step(now) {
-              var progress = Math.min((now - start) / duration, 1);
-              var eased = 1 - Math.pow(1 - progress, 3);
-              current = Math.round(target * eased);
-              counter.textContent = current + suffix;
-              if (progress < 1) requestAnimationFrame(step);
-            }
-            requestAnimationFrame(step);
-          });
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0.5 });
-
-    counters.forEach(function(c) { observer.observe(c); });
-  })();
-</script>
-<div class="cursor-dot" id="cursor-dot"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
+<script src="/js/main.js?v=32"></script>
 </body>
-
 </html>

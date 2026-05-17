@@ -1,0 +1,139 @@
+/* Selected work — sticky stacking deck (Nitro pattern).
+   Each .case-card sticks at top:100px while you scroll, creating a stacking
+   effect where each card slides up over the previous.
+
+   Aspect ratio matches the source screenshots exactly (1920:970 ≈ 1.98:1)
+   so each shot fits perfectly with virtually no cropping. object-position
+   pinned to top so the website hero always shows — never a random middle.
+
+   Mobile (<768): switches to a stacked layout (image top, text below) since
+   the overlap approach can't fit 460px text on a 177px tall image. */
+
+.case-studies { padding: var(--space-3xl) 0 0; }
+
+.case-stack {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.case-card {
+  position: sticky;
+  top: 100px;
+  width: calc(100% - var(--page-pad) * 2);
+  max-width: calc(var(--page-max) - var(--page-pad) * 2);
+  margin: 0 auto var(--space-md);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1920 / 970;     /* matches screenshot — no awkward cropping */
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+}
+
+.case-card-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.case-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;  /* always show the website hero, predictable */
+}
+
+.case-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.15) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Card adapts to theme — uses bg-elevated + token text colors. Subtle border
+   in dark theme so it pops against any screenshot (light or dark imagery). */
+.case-card-content {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-elevated);
+  padding: 40px 36px;
+  border-radius: 16px;
+  max-width: 420px;
+  margin-left: 40px;
+  color: var(--text-primary);
+  box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.4);
+}
+[data-theme="dark"] .case-card-content {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.case-card-meta {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+.case-card-name {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.05;
+}
+.case-card-desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.case-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.case-card-tags .tag {
+  border-color: var(--border);
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+/* ─── Mobile: stacked layout ─── */
+@media (max-width: 768px) {
+  .case-card {
+    aspect-ratio: auto;          /* let content drive height */
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--space-lg);
+  }
+  .case-card-image {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 1920 / 970;     /* image keeps natural ratio */
+    width: 100%;
+  }
+  .case-card-overlay { display: none; }  /* no need — text isn't over image */
+  .case-card-content {
+    position: relative;
+    margin: 0;
+    max-width: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 24px 24px 28px;
+  }
+  .case-card-name { font-size: 24px; }
+  .case-card-desc { font-size: 14px; margin-bottom: 16px; }
+}

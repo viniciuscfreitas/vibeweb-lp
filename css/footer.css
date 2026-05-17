@@ -1,0 +1,93 @@
+/* Final CTA section + footer. */
+
+.final-cta {
+  position: relative;
+  padding: var(--space-6xl) var(--page-pad);
+  text-align: left;
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .final-cta { padding: var(--space-4xl) var(--page-pad); }
+}
+.final-cta .large-type { max-width: 22ch; }
+.final-cta .body-prose { margin-top: var(--space-xl); }
+.cta-dock {
+  display: flex;
+  justify-content: center; /* center the docked CTA pill — primary action */
+  margin-top: var(--space-3xl);
+  position: relative;
+  min-height: 64px;
+  isolation: isolate; /* contains the docked glow halo */
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-5xl) var(--page-pad) var(--space-xl);
+  border-top: 1px solid var(--border-subtle);
+}
+.footer-row {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* mobile: stack centered */
+  text-align: center;
+  gap: var(--space-lg);
+}
+@media (min-width: 768px) {
+  .footer-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;          /* desktop: 3 columns left/center/right naturally */
+  }
+}
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: opacity var(--transition-base);
+}
+.footer-logo:hover { opacity: 0.75; }
+.footer-logo-mark {
+  width: 26px;
+  height: 26px;
+  color: var(--color-vibeweb-green);
+  flex-shrink: 0;
+  display: block;
+}
+.footer-logo-divider {
+  display: block;
+  width: 1px;
+  height: 18px;
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+.footer-logo-name {
+  font-family: 'Syne', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.footer-meta {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.footer-links {
+  display: flex;
+  gap: var(--space-lg);
+}
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+.footer-links a:hover { color: var(--text-primary); }

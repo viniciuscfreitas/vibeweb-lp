@@ -1,0 +1,176 @@
+/* Top nav: real V mark + wordmark + text link + filled CTA. */
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px var(--page-pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  pointer-events: none; /* outer wrapper transparent — children re-enable */
+}
+.nav > * { pointer-events: auto; }
+
+/* ─── Logo (real V mark + wordmark) ─── */
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: opacity var(--transition-base);
+}
+.nav-logo:hover { opacity: 0.75; }
+.nav-logo-mark {
+  width: 32px;
+  height: 32px;
+  color: var(--color-vibeweb-green);
+  flex-shrink: 0;
+  display: block;
+}
+.nav-logo-divider {
+  display: block;
+  width: 1px;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.18);
+  flex-shrink: 0;
+}
+.nav-logo-name {
+  font-family: 'Syne', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+@media (max-width: 480px) {
+  .nav-logo { gap: 8px; }
+  .nav-logo-mark { width: 26px; height: 26px; }
+  .nav-logo-divider { height: 18px; }
+  .nav-logo-name { font-size: 16px; }
+}
+
+/* ─── Right side: text link + filled CTA ─── */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+/* Text link — quiet, with animated underline on hover */
+.nav-link {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-base);
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Primary CTA — filled black pill (clear visual hierarchy vs text link) */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: var(--text-primary);
+  color: var(--bg);
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: background var(--transition-base), transform var(--transition-fast);
+  white-space: nowrap;
+}
+.nav-cta:hover {
+  background: #1f1f1f;
+  transform: translateY(-1px);
+}
+.nav-cta:active { transform: translateY(0); }
+.nav-cta__arrow {
+  display: inline-block;
+  transition: transform var(--transition-base);
+}
+.nav-cta:hover .nav-cta__arrow { transform: translateX(2px); }
+
+/* ─── Theme switcher (glass pill, 2 options: light/dark) ─── */
+.theme-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 4px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg);
+  border: 1px solid var(--border-subtle);
+  isolation: isolate;
+}
+.theme-switcher-pill {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-spring), background var(--transition-base);
+  z-index: 0;
+}
+[data-theme="dark"] .theme-switcher-pill { background: rgba(0, 0, 0, 0.6); }
+.theme-switcher-pill[data-pos="1"] { transform: translateX(28px); }
+.theme-switcher-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition-base);
+  z-index: 1;
+  padding: 0;
+}
+.theme-switcher-option svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.theme-switcher-option:hover { color: var(--text-secondary); }
+.theme-switcher-option.active { color: var(--text-primary); }
+
+@media (max-width: 480px) {
+  .nav { padding: 16px var(--page-pad); }
+  .nav-right { gap: var(--space-md); }
+  .nav-link { font-size: 13px; }
+  .nav-cta { padding: 8px 14px; font-size: 12px; }
+  .theme-switcher { height: 32px; padding: 3px; }
+  .theme-switcher-option { width: 26px; height: 26px; }
+  .theme-switcher-pill { width: 26px; height: 26px; }
+  .theme-switcher-pill[data-pos="1"] { transform: translateX(26px); }
+}

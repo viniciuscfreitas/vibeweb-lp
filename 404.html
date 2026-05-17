@@ -1,180 +1,62 @@
-<!-- VibeWeb Production Build v1.0.1 -->
 <!DOCTYPE html>
-<html
-  lang="en"
-  class="scroll-smooth"
-  style="color-scheme: dark"
-  itemscope
-  itemtype="https://schema.org/WebPage"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n="error_404_title">404 - Lost in the Vibe? | VibeWeb</title>
-    <!-- Google Tag Manager -->
-    <script>
-      window.loadGTM = function () {
-        if (window.gtmLoaded) return;
-        window.gtmLoaded = true;
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-          var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != "dataLayer" ? "&l=" + l : "";
-          j.async = true;
-          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-          f.parentNode.insertBefore(j, f);
-        })(window, document, "script", "dataLayer", "GTM-T66KGKHZ");
-      };
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f0f0f0">
+  <title>Not found · Vibe Web</title>
+  <meta name="description" content="That page doesn't exist. Head back to vibe-web.com.">
+  <meta name="robots" content="noindex">
 
-      (function () {
-        const consent = localStorage.getItem("vibe-cookie-consent");
-        if (consent === "accepted") {
-          window.loadGTM();
-        }
-      })();
-    </script>
-    <!-- End Google Tag Manager -->
-    <meta
-      name="description"
-      content="Page not found. Talk to us on WhatsApp to build your high-end website."
-      data-i18n-meta="meta_description"
-    />
-    <meta name="theme-color" content="#000000" />
-    <meta name="robots" content="noindex, follow" />
-    <link rel="icon" type="image/png" href="fotos/favicon.png" />
+  <link rel="icon" type="image/png" href="/fotos/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript
-      ><link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-        rel="stylesheet"
-    /></noscript>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .nf {
+      min-height: 80vh;
+      max-width: var(--page-max);
+      margin: 0 auto;
+      padding: 30vh var(--page-pad) var(--space-7xl);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-xl);
+    }
+  </style>
+</head>
+<body>
 
-    <script src="js/i18n.js" defer></script>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
+<a href="#main" class="skip-link">Skip to content</a>
 
-  <body class="antialiased flex flex-col min-h-screen bg-black text-white">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-T66KGKHZ"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <a
-      href="#main-content"
-      class="skip-link"
-    >
-      Skip to content
+<nav class="nav" aria-label="Primary">
+  <a href="/" class="nav-logo" aria-label="Vibe Web home">
+    <span class="wordmark">VIBE WEB<span class="accent-dot" aria-hidden="true"></span></span>
+  </a>
+  <div class="nav-right">
+    <a href="/" class="glass-btn nav-action-btn">
+      <span class="glass-shine"></span>
+      Back home
+      <span class="btn-arrow">→</span>
     </a>
+  </div>
+</nav>
 
-    <nav
-      class="w-full py-6 px-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto z-40 relative"
-      aria-label="Main navigation"
-      role="navigation"
-    >
-      <a href="index.html" class="text-2xl font-bold tracking-tighter flex items-center gap-2 text-white">
-        VibeWeb
-      </a>
-    </nav>
+<main id="main" class="nf">
+  <span class="section-label">404 — page not found</span>
+  <h1 class="large-type">That page doesn't exist.</h1>
+  <p class="body-prose">
+    Probably a stale link. The custom-website offer hasn't moved —
+    €450, 7 days, still here.
+  </p>
+  <a href="/" class="glass-btn">
+    <span class="glass-shine"></span>
+    Back to the home
+    <span class="btn-arrow">→</span>
+  </a>
+</main>
 
-    <main id="main-content" class="flex-grow flex items-center justify-center px-6 py-24">
-      <div class="max-w-2xl w-full text-center space-y-8">
-        <h1
-          class="text-8xl md:text-9xl font-black tracking-tighter text-brand leading-none"
-          data-i18n="error_404_heading"
-        >
-          404
-        </h1>
-
-        <div class="space-y-4">
-          <h2
-            class="text-4xl md:text-6xl font-black tracking-tighter text-white"
-            data-i18n="error_404_title"
-          >
-            Lost in the Vibe?
-          </h2>
-          <p
-            class="text-xl md:text-2xl text-neutral-400 max-w-lg mx-auto leading-relaxed"
-            data-i18n="error_404_subtitle"
-          >
-            The page you're looking for doesn't exist or has been moved.
-          </p>
-        </div>
-
-        <div class="pt-8 flex flex-col items-center gap-6">
-          <a
-            href="https://wa.me/5513974023753"
-            rel="noopener noreferrer"
-            aria-label="Talk to us on WhatsApp (opens in new window)"
-            class="w-full md:w-auto text-center inline-block bg-brand hover:bg-green-400 text-black text-xl md:text-2xl font-bold py-5 px-10 rounded-none transition-transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] border-2 border-transparent hover:border-white"
-            data-i18n="error_404_cta"
-          >
-            Talk to us on WhatsApp
-          </a>
-
-          <a
-            href="index.html"
-            class="text-neutral-500 hover:text-white transition-colors font-bold uppercase tracking-widest text-sm"
-            data-i18n="back_home"
-          >
-            Back to Home
-          </a>
-        </div>
-      </div>
-    </main>
-
-    <div id="cookie-backdrop" class="cookie-backdrop"></div>
-    <div
-      id="cookie-banner"
-      role="region"
-      aria-labelledby="cookie-heading"
-      aria-hidden="true"
-    >
-      <div
-        class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
-      >
-        <div class="space-y-1 text-left">
-          <h2 id="cookie-heading" class="sr-only">Cookie Consent</h2>
-          <p
-            class="text-neutral-300 text-sm md:text-base"
-            data-i18n="cookie_text"
-          >
-            We use cookies to improve your experience and analyze our traffic.
-            By clicking 'Accept', you consent to our use of cookies.
-          </p>
-        </div>
-        <div class="flex items-center gap-6">
-          <button
-            id="cookie-decline"
-            class="focus:outline-none focus:ring-2 focus:ring-white p-2"
-            data-i18n="cookie_decline"
-          >
-            Decline
-          </button>
-          <button
-            id="cookie-accept"
-            class="focus:outline-none focus:ring-2 focus:ring-white"
-            data-i18n="cookie_accept"
-          >
-            Accept
-          </button>
-        </div>
-      </div>
-    </div>
-  </body>
+</body>
 </html>

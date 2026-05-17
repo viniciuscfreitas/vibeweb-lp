@@ -1,0 +1,146 @@
+/* Hero — 100vh with 50vh top padding so headline lives mid-screen.
+   Word-by-word reveal handled by main.js + .reveal-text classes from base.css. */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 50vh var(--page-pad) var(--space-5xl) var(--page-pad);
+  max-width: var(--page-max);
+  margin: 0 auto; /* center to viewport like all other sections — keeps left edge aligned >page-max */
+}
+@media (max-width: 768px) {
+  .hero {
+    /* Mobile: hero takes the full viewport so the next section doesn't peek
+       above the fold (used to either bury the headline at 30vh OR let agitate
+       leak into the hero at 12vh — neither felt right). 100svh = visual
+       viewport including dynamic browser chrome (URL bar) on iOS Safari. */
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 18vh var(--page-pad) var(--space-3xl) var(--page-pad);
+    justify-content: center;
+  }
+  /* Tighter h1 wrapping on mobile so headline doesn't take 4 lines */
+  .hero h1 { font-size: clamp(38px, 9vw, 56px); line-height: 1.05; }
+  .hero p  { font-size: 15px; }
+}
+
+.hero h1, .hero h2, .hero p { margin: 0; }
+.hero h2 { margin-top: var(--space-md); } /* tight pairing — was --space-xl, too far */
+
+/* Line-level reveal: each line fades + rises in as a single block, staggered.
+   Mascot still tracks the last visible word inside the H1 (data-visible-words=999
+   so the word splitter marks every word .visible from the start). */
+.hero__line {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: hero-line-in 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero__line--2 { animation-delay: 0.55s; }
+@keyframes hero-line-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Word-level reveal disabled inside hero — words start visible, line-level
+   handles the entrance. Override the .reveal-text .word hidden state. */
+.hero__line .word { opacity: 1; filter: none; transform: none; transition: none; }
+
+/* Mascot wrapper — JS controls position. CSS provides initial state + transitions. */
+.site-icon-wrap {
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: 70px;
+  height: 70px;
+  z-index: 60;
+  pointer-events: none;
+  transition: width var(--transition-base), height var(--transition-base);
+}
+.site-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  color: var(--color-vibeweb-green); /* brand color — V mascot is always green */
+}
+
+/* ─── Mascot "Vibe" — character animations ─── */
+
+/* Idle: subtle bob (always playing, gives it a heartbeat) */
+.site-icon.vibo {
+  animation: vibo-bob 2.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+@keyframes vibo-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+/* Blink: every 3.5s the eyes scale Y to 0.1 for ~120ms */
+.vibo__eyes {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: vibo-blink 3.5s ease-in-out infinite;
+}
+@keyframes vibo-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.08); }
+  98%           { transform: scaleY(1); }
+}
+
+/* Hard-hat plate: subtle pulse marks the brand tip on the helmet */
+.vibo__hat rect:last-child {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: vibo-hat-pulse 2.4s ease-in-out infinite;
+}
+@keyframes vibo-hat-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+
+/* Walk cycle — legs alternate stride. Triggered when mascot is moving. */
+.is-walking .vibo__leg {
+  transform-box: fill-box;
+}
+.is-walking .vibo__leg--l {
+  transform-origin: 29px 58px;
+  animation: vibo-leg-l 0.45s ease-in-out infinite;
+}
+.is-walking .vibo__leg--r {
+  transform-origin: 41px 58px;
+  animation: vibo-leg-r 0.45s ease-in-out infinite;
+}
+@keyframes vibo-leg-l {
+  0%, 100% { transform: rotate(-12deg); }
+  50%      { transform: rotate(12deg); }
+}
+@keyframes vibo-leg-r {
+  0%, 100% { transform: rotate(12deg); }
+  50%      { transform: rotate(-12deg); }
+}
+
+/* Wave — when settled in corner, occasional friendly wave with right arm */
+.is-settled .vibo__arm--r {
+  transform-origin: 50px 34px;
+  transform-box: fill-box;
+  animation: vibo-wave 5s ease-in-out infinite;
+}
+@keyframes vibo-wave {
+  0%, 70%, 100% { transform: rotate(0deg); }
+  78%, 90%      { transform: rotate(-35deg); }
+  84%           { transform: rotate(-20deg); }
+}
+@media (max-width: 480px) {
+  .site-icon-wrap {
+    bottom: 30px !important;
+    right: 24px !important;
+    top: auto !important;
+    left: auto !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
