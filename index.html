@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Syne:wght@700&display=swap">
 
-  <link rel="stylesheet" href="/css/styles.css?v=36">
+  <link rel="stylesheet" href="/css/styles.css?v=37">
 
   <!-- Meta Pixel Code (GDPR-gated: fires only after consent) -->
   <script>
@@ -108,11 +108,6 @@
   <div class="nav-right">
     <a href="#work" class="nav-link" data-i18n="nav.work">Work</a>
     <a href="#contact" class="nav-cta"><span data-i18n="nav.cta">Get in touch</span> <span class="nav-cta__arrow" aria-hidden="true">→</span></a>
-    <div class="locale-switcher" role="radiogroup" data-i18n-aria="nav.locale.aria" aria-label="Language">
-      <div class="locale-switcher-pill" data-pos="0" aria-hidden="true"></div>
-      <button class="locale-switcher-option active" data-locale-value="en" aria-label="English" role="radio" aria-checked="true">EN</button>
-      <button class="locale-switcher-option" data-locale-value="de" aria-label="Deutsch" role="radio" aria-checked="false">DE</button>
-    </div>
     <div class="theme-switcher" role="radiogroup" aria-label="Theme">
       <div class="theme-switcher-pill" data-pos="0" aria-hidden="true"></div>
       <button class="theme-switcher-option active" data-theme-value="light" data-i18n-aria="nav.theme.light" aria-label="Light mode" role="radio" aria-checked="true">
@@ -333,6 +328,11 @@
       <a href="/privacy.html" data-locale-only="en">Privacy</a>
       <a href="/datenschutz.html" data-locale-only="de">Datenschutz</a>
       <a href="/impressum.html">Impressum</a>
+      <span class="footer-locale" role="group" data-i18n-aria="nav.locale.aria" aria-label="Language">
+        <button type="button" class="footer-locale-btn active" data-locale-value="en" aria-label="English">EN</button>
+        <span class="footer-locale-sep" aria-hidden="true">·</span>
+        <button type="button" class="footer-locale-btn" data-locale-value="de" aria-label="Deutsch">DE</button>
+      </span>
     </div>
     <span class="footer-meta" data-i18n="footer.meta">© 2026 · Built in seven days</span>
   </div>
@@ -363,8 +363,8 @@
   </div>
 </div>
 
-<script src="/js/i18n.js?v=36"></script>
-<script src="/js/main.js?v=36"></script>
+<script src="/js/i18n.js?v=37"></script>
+<script src="/js/main.js?v=37"></script>
 <script>
   (function () {
     var banner = document.getElementById('cookie-banner');

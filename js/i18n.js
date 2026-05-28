@@ -230,21 +230,16 @@
       else el.setAttribute('aria-hidden', 'true');
     });
 
-    const switcher = document.querySelector('.locale-switcher');
-    if (switcher) {
-      switcher.querySelectorAll('.locale-switcher-option').forEach(btn => {
-        const active = btn.getAttribute('data-locale-value') === locale;
-        btn.classList.toggle('active', active);
-        btn.setAttribute('aria-checked', active ? 'true' : 'false');
-      });
-      const pill = switcher.querySelector('.locale-switcher-pill');
-      if (pill) pill.setAttribute('data-pos', locale === 'de' ? '1' : '0');
-    }
+    document.querySelectorAll('[data-locale-value]').forEach(btn => {
+      const active = btn.getAttribute('data-locale-value') === locale;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
   }
 
   applyLocale(detectLocale());
 
-  document.querySelectorAll('.locale-switcher-option').forEach(btn => {
+  document.querySelectorAll('[data-locale-value]').forEach(btn => {
     btn.addEventListener('click', () => {
       const next = btn.getAttribute('data-locale-value');
       if (next !== 'en' && next !== 'de') return;

@@ -91,3 +91,30 @@ footer {
   transition: color var(--transition-fast);
 }
 .footer-links a:hover { color: var(--text-primary); }
+
+.footer-locale {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.footer-locale-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  letter-spacing: 0.04em;
+  color: inherit;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+.footer-locale-btn:hover { color: var(--text-primary); }
+.footer-locale-btn.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.footer-locale-sep {
+  color: var(--text-muted);
+  user-select: none;
+}

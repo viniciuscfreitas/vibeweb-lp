@@ -164,55 +164,6 @@
 .theme-switcher-option:hover { color: var(--text-secondary); }
 .theme-switcher-option.active { color: var(--text-primary); }
 
-/* Locale switcher — wider pill (text labels EN/DE instead of icons). */
-.locale-switcher {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  padding: 4px;
-  height: 36px;
-  border-radius: var(--radius-pill);
-  background: var(--glass-bg);
-  border: 1px solid var(--border-subtle);
-  isolation: isolate;
-}
-.locale-switcher-pill {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 36px;
-  height: 28px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: transform var(--transition-spring), background var(--transition-base);
-  z-index: 0;
-}
-[data-theme="dark"] .locale-switcher-pill { background: rgba(0, 0, 0, 0.6); }
-.locale-switcher-pill[data-pos="1"] { transform: translateX(36px); }
-.locale-switcher-option {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 28px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color var(--transition-base);
-  z-index: 1;
-  padding: 0;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-}
-.locale-switcher-option:hover { color: var(--text-secondary); }
-.locale-switcher-option.active { color: var(--text-primary); }
-
 @media (max-width: 480px) {
   .nav { padding: 16px var(--page-pad); }
   .nav-right { gap: var(--space-md); }
@@ -222,8 +173,4 @@
   .theme-switcher-option { width: 26px; height: 26px; }
   .theme-switcher-pill { width: 26px; height: 26px; }
   .theme-switcher-pill[data-pos="1"] { transform: translateX(26px); }
-  .locale-switcher { height: 32px; padding: 3px; }
-  .locale-switcher-option { width: 32px; height: 26px; font-size: 10px; }
-  .locale-switcher-pill { width: 32px; height: 26px; }
-  .locale-switcher-pill[data-pos="1"] { transform: translateX(32px); }
 }
