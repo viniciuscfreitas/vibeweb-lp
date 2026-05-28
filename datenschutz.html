@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f0f0">
+  <title>Datenschutz · Vibe Web</title>
+  <meta name="description" content="Datenschutzerklärung von Vibe Web nach DSGVO — kurz und verständlich.">
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/fotos/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/fotos/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/fotos/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Syne:wght@700&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.css?v=35">
+  <style>
+    .privacy {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: calc(var(--space-7xl) + 60px) var(--page-pad) var(--space-6xl);
+    }
+    .privacy__head { margin-bottom: var(--space-3xl); }
+    .privacy__head .section-label { margin-bottom: var(--space-md); }
+    .privacy__title {
+      font-family: inherit;
+      font-weight: var(--font-label);
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+    }
+    .privacy__updated {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: var(--space-md);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .privacy__body { display: flex; flex-direction: column; gap: var(--space-2xl); }
+    .privacy__body section h2 {
+      font-family: inherit;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.014em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .privacy__body p,
+    .privacy__body li {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+    .privacy__body p + p { margin-top: var(--space-md); }
+    .privacy__body ul { list-style: none; padding: 0; margin-top: var(--space-md); }
+    .privacy__body li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: var(--space-sm);
+    }
+    .privacy__body li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10px;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--color-vibeweb-green);
+    }
+    .privacy__body strong { color: var(--text-primary); font-weight: 500; }
+    .privacy__body a {
+      color: var(--text-primary);
+      text-decoration: underline;
+      text-decoration-color: var(--color-vibeweb-green);
+      text-underline-offset: 3px;
+    }
+    .privacy__body a:hover { text-decoration-color: var(--text-primary); }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+<nav class="nav" aria-label="Primary">
+  <a href="/" class="nav-logo" aria-label="Vibe Web — Startseite">
+    <svg class="nav-logo-mark" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+      <g transform="translate(3.5, 3) scale(0.105)" fill="currentColor" fill-rule="evenodd">
+        <path d="M 0,0 L 69.6,152.7 L 82.6,144 L 82.6,122.2 L 95.7,122.2 L 69.6,248.7 L 60.9,253.1 L 52.2,309.8 L 34.8,344.7 L 47.8,353.5 L 95.7,327.3 L 152.2,318.5 L 208.7,440.7 L 226.1,445.1 L 226.1,475.6 L 369.6,475.6 L 595.7,0 L 434.8,0 L 300,279.3 L 282.6,244.4 L 269.6,244.4 L 269.6,274.9 L 256.5,274.9 L 273.9,148.4 L 221.7,174.5 L 173.9,183.3 L 126.1,61.1 L 113,61.1 L 104.3,117.8 L 91.3,117.8 L 56.5,43.6 L 134.8,39.3 L 182.6,122.2 L 182.6,144 L 200,161.5 L 230.4,152.7 L 160.9,0 L 4.3,0 Z"/>
+        <path d="M 460.9,43.6 L 313,353.5 L 300,366.5 L 282.6,353.5 L 252.2,279.3 L 226.1,440.7 L 234.8,414.5 L 252.2,432 L 343.5,432 L 352.2,423.3 L 369.6,366.5 L 534.8,48 L 465.2,43.6 Z"/>
+      </g>
+    </svg>
+    <span class="nav-logo-divider" aria-hidden="true"></span>
+    <span class="nav-logo-name">Vibe Web</span>
+  </a>
+  <div class="nav-right">
+    <a href="/" class="nav-link">Startseite</a>
+    <a href="/#contact" class="nav-cta">Kontakt <span class="nav-cta__arrow" aria-hidden="true">→</span></a>
+    <div class="theme-switcher" role="radiogroup" aria-label="Theme">
+      <div class="theme-switcher-pill" data-pos="0" aria-hidden="true"></div>
+      <button class="theme-switcher-option active" data-theme-value="light" aria-label="Heller Modus" role="radio" aria-checked="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="theme-switcher-option" data-theme-value="dark" aria-label="Dunkler Modus" role="radio" aria-checked="false">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="privacy">
+  <header class="privacy__head">
+    <span class="section-label">Datenschutz</span>
+    <h1 class="privacy__title">Wie wir mit deinen Daten umgehen.</h1>
+    <p class="privacy__updated">Stand · 25. Mai 2026</p>
+  </header>
+
+  <div class="privacy__body">
+
+    <section>
+      <h2>Kurzfassung</h2>
+      <p>
+        Vibe Web ist ein Ein-Personen-Studio. Ich erhebe nur das Minimum, das
+        nötig ist, um individuelle Websites zu liefern und deine Nachrichten zu
+        beantworten — nicht mehr. Ich verkaufe, teile oder analysiere deine
+        Daten nicht für Drittzwecke.
+      </p>
+    </section>
+
+    <section>
+      <h2>Verantwortlicher</h2>
+      <p>
+        Verantwortlich im Sinne der DSGVO ist der Betreiber dieser Website.
+        Die vollständigen Kontaktdaten findest du im
+        <a href="/impressum.html">Impressum</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Welche Daten ich erhebe</h2>
+      <ul>
+        <li><strong>Kontaktdaten</strong>, die du mir direkt gibst — Name,
+          E-Mail, Nachricht — wenn du mir auf Instagram schreibst, eine E-Mail
+          schickst oder ein Lead-Formular auf Meta-Anzeigen ausfüllst.</li>
+        <li><strong>Projektdateien</strong>, die du während des Aufbaus teilst —
+          Texte, Fotos, Marken-Assets — werden ausschließlich zur Erstellung
+          deiner Website genutzt.</li>
+        <li><strong>Server-Logs</strong>: IP-Adresse, User-Agent,
+          Zeitstempel — automatisch durch den Webserver erfasst, gelöscht
+          nach 7 Tagen.</li>
+        <li><strong>Cookie-Einwilligung</strong>: dein Consent-Status wird
+          lokal im Browser gespeichert (kein Tracking ohne Zustimmung).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Cookies und Meta Pixel</h2>
+      <p>
+        Diese Website nutzt den <strong>Meta Pixel</strong> (Facebook Pixel,
+        ID 1623715775404942) ausschließlich nach deiner ausdrücklichen
+        Einwilligung über das Cookie-Banner. Ohne Zustimmung wird der Pixel
+        nicht geladen, es werden keine Daten an Meta übertragen.
+      </p>
+      <p>
+        Wenn du zustimmst, überträgt der Pixel anonymisierte Ereignisse
+        (Seitenaufruf, Lead) an Meta Platforms Ireland Ltd., um die Wirksamkeit
+        unserer Anzeigen zu messen und ähnliche Zielgruppen aufzubauen.
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung). Du kannst
+        deine Einwilligung jederzeit widerrufen, indem du die Cookies dieser
+        Seite in deinem Browser löschst.
+      </p>
+    </section>
+
+    <section>
+      <h2>Was ich nicht erhebe</h2>
+      <ul>
+        <li>Keine Google Analytics, keine Heatmaps, keine
+          Session-Aufzeichnungen.</li>
+        <li>Keine Retargeting-Cookies außer dem oben beschriebenen
+          Meta Pixel.</li>
+        <li>Keine Bewegungs- oder Verhaltensanalyse über die Seite hinaus.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Rechtsgrundlagen</h2>
+      <ul>
+        <li><strong>Vertragsanbahnung und -erfüllung</strong> (Art. 6 Abs. 1
+          lit. b DSGVO): wenn du eine Anfrage stellst oder einen Auftrag
+          erteilst.</li>
+        <li><strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a DSGVO):
+          Meta Pixel, Cookies, optionale Newsletter.</li>
+        <li><strong>Berechtigtes Interesse</strong> (Art. 6 Abs. 1 lit. f
+          DSGVO): Server-Logs zur IT-Sicherheit, kurzfristige Speicherung
+          technischer Daten.</li>
+        <li><strong>Gesetzliche Pflichten</strong> (Art. 6 Abs. 1 lit. c
+          DSGVO): steuer- und handelsrechtliche Aufbewahrung von
+          Rechnungen für bis zu 10 Jahre.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Speicherdauer</h2>
+      <p>
+        Direktnachrichten und Projektdateien: solange wir zusammenarbeiten,
+        plus 12 Monate für steuerliche/rechtliche Zwecke. Danach werden sie
+        gelöscht. Rechnungen werden gesetzlich vorgeschrieben bis zu 10 Jahre
+        aufbewahrt.
+      </p>
+      <p>
+        Server-Logs: 7 Tage, danach automatische Löschung.
+      </p>
+    </section>
+
+    <section>
+      <h2>Empfänger und Auftragsverarbeiter</h2>
+      <p>
+        Die Website wird auf einem privaten VPS in Europa gehostet. Folgende
+        Dienstleister verarbeiten in unserem Auftrag Daten:
+      </p>
+      <ul>
+        <li><strong>Meta Platforms Ireland Ltd.</strong> — Instagram-DMs,
+          Lead Ads, Meta Pixel. Datenübertragung kann in die USA erfolgen
+          (Standardvertragsklauseln nach Art. 46 DSGVO,
+          EU-US Data Privacy Framework).</li>
+        <li><strong>VPS-Hoster in der EU</strong> — Webhosting,
+          Auftragsverarbeitungsvertrag nach Art. 28 DSGVO.</li>
+        <li><strong>E-Mail-Provider</strong> — Versand und Empfang von
+          Nachrichten an hi@vibe-web.com.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Deine Rechte (DSGVO)</h2>
+      <p>
+        Du hast jederzeit das Recht, von mir folgendes zu verlangen:
+      </p>
+      <ul>
+        <li><strong>Auskunft</strong> (Art. 15) — was ich über dich
+          gespeichert habe.</li>
+        <li><strong>Berichtigung</strong> (Art. 16) — falsche Daten
+          korrigieren.</li>
+        <li><strong>Löschung</strong> (Art. 17) — soweit keine gesetzliche
+          Aufbewahrungspflicht entgegensteht.</li>
+        <li><strong>Einschränkung der Verarbeitung</strong> (Art. 18).</li>
+        <li><strong>Datenübertragbarkeit</strong> (Art. 20) — Export deiner
+          Daten in einem strukturierten Format.</li>
+        <li><strong>Widerspruch</strong> (Art. 21) — gegen Verarbeitung auf
+          Grundlage berechtigter Interessen.</li>
+        <li><strong>Widerruf der Einwilligung</strong> (Art. 7 Abs. 3) —
+          jederzeit, ohne Angabe von Gründen.</li>
+      </ul>
+      <p>
+        Schreib mir an
+        <a href="mailto:hi@vibe-web.com">hi@vibe-web.com</a>. Ich antworte
+        innerhalb von 48 Stunden.
+      </p>
+    </section>
+
+    <section>
+      <h2>Beschwerderecht</h2>
+      <p>
+        Du kannst dich jederzeit bei einer Datenschutz-Aufsichtsbehörde
+        beschweren. Für Nutzer in Deutschland ist die zuständige Behörde
+        am Wohnort des Beschwerdeführers oder am Sitz des Verantwortlichen
+        zuständig. Eine Liste findest du auf
+        <a href="https://www.bfdi.bund.de/DE/Service/Anschriften/Laender/Laender-node.html" target="_blank" rel="noopener">bfdi.bund.de</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Änderungen dieser Erklärung</h2>
+      <p>
+        Bei wesentlichen Änderungen aktualisiere ich das Datum oben und poste
+        einen Hinweis auf Instagram. Keine stillen Änderungen.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <a href="/" class="footer-logo" aria-label="Vibe Web — Startseite">
+      <svg class="footer-logo-mark" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+        <g transform="translate(3.5, 3) scale(0.105)" fill="currentColor" fill-rule="evenodd">
+          <path d="M 0,0 L 69.6,152.7 L 82.6,144 L 82.6,122.2 L 95.7,122.2 L 69.6,248.7 L 60.9,253.1 L 52.2,309.8 L 34.8,344.7 L 47.8,353.5 L 95.7,327.3 L 152.2,318.5 L 208.7,440.7 L 226.1,445.1 L 226.1,475.6 L 369.6,475.6 L 595.7,0 L 434.8,0 L 300,279.3 L 282.6,244.4 L 269.6,244.4 L 269.6,274.9 L 256.5,274.9 L 273.9,148.4 L 221.7,174.5 L 173.9,183.3 L 126.1,61.1 L 113,61.1 L 104.3,117.8 L 91.3,117.8 L 56.5,43.6 L 134.8,39.3 L 182.6,122.2 L 182.6,144 L 200,161.5 L 230.4,152.7 L 160.9,0 L 4.3,0 Z"/>
+          <path d="M 460.9,43.6 L 313,353.5 L 300,366.5 L 282.6,353.5 L 252.2,279.3 L 226.1,440.7 L 234.8,414.5 L 252.2,432 L 343.5,432 L 352.2,423.3 L 369.6,366.5 L 534.8,48 L 465.2,43.6 Z"/>
+        </g>
+      </svg>
+      <span class="footer-logo-divider" aria-hidden="true"></span>
+      <span class="footer-logo-name">Vibe Web</span>
+    </a>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/vibeweb.eu" target="_blank" rel="noopener">Instagram</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/impressum.html">Impressum</a>
+    </div>
+    <span class="footer-meta">© 2026 · Built in seven days</span>
+  </div>
+</footer>
+
+<script src="/js/main.js?v=35"></script>
+</body>
+</html>

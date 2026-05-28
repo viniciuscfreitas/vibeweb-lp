@@ -12,3 +12,6 @@ node_modules/
 # Environment
 .env
 .env.local
+
+# QA artifacts
+qa-evidence/
