@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Syne:wght@700&display=swap">
 
-  <link rel="stylesheet" href="/css/styles.css?v=35">
+  <link rel="stylesheet" href="/css/styles.css?v=36">
 
   <!-- Meta Pixel Code (GDPR-gated: fires only after consent) -->
   <script>
@@ -74,33 +74,21 @@
 <a href="#main" class="skip-link">Skip to content</a>
 
 <div class="site-icon-wrap" id="siteIconWrap" aria-hidden="true">
-  <!-- Mascot "Vibe" — capsule humanoid with V-form legs (brand tie via the V).
-       Multiple grouped layers so individual parts (eyes, arms, legs, spark)
-       can animate independently via CSS classes (.is-walking, .is-settled,
-       always-on idle bob + blink). -->
   <svg class="site-icon vibo" viewBox="0 0 70 84" xmlns="http://www.w3.org/2000/svg" focusable="false">
-    <!-- Body capsule (head + torso merged for clean silhouette at 32px) -->
     <rect x="20" y="8" width="30" height="52" rx="15" fill="currentColor"/>
-    <!-- Hard-hat brim — dark stripe splits the capsule into "hat dome" (top
-         rounded portion) and "face/body" (below). Reads as a builder at any
-         size. Tiny VW logo plate sits on the dome. -->
     <g class="vibo__hat">
       <rect x="17" y="14" width="36" height="2.4" rx="1" fill="#0a0a0a"/>
       <rect x="32" y="10.5" width="6" height="3" rx="0.6" fill="#0a0a0a"/>
     </g>
-    <!-- Eyes (white sclera + dark pupils, scale-y animates the blink) -->
     <g class="vibo__eyes">
       <ellipse cx="29" cy="22" rx="3.4" ry="3.6" fill="#fff"/>
       <ellipse cx="41" cy="22" rx="3.4" ry="3.6" fill="#fff"/>
       <circle cx="29" cy="22.5" r="1.6" fill="#0a0a0a"/>
       <circle cx="41" cy="22.5" r="1.6" fill="#0a0a0a"/>
     </g>
-    <!-- Smile (subtle, dark stroke arc) -->
     <path class="vibo__smile" d="M 28 32 Q 35 37 42 32" stroke="#0a0a0a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-    <!-- Arms (rotate from shoulder for wave) -->
     <line class="vibo__arm vibo__arm--l" x1="20" y1="34" x2="11" y2="46" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
     <line class="vibo__arm vibo__arm--r" x1="50" y1="34" x2="59" y2="46" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-    <!-- V-form legs (brand mark hint — when walking they alternate stride) -->
     <line class="vibo__leg vibo__leg--l" x1="29" y1="58" x2="22" y2="80" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
     <line class="vibo__leg vibo__leg--r" x1="41" y1="58" x2="48" y2="80" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
   </svg>
@@ -118,14 +106,19 @@
     <span class="nav-logo-name">Vibe Web</span>
   </a>
   <div class="nav-right">
-    <a href="#work" class="nav-link">Work</a>
-    <a href="#contact" class="nav-cta">Get in touch <span class="nav-cta__arrow" aria-hidden="true">→</span></a>
+    <a href="#work" class="nav-link" data-i18n="nav.work">Work</a>
+    <a href="#contact" class="nav-cta"><span data-i18n="nav.cta">Get in touch</span> <span class="nav-cta__arrow" aria-hidden="true">→</span></a>
+    <div class="locale-switcher" role="radiogroup" data-i18n-aria="nav.locale.aria" aria-label="Language">
+      <div class="locale-switcher-pill" data-pos="0" aria-hidden="true"></div>
+      <button class="locale-switcher-option active" data-locale-value="en" aria-label="English" role="radio" aria-checked="true">EN</button>
+      <button class="locale-switcher-option" data-locale-value="de" aria-label="Deutsch" role="radio" aria-checked="false">DE</button>
+    </div>
     <div class="theme-switcher" role="radiogroup" aria-label="Theme">
       <div class="theme-switcher-pill" data-pos="0" aria-hidden="true"></div>
-      <button class="theme-switcher-option active" data-theme-value="light" aria-label="Light mode" role="radio" aria-checked="true">
+      <button class="theme-switcher-option active" data-theme-value="light" data-i18n-aria="nav.theme.light" aria-label="Light mode" role="radio" aria-checked="true">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
       </button>
-      <button class="theme-switcher-option" data-theme-value="dark" aria-label="Dark mode" role="radio" aria-checked="false">
+      <button class="theme-switcher-option" data-theme-value="dark" data-i18n-aria="nav.theme.dark" aria-label="Dark mode" role="radio" aria-checked="false">
         <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
     </div>
@@ -134,75 +127,75 @@
 
 <main id="main">
 
-  <!-- 1. HERO — Problem-aware hook + offer crystal + CTA implied below -->
+  <!-- 1. HERO -->
   <section class="hero" aria-labelledby="hero-title">
-    <h1 id="hero-title" class="large-type reveal-text hero__line hero__line--1" data-visible-words="999">
+    <h1 id="hero-title" class="large-type reveal-text hero__line hero__line--1" data-visible-words="999" data-i18n="hero.line1">
       If your work deserves better, your site should match.
     </h1>
-    <h2 class="large-type compact reveal-text hero__line hero__line--2" data-visible-words="999" style="margin-top: var(--space-xl);">
+    <h2 class="large-type compact reveal-text hero__line hero__line--2" data-visible-words="999" style="margin-top: var(--space-xl);" data-i18n="hero.line2">
       Custom websites in 7 days, for European freelancers and small businesses.
     </h2>
   </section>
 
-  <!-- 2. AGITATE — Cost of waiting (problem-pain reveal) -->
+  <!-- 2. AGITATE -->
   <section class="agitate fade-in" aria-labelledby="agitate-title">
-    <h2 id="agitate-title" class="agitate__line">
+    <h2 id="agitate-title" class="agitate__line" data-i18n="agitate.headline" data-i18n-html>
       Every week without a site, <em>~3 prospects pick someone else.</em>
     </h2>
-    <p class="agitate__sub">Most never tell you why. They just disappear.</p>
+    <p class="agitate__sub" data-i18n="agitate.sub">Most never tell you why. They just disappear.</p>
   </section>
 
-  <!-- 3. MECHANISM — How the 7-day path works (solution-aware) -->
+  <!-- 3. MECHANISM -->
   <section class="process fade-in" aria-labelledby="process-title">
     <header class="process__head">
-      <span class="section-label">How it works</span>
-      <h2 id="process-title" class="process__title">
+      <span class="section-label" data-i18n="process.label">How it works</span>
+      <h2 id="process-title" class="process__title" data-i18n="process.title">
         Day 1 to Day 7. Real timeline. No asterisks.
       </h2>
     </header>
     <div class="process__grid">
       <article class="process__step">
-        <span class="day">Day 1</span>
-        <h3 class="title">Brief</h3>
-        <p class="body">30-min call. I leave with everything I need.</p>
+        <span class="day" data-i18n="process.day1.label">Day 1</span>
+        <h3 class="title" data-i18n="process.day1.title">Brief</h3>
+        <p class="body" data-i18n="process.day1.body">30-min call. I leave with everything I need.</p>
       </article>
       <article class="process__step">
-        <span class="day">Day 2</span>
-        <h3 class="title">Wireframes</h3>
-        <p class="body">Structure first. Voice and message before pixels.</p>
+        <span class="day" data-i18n="process.day2.label">Day 2</span>
+        <h3 class="title" data-i18n="process.day2.title">Wireframes</h3>
+        <p class="body" data-i18n="process.day2.body">Structure first. Voice and message before pixels.</p>
       </article>
       <article class="process__step">
-        <span class="day">Day 3</span>
-        <h3 class="title">Design</h3>
-        <p class="body">Visual direction. Typography, color, layout — done.</p>
+        <span class="day" data-i18n="process.day3.label">Day 3</span>
+        <h3 class="title" data-i18n="process.day3.title">Design</h3>
+        <p class="body" data-i18n="process.day3.body">Visual direction. Typography, color, layout — done.</p>
       </article>
       <article class="process__step">
-        <span class="day">Day 4</span>
-        <h3 class="title">Build</h3>
-        <p class="body">Hand-coded HTML/CSS. No framework you don't need.</p>
+        <span class="day" data-i18n="process.day4.label">Day 4</span>
+        <h3 class="title" data-i18n="process.day4.title">Build</h3>
+        <p class="body" data-i18n="process.day4.body">Hand-coded HTML/CSS. No framework you don't need.</p>
       </article>
       <article class="process__step">
-        <span class="day">Day 5</span>
-        <h3 class="title">Polish</h3>
-        <p class="body">Micro-interactions, edge cases, mobile QA.</p>
+        <span class="day" data-i18n="process.day5.label">Day 5</span>
+        <h3 class="title" data-i18n="process.day5.title">Polish</h3>
+        <p class="body" data-i18n="process.day5.body">Micro-interactions, edge cases, mobile QA.</p>
       </article>
       <article class="process__step">
-        <span class="day">Day 6</span>
-        <h3 class="title">Review</h3>
-        <p class="body">Two rounds of feedback. Fast turnaround.</p>
+        <span class="day" data-i18n="process.day6.label">Day 6</span>
+        <h3 class="title" data-i18n="process.day6.title">Review</h3>
+        <p class="body" data-i18n="process.day6.body">Two rounds of feedback. Fast turnaround.</p>
       </article>
       <article class="process__step">
-        <span class="day">Day 7</span>
-        <h3 class="title">Ship</h3>
-        <p class="body">DNS propagated. Live on your domain. Owned by you.</p>
+        <span class="day" data-i18n="process.day7.label">Day 7</span>
+        <h3 class="title" data-i18n="process.day7.title">Ship</h3>
+        <p class="body" data-i18n="process.day7.body">DNS propagated. Live on your domain. Owned by you.</p>
       </article>
     </div>
   </section>
 
-  <!-- 4. PROOF — Selected work (product-aware via social proof) -->
+  <!-- 4. PROOF -->
   <section class="case-studies fade-in" id="work" aria-labelledby="work-label">
     <div class="container">
-      <h2 id="work-label" class="section-label" style="display:block;">Selected work</h2>
+      <h2 id="work-label" class="section-label" style="display:block;" data-i18n="work.label">Selected work</h2>
     </div>
     <div class="case-stack">
 
@@ -212,10 +205,10 @@
         </div>
         <div class="case-card-overlay" aria-hidden="true"></div>
         <div class="case-card-content">
-          <div class="case-card-meta">Architecture</div>
+          <div class="case-card-meta" data-i18n="case.onearc.meta">Architecture</div>
           <h3 id="case-onearc" class="case-card-name">OneArc Residence</h3>
-          <p class="case-card-desc">Single-page concept site for a residential architecture studio.</p>
-          <div class="case-card-tags"><span class="tag">Brand &amp; Web</span></div>
+          <p class="case-card-desc" data-i18n="case.onearc.desc">Single-page concept site for a residential architecture studio.</p>
+          <div class="case-card-tags"><span class="tag" data-i18n="case.onearc.tag">Brand &amp; Web</span></div>
         </div>
       </article>
 
@@ -225,10 +218,10 @@
         </div>
         <div class="case-card-overlay" aria-hidden="true"></div>
         <div class="case-card-content">
-          <div class="case-card-meta">FinTech</div>
+          <div class="case-card-meta" data-i18n="case.lunera.meta">FinTech</div>
           <h3 id="case-lunera" class="case-card-name">Lunera</h3>
-          <p class="case-card-desc">Mobile-first product page for a personal finance app.</p>
-          <div class="case-card-tags"><span class="tag">Product</span></div>
+          <p class="case-card-desc" data-i18n="case.lunera.desc">Mobile-first product page for a personal finance app.</p>
+          <div class="case-card-tags"><span class="tag" data-i18n="case.lunera.tag">Product</span></div>
         </div>
       </article>
 
@@ -238,10 +231,10 @@
         </div>
         <div class="case-card-overlay" aria-hidden="true"></div>
         <div class="case-card-content">
-          <div class="case-card-meta">SaaS</div>
+          <div class="case-card-meta" data-i18n="case.dreelio.meta">SaaS</div>
           <h3 id="case-dreelio" class="case-card-name">Dreelio</h3>
-          <p class="case-card-desc">Marketing site for a freelancer ops platform.</p>
-          <div class="case-card-tags"><span class="tag">Marketing</span></div>
+          <p class="case-card-desc" data-i18n="case.dreelio.desc">Marketing site for a freelancer ops platform.</p>
+          <div class="case-card-tags"><span class="tag" data-i18n="case.dreelio.tag">Marketing</span></div>
         </div>
       </article>
 
@@ -251,10 +244,10 @@
         </div>
         <div class="case-card-overlay" aria-hidden="true"></div>
         <div class="case-card-content">
-          <div class="case-card-meta">AI</div>
+          <div class="case-card-meta" data-i18n="case.messageai.meta">AI</div>
           <h3 id="case-messageai" class="case-card-name">MessageAI</h3>
-          <p class="case-card-desc">Brand and landing for an AI messaging tool.</p>
-          <div class="case-card-tags"><span class="tag">Brand</span></div>
+          <p class="case-card-desc" data-i18n="case.messageai.desc">Brand and landing for an AI messaging tool.</p>
+          <div class="case-card-tags"><span class="tag" data-i18n="case.messageai.tag">Brand</span></div>
         </div>
       </article>
 
@@ -264,57 +257,57 @@
         </div>
         <div class="case-card-overlay" aria-hidden="true"></div>
         <div class="case-card-content">
-          <div class="case-card-meta">B2B SaaS</div>
+          <div class="case-card-meta" data-i18n="case.alytics.meta">B2B SaaS</div>
           <h3 id="case-alytics" class="case-card-name">Alytics</h3>
-          <p class="case-card-desc">Product page with feature grid, integrations row and free-trial CTA.</p>
-          <div class="case-card-tags"><span class="tag">Product</span></div>
+          <p class="case-card-desc" data-i18n="case.alytics.desc">Product page with feature grid, integrations row and free-trial CTA.</p>
+          <div class="case-card-tags"><span class="tag" data-i18n="case.alytics.tag">Product</span></div>
         </div>
       </article>
 
     </div>
   </section>
 
-  <!-- 5. OFFER — What's in / what's not (most-aware decision support) -->
+  <!-- 5. OFFER -->
   <section class="offer fade-in" aria-labelledby="offer-title">
     <header class="offer__head">
-      <span class="section-label">The €450 package</span>
-      <h2 id="offer-title" class="offer__title">
+      <span class="section-label" data-i18n="offer.label">The €450 package</span>
+      <h2 id="offer-title" class="offer__title" data-i18n="offer.title">
         What's actually included — and what isn't.
       </h2>
     </header>
     <div class="offer__grid">
       <article class="offer__card">
-        <h3>What you get</h3>
+        <h3 data-i18n="offer.in.title">What you get</h3>
         <ul class="offer__list">
-          <li>5 custom-designed pages (home, work, services, about, contact)</li>
-          <li>Hand-written HTML/CSS — no Wix, Squarespace or Webflow lock-in</li>
-          <li>Mobile-first, responsive on every screen size</li>
-          <li>SEO foundations + analytics ready out of the box</li>
-          <li>Two rounds of revisions during the build</li>
-          <li>Full ownership — code, domain, hosting in your name</li>
-          <li>Live on your domain by Day 7</li>
+          <li data-i18n="offer.in.li1">5 custom-designed pages (home, work, services, about, contact)</li>
+          <li data-i18n="offer.in.li2">Hand-written HTML/CSS — no Wix, Squarespace or Webflow lock-in</li>
+          <li data-i18n="offer.in.li3">Mobile-first, responsive on every screen size</li>
+          <li data-i18n="offer.in.li4">SEO foundations + analytics ready out of the box</li>
+          <li data-i18n="offer.in.li5">Two rounds of revisions during the build</li>
+          <li data-i18n="offer.in.li6">Full ownership — code, domain, hosting in your name</li>
+          <li data-i18n="offer.in.li7">Live on your domain by Day 7</li>
         </ul>
       </article>
       <article class="offer__card offer__card--out">
-        <h3>What you don't</h3>
+        <h3 data-i18n="offer.out.title">What you don't</h3>
         <ul class="offer__list">
-          <li>Generic templates dressed up as "custom"</li>
-          <li>Stock photography or AI-generated illustrations</li>
-          <li>Six-week timelines pretending to be "thorough"</li>
-          <li>Endless upsells (CMS, blog, e-commerce — separate scope)</li>
-          <li>Monthly retainers you didn't ask for</li>
-          <li>Surprise invoices after sign-off</li>
+          <li data-i18n="offer.out.li1">Generic templates dressed up as "custom"</li>
+          <li data-i18n="offer.out.li2">Stock photography or AI-generated illustrations</li>
+          <li data-i18n="offer.out.li3">Six-week timelines pretending to be "thorough"</li>
+          <li data-i18n="offer.out.li4">Endless upsells (CMS, blog, e-commerce — separate scope)</li>
+          <li data-i18n="offer.out.li5">Monthly retainers you didn't ask for</li>
+          <li data-i18n="offer.out.li6">Surprise invoices after sign-off</li>
         </ul>
       </article>
     </div>
   </section>
 
-  <!-- 6. CLOSE — Final CTA with risk reversal -->
+  <!-- 6. CLOSE -->
   <section class="final-cta fade-in" id="contact" aria-labelledby="cta-title">
-    <h2 id="cta-title" class="large-type reveal-text" data-visible-words="2">
+    <h2 id="cta-title" class="large-type reveal-text" data-visible-words="2" data-i18n="cta.title">
       Send "site" to my DMs.
     </h2>
-    <p class="body-prose reveal-text" data-visible-words="0" style="margin-top: var(--space-xl);">
+    <p class="body-prose reveal-text" data-visible-words="0" style="margin-top: var(--space-xl);" data-i18n="cta.body">
       I'll record a 5-minute Loom showing exactly how I'd build yours. Free.
       No deck. No commitment. If you like the take, we book Day 1.
     </p>
@@ -337,11 +330,11 @@
     </a>
     <div class="footer-links">
       <a href="https://www.instagram.com/vibeweb.eu" target="_blank" rel="noopener">Instagram</a>
-      <a href="/privacy.html">Privacy</a>
-      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/privacy.html" data-locale-only="en">Privacy</a>
+      <a href="/datenschutz.html" data-locale-only="de">Datenschutz</a>
       <a href="/impressum.html">Impressum</a>
     </div>
-    <span class="footer-meta">© 2026 · Built in seven days</span>
+    <span class="footer-meta" data-i18n="footer.meta">© 2026 · Built in seven days</span>
   </div>
 </footer>
 
@@ -352,24 +345,26 @@
      target="_blank"
      rel="noopener"
      class="glass-btn"
+     data-i18n-aria="cta.button.aria"
      aria-label="Open Instagram DMs to @vibeweb.eu — type the word 'site' to start">
     <span class="glass-shine" aria-hidden="true"></span>
-    Send "site" to my DMs
+    <span data-i18n="cta.button">Send "site" to my DMs</span>
     <span class="btn-arrow" aria-hidden="true">→</span>
   </a>
 </div>
 
 <div id="cookie-banner" class="cookie-banner" role="region" aria-label="Cookie consent" hidden>
-  <p class="cookie-banner__text">
+  <p class="cookie-banner__text" data-i18n="cookie.text">
     We use cookies to measure traffic and improve this site. You can decline without impact.
   </p>
   <div class="cookie-banner__actions">
-    <button type="button" class="cookie-banner__btn cookie-banner__btn--ghost" id="cookieDecline">Decline</button>
-    <button type="button" class="cookie-banner__btn cookie-banner__btn--solid" id="cookieAccept">Accept</button>
+    <button type="button" class="cookie-banner__btn cookie-banner__btn--ghost" id="cookieDecline" data-i18n="cookie.decline">Decline</button>
+    <button type="button" class="cookie-banner__btn cookie-banner__btn--solid" id="cookieAccept" data-i18n="cookie.accept">Accept</button>
   </div>
 </div>
 
-<script src="/js/main.js?v=35"></script>
+<script src="/js/i18n.js?v=36"></script>
+<script src="/js/main.js?v=36"></script>
 <script>
   (function () {
     var banner = document.getElementById('cookie-banner');

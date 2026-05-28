@@ -1,19 +1,15 @@
 /*
  * Vibe Web — Landing styles entry-point.
- * Modeled 1:1 from someoneandothers.com (light + dim themes — Plan B).
- * Selling sections (agitate, process, offer) added to support the implicit
- * Schwartz funnel (problem -> mechanism -> proof -> offer -> close).
- *
  * NOTE: ?v=N busts the 1y immutable cache on each ship.
  */
 
-@import url('./tokens.css?v=35');
-@import url('./base.css?v=35');
-@import url('./components.css?v=35');
-@import url('./nav.css?v=35');
-@import url('./hero.css?v=35');
-@import url('./glow-cta.css?v=35');
-@import url('./case-stack.css?v=35');
-@import url('./selling.css?v=35');
-@import url('./footer.css?v=35');
-@import url('./scrollbar.css?v=35');
+@import url('./tokens.css?v=36');
+@import url('./base.css?v=36');
+@import url('./components.css?v=36');
+@import url('./nav.css?v=36');
+@import url('./hero.css?v=36');
+@import url('./glow-cta.css?v=36');
+@import url('./case-stack.css?v=36');
+@import url('./selling.css?v=36');
+@import url('./footer.css?v=36');
+@import url('./scrollbar.css?v=36');
